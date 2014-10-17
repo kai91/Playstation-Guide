@@ -13,6 +13,8 @@
 
     <EditText
         android:id="@+id/username"
+        android:maxLines="1"
+        android:maxLength="16"
         android:layout_centerInParent="true"
         android:layout_marginLeft="@dimen/layout_horizontal_margin"
         android:layout_marginRight="@dimen/layout_horizontal_margin"
