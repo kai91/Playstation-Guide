@@ -8,4 +8,14 @@ package robustgametools.util;
  * @author kai
  */
 public class JsonFactory {
+
+    private static JsonFactory mJsonFactory = null;
+
+    // Singleton design pattern
+    public static JsonFactory getInstance() {
+        if (mJsonFactory == null) {
+            mJsonFactory = new JsonFactory();
+        }
+        return mJsonFactory;
+    }
 }
