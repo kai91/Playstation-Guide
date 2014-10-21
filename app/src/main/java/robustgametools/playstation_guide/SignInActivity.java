@@ -10,8 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.EditText;
 
 import com.google.gson.Gson;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 
 public class SignInActivity extends Activity implements SignInFragment.onSignInListener {
@@ -22,7 +26,7 @@ public class SignInActivity extends Activity implements SignInFragment.onSignInL
         setContentView(R.layout.activity_sign_in);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new SignInFragment())
                     .commit();
         }
 
