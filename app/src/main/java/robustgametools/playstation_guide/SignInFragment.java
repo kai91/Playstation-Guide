@@ -1,25 +1,32 @@
 package robustgametools.playstation_guide;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.app.Fragment;
-import android.view.KeyEvent;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import org.apache.http.Header;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnEditorAction;
+import robustgametools.util.HttpClient;
 
 
 public class SignInFragment extends Fragment {
     @InjectView(R.id.username) EditText mUsername;
 
     private onSignInListener mListener;
+    private ProgressDialog mProgressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,16 +37,25 @@ public class SignInFragment extends Fragment {
     }
 
     @OnEditorAction(R.id.username)
-    public boolean signIn() {
-        Toast.makeText(getActivity(), mUsername.getText().toString(), Toast.LENGTH_LONG).show();
-        return true;
-    }
+    public boolean signInClicked() {
+        String username = mUsername.getText().toString();
+        showLoadingDialog();
+        HttpClient.signIn(username, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String response = new String(responseBody);
+                hideLoadingDialog();
+                hideKeyboard();
+                Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
+            }
 
-    public void onSignInButtonPressed(String username) {
-        //TODO Implement login behaviour
-        if (mListener != null) {
-            mListener.signIn(username);
-        }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                hideLoadingDialog();
+                Toast.makeText(getActivity(), "Error signing in: " + Integer.toString(statusCode), Toast.LENGTH_LONG).show();
+            }
+        });
+        return true;
     }
 
     @Override
@@ -57,10 +73,29 @@ public class SignInFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        HttpClient.cancelRequests();
+    }
+
+    private void showLoadingDialog() {
+        if (mProgressDialog == null)
+            mProgressDialog = new ProgressDialog(getActivity());
+        mProgressDialog.setMessage("Logging in...");
+        mProgressDialog.show();
+    }
+
+    private void hideLoadingDialog() {
+        if (mProgressDialog != null)
+            mProgressDialog.dismiss();
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mUsername.getWindowToken(), 0);
     }
 
     public interface onSignInListener {
-        public void signIn(String username);
+        public void onSignInSuccess(String username);
     }
 
 }
