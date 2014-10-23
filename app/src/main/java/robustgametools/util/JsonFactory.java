@@ -9,7 +9,10 @@ package robustgametools.util;
  */
 public class JsonFactory {
 
-    private static JsonFactory mJsonFactory = null;
+    private static JsonFactory mJsonFactory = new JsonFactory();
+
+    // To prevent instantiation
+    private JsonFactory() {};
 
     // Singleton design pattern
     public static JsonFactory getInstance() {
