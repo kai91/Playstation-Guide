@@ -3,83 +3,82 @@ package robustgametools.model;
 /**
  * Profile to store the information about user's account.
  *
- * @author kai
  */
 public class Profile {
 
-    private String onlineId, avatarUrl;
-    private int level, progress, platinum, gold, silver, bronze;
-    private boolean plus;
+    private String mOnlineId, mAvatarUrl;
+    private int mLevel, mProgress, mPlatinum, mGold, mSilver, mBronze;
+    private boolean mPlus;
 
     public String getOnlineId() {
-        return onlineId;
+        return mOnlineId;
     }
 
     public void setOnlineId(String onlineId) {
-        this.onlineId = onlineId;
+        this.mOnlineId = onlineId;
     }
 
     public String getAvatarUrl() {
-        return avatarUrl;
+        return mAvatarUrl;
     }
 
     public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
+        this.mAvatarUrl = avatarUrl;
     }
 
     public int getLevel() {
-        return level;
+        return mLevel;
     }
 
     public void setLevel(int level) {
-        this.level = level;
+        this.mLevel = level;
     }
 
     public int getProgress() {
-        return progress;
+        return mProgress;
     }
 
     public void setProgress(int progress) {
-        this.progress = progress;
+        this.mProgress = progress;
     }
 
     public int getPlatinum() {
-        return platinum;
+        return mPlatinum;
     }
 
     public void setPlatinum(int platinum) {
-        this.platinum = platinum;
+        this.mPlatinum = platinum;
     }
 
     public int getGold() {
-        return gold;
+        return mGold;
     }
 
     public void setGold(int gold) {
-        this.gold = gold;
+        this.mGold = gold;
     }
 
     public int getSilver() {
-        return silver;
+        return mSilver;
     }
 
     public void setSilver(int silver) {
-        this.silver = silver;
+        this.mSilver = silver;
     }
 
     public int getBronze() {
-        return bronze;
+        return mBronze;
     }
 
     public void setBronze(int bronze) {
-        this.bronze = bronze;
+        this.mBronze = bronze;
     }
 
     public boolean isPlus() {
-        return plus;
+        return mPlus;
     }
 
     public void setPlus(boolean plus) {
-        this.plus = plus;
+        this.mPlus = plus;
     }
 }
