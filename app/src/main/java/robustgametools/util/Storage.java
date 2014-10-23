@@ -4,24 +4,20 @@ import android.content.Context;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * Storage is a util class used to write and read
  * file from and into the Android. This class will
- * use Android internal mStorage.
+ * use Android Internal Storage.
  */
 public class Storage {
 
     private static Storage mStorage = new Storage();
     private static Context mContext = null;
-    private static String rootDir = null;
 
-    private static String profileDir = "profile/";
-    private static  String jsonDir = "json/";
+    private static String mActiveUser = "activeUser";
+    private static String mJsonDir = "json/";
 
     protected Storage() {
         // Exists only to defeat instantiation.
@@ -65,7 +61,6 @@ public class Storage {
         final FileInputStream stream;
         try {
             File root = mContext.getFilesDir();
-            //File newDir = new File(root, path);
             File newDir = new File(root.getAbsolutePath() + '/' + path);
             File output = new File(newDir, fileName);
             stream = new FileInputStream(output);
@@ -73,16 +68,16 @@ public class Storage {
             stream.read(bytes);
             return new String(bytes);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to read file to input sream", e);
+            throw new RuntimeException("Failed to read file to input stream", e);
         }
     }
 
-    public boolean persistUserData(String username, String data) {
-        return createFile(profileDir, username, data);
+    public boolean persistUserData(String data) {
+        return createFile("", mActiveUser, data);
     }
 
-    public String readUserData(String username) {
-        return readFile(profileDir, username);
+    public String readUserData() {
+        return readFile("", mActiveUser);
     }
 
 }

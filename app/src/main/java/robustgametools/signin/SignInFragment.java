@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ public class SignInFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View rootView = inflater.inflate(R.layout.fragment_sign_in_form, container, false);
         ButterKnife.inject(this, rootView);
         return rootView;
@@ -41,22 +43,26 @@ public class SignInFragment extends Fragment {
 
     @OnEditorAction(R.id.username)
     public boolean signInClicked() {
-        final String username = mUsername.getText().toString();
+
+        String username = mUsername.getText().toString();
         showLoadingDialog();
         HttpClient.signIn(username, new AsyncHttpResponseHandler() {
+
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            public void onSuccess(int statusCode, Header[] headers,
+                                  byte[] responseBody) {
+
                 String response = new String(responseBody);
-                hideLoadingDialog();
-                hideKeyboard();
-                persistUserData(username, response);
-                Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
+                successfullyLoggedIn(response);
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            public void onFailure(int statusCode, Header[] headers,
+                                  byte[] responseBody, Throwable error) {
+
                 hideLoadingDialog();
-                Toast.makeText(getActivity(), "Error signing in: " + Integer.toString(statusCode), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Error signing in: " +
+                        Integer.toString(statusCode), Toast.LENGTH_LONG).show();
             }
         });
         return true;
@@ -80,14 +86,33 @@ public class SignInFragment extends Fragment {
         HttpClient.cancelRequests();
     }
 
-    private void persistUserData(String username, String data) {
-        Storage.getInstance(getActivity()).persistUserData(username, data);
+    private void successfullyLoggedIn(String response) {
+        hideLoadingDialog();
+        hideKeyboard();
+        persistUserData(response);
+        mListener.onSignInSuccess();
+    }
+
+    /**
+     * Save player's data to the
+     * @param data
+     */
+    private void persistUserData(String data) {
+        Storage storage = Storage.getInstance(getActivity());
+        storage.persistUserData(data);
     }
 
     private void showLoadingDialog() {
         if (mProgressDialog == null)
             mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage("Logging in...");
+        mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                // Cancels all connection in case user wants to cancel it
+                HttpClient.cancelRequests();
+            }
+        });
         mProgressDialog.show();
     }
 
@@ -103,7 +128,7 @@ public class SignInFragment extends Fragment {
     }
 
     public interface onSignInListener {
-        public void onSignInSuccess(String username);
+        public void onSignInSuccess();
     }
 
 }
