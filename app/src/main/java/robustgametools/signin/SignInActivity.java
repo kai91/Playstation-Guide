@@ -43,7 +43,7 @@ public class SignInActivity extends Activity implements SignInFragment.onSignInL
     }
 
     @Override
-    public void onSignInSuccess(String username) {
+    public void onSignInSuccess() {
         //TODO Implements sign in method
     }
 }

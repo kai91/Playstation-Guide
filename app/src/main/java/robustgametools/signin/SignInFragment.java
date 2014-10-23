@@ -86,6 +86,11 @@ public class SignInFragment extends Fragment {
         HttpClient.cancelRequests();
     }
 
+    /**
+     * Called upon successfully logged in. Clean up
+     * and finally pass on to the activity to handle
+     * @param response
+     */
     private void successfullyLoggedIn(String response) {
         hideLoadingDialog();
         hideKeyboard();
@@ -94,7 +99,7 @@ public class SignInFragment extends Fragment {
     }
 
     /**
-     * Save player's data to the
+     * Save player's data to the internal storage
      * @param data
      */
     private void persistUserData(String data) {
