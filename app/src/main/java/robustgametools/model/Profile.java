@@ -1,5 +1,7 @@
 package robustgametools.model;
 
+import java.util.ArrayList;
+
 /**
  * Profile to store the information about user's account.
  *
@@ -9,6 +11,7 @@ public class Profile {
     private String mOnlineId, mAvatarUrl;
     private int mLevel, mProgress, mPlatinum, mGold, mSilver, mBronze;
     private boolean mPlus;
+    private ArrayList<Game> mGames;
 
     public String getOnlineId() {
         return mOnlineId;
@@ -80,5 +83,9 @@ public class Profile {
 
     public void setPlus(boolean plus) {
         this.mPlus = plus;
+    }
+
+    public ArrayList<Game> getGames() {
+        return mGames;
     }
 }
