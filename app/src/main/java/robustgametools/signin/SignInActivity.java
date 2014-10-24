@@ -12,13 +12,16 @@ import robustgametools.playstation_guide.R;
 
 public class SignInActivity extends Activity implements SignInFragment.onSignInListener {
 
+    private static SignInFragment mSignInFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mSignInFragment = new SignInFragment();
         setContentView(R.layout.activity_sign_in);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new SignInFragment())
+                    .add(R.id.container, mSignInFragment)
                     .commit();
         }
     }
@@ -37,7 +40,8 @@ public class SignInActivity extends Activity implements SignInFragment.onSignInL
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.sign_in) {
+            mSignInFragment.signInClicked();
             return true;
         }
         return super.onOptionsItemSelected(item);
