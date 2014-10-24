@@ -1,10 +1,12 @@
 package robustgametools.signin;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import robustgametools.playstation.HomeActivity;
 import robustgametools.playstation_guide.R;
 
 
@@ -19,7 +21,6 @@ public class SignInActivity extends Activity implements SignInFragment.onSignInL
                     .add(R.id.container, new SignInFragment())
                     .commit();
         }
-
     }
 
 
@@ -44,6 +45,8 @@ public class SignInActivity extends Activity implements SignInFragment.onSignInL
 
     @Override
     public void onSignInSuccess() {
-        //TODO Implements sign in method
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
