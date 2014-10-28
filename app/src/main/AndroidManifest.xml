@@ -24,6 +24,10 @@
             android:name="robustgametools.playstation.HomeActivity"
             android:label="@string/title_activity_home" >
         </activity>
+        <activity
+            android:name="robustgametools.guide.GuideActivity"
+            android:label="@string/title_activity_guide" >
+        </activity>
     </application>
 
 </manifest>
