@@ -3,6 +3,7 @@ package robustgametools.signin;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -10,7 +11,7 @@ import robustgametools.playstation.HomeActivity;
 import robustgametools.playstation_guide.R;
 
 
-public class SignInActivity extends Activity implements SignInFragment.onSignInListener {
+public class SignInActivity extends ActionBarActivity implements SignInFragment.onSignInListener {
 
     private static SignInFragment mSignInFragment;
 
@@ -24,14 +25,6 @@ public class SignInActivity extends Activity implements SignInFragment.onSignInL
                     .add(R.id.container, mSignInFragment)
                     .commit();
         }
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.sign_in, menu);
-        return true;
     }
 
     @Override

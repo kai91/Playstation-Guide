@@ -10,6 +10,7 @@ import android.app.FragmentTransaction;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,7 +23,7 @@ import com.astuetz.PagerSlidingTabStrip;
 
 import robustgametools.playstation_guide.R;
 
-public class HomeActivity extends Activity{
+public class HomeActivity extends ActionBarActivity{
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
