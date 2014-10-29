@@ -19,7 +19,6 @@ import org.apache.http.Header;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import robustgametools.playstation_guide.R;
 import robustgametools.util.HttpClient;
