@@ -19,6 +19,7 @@ import org.apache.http.Header;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import robustgametools.playstation_guide.R;
 import robustgametools.util.HttpClient;
@@ -39,6 +40,12 @@ public class SignInFragment extends Fragment {
         ButterKnife.inject(this, rootView);
         return rootView;
     }
+
+    @OnClick(R.id.sign_in)
+    public void signInButtonClicked() {
+        signInClicked();
+    }
+
 
     @OnEditorAction(R.id.username)
     public boolean signInClicked() {
