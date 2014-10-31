@@ -6,16 +6,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/container"
+    <RelativeLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".HomeActivity"
-        tools:ignore="MergeRootFrame" />
+        tools:ignore="MergeRootFrame">
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/toolbar"/>
+            layout="@layout/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@id/toolbar"
+            ></FrameLayout>
+
+    </RelativeLayout>
+
+
 
         <ListView
             android:layout_width="260dp"

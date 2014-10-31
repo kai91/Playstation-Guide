@@ -16,29 +16,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import robustgametools.model.BaseActivity;
 import robustgametools.playstation_guide.R;
 
-public class HomeActivity extends ActionBarActivity {
-
-    private Toolbar toolbar;
+public class HomeActivity extends BaseActivity {
     private DrawerLayout drawer;
     private CharSequence mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            getSupportActionBar().hide();
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            toolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
-        } else Toast.makeText(this, "NO TOOLBAR?!!!", Toast.LENGTH_LONG).show();
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, PlaceholderFragment.newInstance(1))
+                    .commit();
+        }
 
         drawer = (DrawerLayout) findViewById(R.id.drawer);
         drawer.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
+    }
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.activity_home;
     }
 
 
