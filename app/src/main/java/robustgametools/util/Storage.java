@@ -16,7 +16,7 @@ public class Storage {
     private static Storage mStorage = new Storage();
     private static Context mContext = null;
 
-    private static String mActiveUser = "activeUser";
+    private static String mActiveUser = "activeUser.json";
     private static String mJsonDir = "json/";
 
     protected Storage() {
