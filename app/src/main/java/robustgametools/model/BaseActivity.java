@@ -13,7 +13,7 @@ import robustgametools.playstation_guide.R;
  */
 public abstract class BaseActivity extends ActionBarActivity {
 
-    private Toolbar toolbar;
+    protected Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
