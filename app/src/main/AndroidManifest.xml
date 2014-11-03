@@ -28,6 +28,14 @@
             android:name="robustgametools.playstation.HomeActivity"
             android:label="@string/title_activity_home" >
         </activity>
+        <activity
+            android:name="robustgametools.playstation.GameActivity"
+            android:label="@string/title_activity_game"
+            android:parentActivityName="robustgametools.playstation.HomeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="robustgametools.playstation.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>
