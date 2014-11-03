@@ -96,10 +96,13 @@ public class JsonFactory {
         JsonObject trophySummary = jsonObject.get("trophySummary").getAsJsonObject();
         profile.setLevel(trophySummary.get("level").getAsInt());
         profile.setProgress(trophySummary.get("progress").getAsInt());
-        profile.setPlatinum(trophySummary.get("platinum").getAsInt());
-        profile.setGold(trophySummary.get("gold").getAsInt());
-        profile.setSilver(trophySummary.get("silver").getAsInt());
-        profile.setBronze(trophySummary.get("bronze").getAsInt());
+
+        JsonObject earnedTrophies = trophySummary.
+                get("earnedTrophies").getAsJsonObject();
+        profile.setPlatinum(earnedTrophies.get("platinum").getAsInt());
+        profile.setGold(earnedTrophies.get("gold").getAsInt());
+        profile.setSilver(earnedTrophies.get("silver").getAsInt());
+        profile.setBronze(earnedTrophies.get("bronze").getAsInt());
         return profile;
     }
 }
