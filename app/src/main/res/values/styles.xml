@@ -1,7 +1,16 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat">
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:titleTextStyle">@style/Toolbar.CustomTitle</item>
+
+    </style>
+
+    <!-- ActionBar title text -->
+    <style name="Toolbar.CustomTitle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/toolbarText</item>
+        <!-- The textColor property is backward compatible with the Support Library -->
     </style>
 
 </resources>
