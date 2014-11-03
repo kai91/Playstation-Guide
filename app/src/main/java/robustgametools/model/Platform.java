@@ -5,5 +5,5 @@ package robustgametools.model;
  * of platforms the game is on.
  */
 public enum Platform {
-    PS3, PS4, VITA;
+    PS3, PS4, PSVITA;
 }
