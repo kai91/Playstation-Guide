@@ -54,7 +54,7 @@ public class JsonFactory {
         JsonObject jsonObject = new JsonParser().parse(gameJson).getAsJsonObject();
         JsonArray array = jsonObject.get("trophyTitles").getAsJsonArray();
         int size = array.size();
-        for (int i = 0; i <= size ; i++) {
+        for (int i = 0; i < size ; i++) {
             JsonObject jsGame = array.get(i).getAsJsonObject();
             Game game = new Game();
             game.setNpCommunicationId(jsGame.get("npCommunicationId").getAsString());

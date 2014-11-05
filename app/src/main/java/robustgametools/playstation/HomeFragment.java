@@ -10,11 +10,16 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import robustgametools.model.Game;
 import robustgametools.model.Profile;
 import robustgametools.playstation_guide.R;
 import robustgametools.util.JsonFactory;
@@ -29,8 +34,9 @@ public class HomeFragment extends Fragment {
 
     private HomeFragmentListener mListener;
 
-    @InjectView(R.id.profile_image)
-    ImageView mProfileImage;
+    @InjectView(R.id.profile_image) ImageView mProfileImage;
+    @InjectView(R.id.level) TextView mLevel;
+    @InjectView(R.id.progress) NumberProgressBar mProgress;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,9 @@ public class HomeFragment extends Fragment {
         String data = storage.readUserData();
         Log.i(TAG, data);
         mProfile = jsonFactory.parseUserProfile(data);
+        String gameData = storage.readGameData();
+        ArrayList<Game> recentGames = jsonFactory.parseGames(gameData);
+        mProfile.setGames(recentGames);
     }
 
     @Override
@@ -85,6 +94,8 @@ public class HomeFragment extends Fragment {
     private void initHeader() {
         Picasso.with(getActivity()).load(mProfile.getAvatarUrl())
                 .into(mProfileImage);
+        mLevel.setText("Level " + mProfile.getLevel());
+        mProgress.setProgress(mProfile.getProgress());
     }
 
     public interface HomeFragmentListener {

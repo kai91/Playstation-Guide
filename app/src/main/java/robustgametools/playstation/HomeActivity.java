@@ -27,7 +27,6 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
     }
 
     private void initDrawer() {
-        //TODO inflate drawer layout and add listener
         drawer = (DrawerLayout) findViewById(R.id.drawer);
         drawer.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
     }

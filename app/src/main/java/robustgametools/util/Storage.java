@@ -17,6 +17,7 @@ public class Storage {
     private static Context mContext = null;
 
     private static String mActiveUser = "activeUser.json";
+    private static String mActiveGame = "activeGame.json";
     private static String mJsonDir = "json/";
 
     protected Storage() {
@@ -76,8 +77,15 @@ public class Storage {
         return createFile("", mActiveUser, data);
     }
 
+    public boolean persistRecentGames(String data) {
+        return createFile("", mActiveGame, data);
+    }
+
     public String readUserData() {
         return readFile("", mActiveUser);
     }
 
+    public String readGameData() {
+        return readFile("", mActiveGame);
+    }
 }

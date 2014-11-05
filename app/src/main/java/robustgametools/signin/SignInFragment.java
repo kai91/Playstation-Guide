@@ -59,7 +59,8 @@ public class SignInFragment extends Fragment {
                                   byte[] responseBody) {
 
                 String response = new String(responseBody);
-                successfullyLoggedIn(response);
+                persistUserData(response);
+                getRecentlyPlayedGames();
             }
 
             @Override
@@ -92,15 +93,33 @@ public class SignInFragment extends Fragment {
         HttpClient.cancelRequests();
     }
 
+    private void getRecentlyPlayedGames() {
+        HttpClient.getRecentlyPlayedGames(new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String response = new String(responseBody);
+                persistRecentGames(response);
+                successfullyLoggedIn();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Toast.makeText(getActivity(), "Error retrieving information: " +
+                        Integer.toString(statusCode), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     /**
      * Called upon successfully logged in. Clean up
      * and finally pass on to the activity to handle
      * @param response
      */
-    private void successfullyLoggedIn(String response) {
-        hideLoadingDialog();
+    private void successfullyLoggedIn() {
+        //String recentGames = HttpClient.getRecentlyPlayedGames();
+        //hideLoadingDialog();
         hideKeyboard();
-        persistUserData(response);
+        //persistUserData(response);
         mListener.onSignInSuccess();
     }
 
@@ -111,6 +130,11 @@ public class SignInFragment extends Fragment {
     private void persistUserData(String data) {
         Storage storage = Storage.getInstance(getActivity());
         storage.persistUserData(data);
+    }
+
+    private void persistRecentGames(String data) {
+        Storage storage = Storage.getInstance(getActivity());
+        storage.persistRecentGames(data);
     }
 
     private void showLoadingDialog() {

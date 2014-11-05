@@ -88,4 +88,8 @@ public class Profile {
     public ArrayList<Game> getGames() {
         return mGames;
     }
+
+    public void setGames(ArrayList<Game> games) {
+        mGames = games;
+    }
 }

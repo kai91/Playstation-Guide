@@ -11,11 +11,18 @@ import java.util.ArrayList;
  */
 public class HttpClient {
 
+    // Stored variable for future uses
+    private static String mUsername;
+
     private static AsyncHttpClient mAsyncHttpClient = null;
     private static ArrayList<RequestHandle> mRequestHandles = new ArrayList<RequestHandle>();
 
     // This is the domain name/ip address of the server
     private static String serverUrl = "http://boiling-bastion-9577.herokuapp.com/";
+
+    public static void setUsername(String username) {
+        mUsername = username;
+    }
 
     private static void init() {
         if (mAsyncHttpClient == null) {
@@ -33,6 +40,12 @@ public class HttpClient {
     public static void signIn(String username, AsyncHttpResponseHandler responseHandler) {
         init();
         String url = serverUrl + "psn/" + username;
+        mRequestHandles.add(mAsyncHttpClient.get(url, null, responseHandler));
+    }
+
+    public static void getRecentlyPlayedGames(AsyncHttpResponseHandler responseHandler) {
+        init();
+        String url = serverUrl + "psn/" + mUsername + "/" + "trophies";
         mRequestHandles.add(mAsyncHttpClient.get(url, null, responseHandler));
     }
 

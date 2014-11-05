@@ -31,6 +31,7 @@ public class SignInActivity extends BaseActivity implements SignInFragment.onSig
     @Override
     public void onSignInSuccess() {
         Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra("RECENTLY_UPDATED", true);
         startActivity(intent);
         finish();
     }
