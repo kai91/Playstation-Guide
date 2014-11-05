@@ -88,4 +88,10 @@ public class Storage {
     public String readGameData() {
         return readFile("", mActiveGame);
     }
+
+    public boolean userDataExists() {
+        File root = mContext.getFilesDir();
+        File userData = new File(root, mActiveUser);
+        return userData.exists();
+    }
 }

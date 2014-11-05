@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
+import robustgametools.playstation.HomeActivity;
 import robustgametools.playstation_guide.R;
 import robustgametools.util.HttpClient;
 import robustgametools.util.Storage;
@@ -31,6 +33,7 @@ public class SignInFragment extends Fragment {
 
     private onSignInListener mListener;
     private ProgressDialog mProgressDialog;
+    private Storage mStorage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,6 +41,10 @@ public class SignInFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_sign_in_form, container, false);
         ButterKnife.inject(this, rootView);
+        mStorage = Storage.getInstance(getActivity());
+        if (mStorage.userDataExists()) {
+            mListener.onSignInSuccess();
+        }
         return rootView;
     }
 
@@ -113,13 +120,9 @@ public class SignInFragment extends Fragment {
     /**
      * Called upon successfully logged in. Clean up
      * and finally pass on to the activity to handle
-     * @param response
      */
     private void successfullyLoggedIn() {
-        //String recentGames = HttpClient.getRecentlyPlayedGames();
-        //hideLoadingDialog();
         hideKeyboard();
-        //persistUserData(response);
         mListener.onSignInSuccess();
     }
 
