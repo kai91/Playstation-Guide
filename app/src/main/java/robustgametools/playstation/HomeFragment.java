@@ -35,6 +35,7 @@ public class HomeFragment extends Fragment {
     private HomeFragmentListener mListener;
 
     @InjectView(R.id.profile_image) ImageView mProfileImage;
+    @InjectView(R.id.username) TextView mUsername;
     @InjectView(R.id.level) TextView mLevel;
     @InjectView(R.id.progress) NumberProgressBar mProgress;
     @InjectView(R.id.bronze) TextView mBronze;
@@ -98,6 +99,7 @@ public class HomeFragment extends Fragment {
     private void initHeader() {
         Picasso.with(getActivity()).load(mProfile.getAvatarUrl())
                 .into(mProfileImage);
+        mUsername.setText(mProfile.getOnlineId());
         mLevel.setText("Level " + mProfile.getLevel());
         mProgress.setProgress(mProfile.getProgress());
         mBronze.setText(Integer.toString(mProfile.getBronze()));

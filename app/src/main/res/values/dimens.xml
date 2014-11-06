@@ -7,7 +7,7 @@
     <dimen name="layout_horizontal_margin">50dp</dimen>
     <dimen name="layout_vertical_margin">50dp</dimen>
     <dimen name="navigation_drawer_width">240dp</dimen>
-    <dimen name="card_horizontal_margin">8dp</dimen>
-    <dimen name="card_vertical_margin">6dp</dimen>
+    <dimen name="card_horizontal_margin">7dp</dimen>
+    <dimen name="card_vertical_margin">7dp</dimen>
 
 </resources>
