@@ -27,10 +27,10 @@
         </FrameLayout>
     </LinearLayout>
 
-        <ListView
-            android:layout_width="260dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="@color/windowBackgroundColor"/>
+    <ListView
+        android:layout_width="260dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/windowBackgroundColor"/>
 
 </android.support.v4.widget.DrawerLayout>

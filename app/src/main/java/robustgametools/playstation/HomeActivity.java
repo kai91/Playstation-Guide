@@ -27,6 +27,7 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
     }
 
     private void initDrawer() {
+        setActionBarIcon(R.drawable.ic_drawer);
         drawer = (DrawerLayout) findViewById(R.id.drawer);
         drawer.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
     }

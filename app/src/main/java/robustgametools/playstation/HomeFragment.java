@@ -37,6 +37,10 @@ public class HomeFragment extends Fragment {
     @InjectView(R.id.profile_image) ImageView mProfileImage;
     @InjectView(R.id.level) TextView mLevel;
     @InjectView(R.id.progress) NumberProgressBar mProgress;
+    @InjectView(R.id.bronze) TextView mBronze;
+    @InjectView(R.id.silver) TextView mSilver;
+    @InjectView(R.id.gold) TextView mGold;
+    @InjectView(R.id.platinum) TextView mPlatinum;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,6 +100,10 @@ public class HomeFragment extends Fragment {
                 .into(mProfileImage);
         mLevel.setText("Level " + mProfile.getLevel());
         mProgress.setProgress(mProfile.getProgress());
+        mBronze.setText(Integer.toString(mProfile.getBronze()));
+        mSilver.setText(Integer.toString(mProfile.getSilver()));
+        mGold.setText(Integer.toString(mProfile.getGold()));
+        mPlatinum.setText(Integer.toString(mProfile.getPlatinum()));
     }
 
     public interface HomeFragmentListener {

@@ -4,8 +4,10 @@
     <!--<color name="colorPrimary">@color/material_blue_grey_800</color>
     <color name="colorPrimaryDark">@color/material_blue_grey_900</color>-->
 
-    <color name="colorPrimary">#5677fc</color>
-    <color name="colorPrimaryDark">#004499</color>
+    <color name="colorPrimary">#003087</color>
+    <color name="colorPrimaryDark">#283593</color>
+
+    <color name="colorHeader">#0D47A1</color>
 
     <color name="colorSecondary">@color/material_deep_teal_200</color>
     <color name="colorSecondaryDark">@color/material_deep_teal_500</color>
