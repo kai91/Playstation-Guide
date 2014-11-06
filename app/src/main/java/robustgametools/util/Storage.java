@@ -58,6 +58,16 @@ public class Storage {
         return true;
     }
 
+    private boolean deleteFile(String path, String fileName) {
+        File root = mContext.getFilesDir();
+        File dir = new File(root, path);
+        File file = new File(dir, fileName);
+        if (file.exists()) {
+            return file.delete();
+        }
+        return false;
+    }
+
     private String readFile(String path, String fileName) {
         final FileInputStream stream;
         try {
@@ -87,6 +97,11 @@ public class Storage {
 
     public String readGameData() {
         return readFile("", mActiveGame);
+    }
+
+    public void deleteUserData() {
+        deleteFile("", mActiveUser);
+        deleteFile("", mActiveGame);
     }
 
     public boolean userDataExists() {

@@ -27,10 +27,18 @@
         </FrameLayout>
     </LinearLayout>
 
-    <ListView
+    <LinearLayout
         android:layout_width="260dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/windowBackgroundColor"/>
+        android:background="@color/windowBackgroundColor">
+
+        <Button
+            android:id="@+id/signOut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_out"/>
+
+    </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>
