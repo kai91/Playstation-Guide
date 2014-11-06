@@ -73,6 +73,9 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         switch (item.getItemId()) {
             case android.R.id.home:
                 mDrawer.openDrawer(Gravity.START);
