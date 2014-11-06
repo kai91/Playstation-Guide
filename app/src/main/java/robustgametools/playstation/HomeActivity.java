@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,8 @@ import robustgametools.util.Storage;
 
 public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragmentListener {
     @InjectView(R.id.drawer) DrawerLayout mDrawer;
+
+    private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,14 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
     private void initDrawer() {
         setActionBarIcon(R.drawable.ic_drawer);
         mDrawer.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                mDrawer,
+                mToolbar,
+                R.string.app_name,
+                R.string.app_name
+        );
+        mDrawer.setDrawerListener(mDrawerToggle);
     }
 
     @OnClick(R.id.signOut)
@@ -70,6 +81,11 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
 
     @Override
     public void onGameClicked(Uri uri) {
