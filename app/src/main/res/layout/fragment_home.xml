@@ -90,8 +90,7 @@
                                 android:id="@+id/bronze"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_marginRight="@dimen/trophy_count_spacing"
-                                android:gravity="center"/>
+                                android:paddingLeft="@dimen/trophy_count_spacing"/>
 
                         </LinearLayout>
 
@@ -110,8 +109,7 @@
                                 android:id="@+id/silver"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_marginRight="@dimen/trophy_count_spacing"
-                                android:gravity="center"/>
+                                android:paddingLeft="@dimen/trophy_count_spacing"/>
 
                         </LinearLayout>
 
@@ -130,8 +128,7 @@
                                 android:id="@+id/gold"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_marginRight="@dimen/trophy_count_spacing"
-                                android:gravity="center"/>
+                                android:paddingLeft="@dimen/trophy_count_spacing"/>
 
                         </LinearLayout>
 
@@ -150,8 +147,7 @@
                                 android:id="@+id/platinum"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_marginRight="@dimen/trophy_count_spacing"
-                                android:gravity="center"/>
+                                android:paddingLeft="@dimen/trophy_count_spacing"/>
 
                         </LinearLayout>
 

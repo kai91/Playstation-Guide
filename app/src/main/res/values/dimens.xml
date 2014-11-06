@@ -8,8 +8,8 @@
     <dimen name="layout_vertical_margin">50dp</dimen>
     <dimen name="navigation_drawer_width">240dp</dimen>
     <dimen name="card_horizontal_margin">7dp</dimen>
-    <dimen name="card_vertical_margin">7dp</dimen>
-    <dimen name="trophy_icon_size">22dp</dimen>
-    <dimen name="trophy_count_spacing">2dp</dimen>
+    <dimen name="card_vertical_margin">8dp</dimen>
+    <dimen name="trophy_icon_size">18dp</dimen>
+    <dimen name="trophy_count_spacing">1dp</dimen>
 
 </resources>
