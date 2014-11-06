@@ -61,10 +61,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:gravity="center"/>
-
                     </LinearLayout>
-
-
 
                     <com.daimajia.numberprogressbar.NumberProgressBar
                         android:layout_marginTop="4dp"
@@ -111,7 +108,6 @@
                                 android:layout_gravity="center" />
 
                             <TextView
-
                                 android:id="@+id/silver"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -162,23 +158,13 @@
 
                         </LinearLayout>
 
+                    </LinearLayout>
 
-
-
-
-
-
-
-
-
-
-                        </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
-
 
         <!--<android.support.v7.widget.CardView
             android:layout_marginTop="4dp"
