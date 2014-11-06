@@ -88,10 +88,10 @@
 
                             <TextView
                                 android:id="@+id/bronze"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/trophy_count_spacing"
-                                android:layout_gravity="center"/>
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_marginRight="@dimen/trophy_count_spacing"
+                                android:gravity="center"/>
 
                         </LinearLayout>
 
@@ -108,10 +108,10 @@
 
                             <TextView
                                 android:id="@+id/silver"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/trophy_count_spacing"
-                                android:layout_gravity="center"/>
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_marginRight="@dimen/trophy_count_spacing"
+                                android:gravity="center"/>
 
                         </LinearLayout>
 
@@ -128,10 +128,10 @@
 
                             <TextView
                                 android:id="@+id/gold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/trophy_count_spacing"
-                                android:layout_gravity="center"/>
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_marginRight="@dimen/trophy_count_spacing"
+                                android:gravity="center"/>
 
                         </LinearLayout>
 
@@ -148,10 +148,10 @@
 
                             <TextView
                                 android:id="@+id/platinum"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/trophy_count_spacing"
-                                android:layout_gravity="center"/>
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_marginRight="@dimen/trophy_count_spacing"
+                                android:gravity="center"/>
 
                         </LinearLayout>
 
