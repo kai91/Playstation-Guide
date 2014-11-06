@@ -13,15 +13,15 @@ import robustgametools.playstation_guide.R;
  */
 public abstract class BaseActivity extends ActionBarActivity {
 
-    protected Toolbar toolbar;
+    protected Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResource());
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
         }
     }
 
@@ -33,7 +33,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     protected abstract int getLayoutResource();
 
     protected void setActionBarIcon(int iconRes) {
-        toolbar.setNavigationIcon(iconRes);
+        mToolbar.setNavigationIcon(iconRes);
     }
 
     protected void setDisplayHomeAsUp() {
