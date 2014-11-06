@@ -81,8 +81,8 @@
                             android:layout_height="wrap_content">
 
                             <ImageView
-                                android:layout_width="22dp"
-                                android:layout_height="22dp"
+                                android:layout_width="@dimen/trophy_icon_size"
+                                android:layout_height="@dimen/trophy_icon_size"
                                 android:src="@drawable/bronze"
                                 android:layout_gravity="center"/>
 
@@ -90,8 +90,7 @@
                                 android:id="@+id/bronze"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="1dp"
-                                android:layout_marginRight="2dp"
+                                android:layout_marginLeft="@dimen/trophy_count_spacing"
                                 android:layout_gravity="center"/>
 
                         </LinearLayout>
@@ -102,8 +101,8 @@
                             android:layout_height="wrap_content">
 
                             <ImageView
-                                android:layout_width="22dp"
-                                android:layout_height="22dp"
+                                android:layout_width="@dimen/trophy_icon_size"
+                                android:layout_height="@dimen/trophy_icon_size"
                                 android:src="@drawable/silver"
                                 android:layout_gravity="center" />
 
@@ -111,8 +110,7 @@
                                 android:id="@+id/silver"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="1dp"
-                                android:layout_marginRight="2dp"
+                                android:layout_marginLeft="@dimen/trophy_count_spacing"
                                 android:layout_gravity="center"/>
 
                         </LinearLayout>
@@ -123,8 +121,8 @@
                             android:layout_height="wrap_content">
 
                             <ImageView
-                                android:layout_width="22dp"
-                                android:layout_height="22dp"
+                                android:layout_width="@dimen/trophy_icon_size"
+                                android:layout_height="@dimen/trophy_icon_size"
                                 android:src="@drawable/gold"
                                 android:layout_gravity="center"/>
 
@@ -132,8 +130,7 @@
                                 android:id="@+id/gold"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="1dp"
-                                android:layout_marginRight="2dp"
+                                android:layout_marginLeft="@dimen/trophy_count_spacing"
                                 android:layout_gravity="center"/>
 
                         </LinearLayout>
@@ -144,8 +141,8 @@
                             android:layout_height="wrap_content">
 
                             <ImageView
-                                android:layout_width="22dp"
-                                android:layout_height="22dp"
+                                android:layout_width="@dimen/trophy_icon_size"
+                                android:layout_height="@dimen/trophy_icon_size"
                                 android:src="@drawable/platinum"
                                 android:layout_gravity="center"/>
 
@@ -153,7 +150,7 @@
                                 android:id="@+id/platinum"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="1dp"
+                                android:layout_marginLeft="@dimen/trophy_count_spacing"
                                 android:layout_gravity="center"/>
 
                         </LinearLayout>
