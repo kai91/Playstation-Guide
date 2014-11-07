@@ -41,6 +41,7 @@ public class HttpClient {
         init();
         String url = serverUrl + "psn/" + username;
         mRequestHandles.add(mAsyncHttpClient.get(url, null, responseHandler));
+        mUsername = username;
     }
 
     public static void getRecentlyPlayedGames(AsyncHttpResponseHandler responseHandler) {
