@@ -62,15 +62,23 @@ public class JsonFactory {
             game.setTrophyIconUrl(jsGame.get("trophyTitleIconUrl").getAsString());
             game.setHasDlc(jsGame.get("hasTrophyGroups").getAsBoolean());
 
-            String platformName = jsGame.get("trophyTitlePlatform").getAsString();
-            Platform platform = Platform.valueOf(platformName.toUpperCase());
-            game.setPlatform(platform);
+            String platformName = jsGame.get("trophyTitlePlatfrom").getAsString();
+            ArrayList<Platform> platforms = new ArrayList<Platform>();
+            String[] platformString = platformName.split(",");
+            for (int j = 0; j < platformString.length; j++) {
+                Platform platform = Platform.valueOf(platformString[j].toUpperCase());
+                platforms.add(platform);
+            }
+            game.setPlatform(platforms);
 
-            JsonObject trophiesInfo = jsGame.get("comparedUser").getAsJsonObject();
+
+            JsonObject comparedUser = jsGame.get("comparedUser").getAsJsonObject();
+            JsonObject trophiesInfo = comparedUser.get("earnedTrophies").getAsJsonObject();
             game.setBronze(trophiesInfo.get("bronze").getAsInt());
             game.setSilver(trophiesInfo.get("silver").getAsInt());
             game.setGold(trophiesInfo.get("gold").getAsInt());
             game.setPlatinum(trophiesInfo.get("platinum").getAsInt());
+            gameArray.add(game);
         }
         return gameArray;
     }
