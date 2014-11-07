@@ -8,15 +8,13 @@ import java.util.ArrayList;
 public class Game {
 
     private String mTitle;
-    private Platform mPlatform;
+    private ArrayList<Platform> mPlatform;
     private ArrayList<Trophy> mTrophies;
     private boolean mHasDlc;
     private String mNpCommunicationId;
     private String mTrophyIconUrl;
     private int mBronze, mSilver, mGold, mPlatinum;
-
-    public Game() {
-    }
+    private int mProgress;
 
     public String getTitle() {
         return mTitle;
@@ -26,11 +24,11 @@ public class Game {
         this.mTitle = mTitle;
     }
 
-    public Platform getPlatform() {
+    public ArrayList<Platform> getPlatform() {
         return mPlatform;
     }
 
-    public void setPlatform(Platform mPlatform) {
+    public void setPlatform(ArrayList<Platform> mPlatform) {
         this.mPlatform = mPlatform;
     }
 
@@ -96,5 +94,13 @@ public class Game {
 
     public void setPlatinum(int mPlatinum) {
         this.mPlatinum = mPlatinum;
+    }
+
+    public int getProgress() {
+        return mProgress;
+    }
+
+    public void setProgress(int progress) {
+        mProgress = progress;
     }
 }
