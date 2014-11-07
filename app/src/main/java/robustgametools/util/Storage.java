@@ -107,6 +107,7 @@ public class Storage {
     public boolean userDataExists() {
         File root = mContext.getFilesDir();
         File userData = new File(root, mActiveUser);
-        return userData.exists();
+        File userGame = new File(root, mActiveGame);
+        return userData.exists() && userGame.exists();
     }
 }
