@@ -171,7 +171,7 @@
 
         <ListView
             android:id="@+id/games"
-
+            android:layout_below="@id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></ListView>
 

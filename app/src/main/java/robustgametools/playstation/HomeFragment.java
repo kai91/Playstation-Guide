@@ -10,7 +10,9 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.squareup.picasso.Picasso;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import robustgametools.adapter.GameListAdapter;
 import robustgametools.model.Game;
 import robustgametools.model.Profile;
 import robustgametools.playstation_guide.R;
@@ -42,6 +45,7 @@ public class HomeFragment extends Fragment {
     @InjectView(R.id.silver) TextView mSilver;
     @InjectView(R.id.gold) TextView mGold;
     @InjectView(R.id.platinum) TextView mPlatinum;
+    @InjectView(R.id.games) ListView mGameList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.inject(this, view);
         initHeader();
+        initGameList();
         return view;
     }
 
@@ -106,6 +111,22 @@ public class HomeFragment extends Fragment {
         mSilver.setText(Integer.toString(mProfile.getSilver()));
         mGold.setText(Integer.toString(mProfile.getGold()));
         mPlatinum.setText(Integer.toString(mProfile.getPlatinum()));
+    }
+
+    private void initGameList() {
+        Log.i("Game size", Integer.toString(mProfile.getGames().size()));
+        GameListAdapter adapter = new GameListAdapter(getActivity(), mProfile.getGames());
+        mGameList.setAdapter(adapter);
+
+        // Dummy game with dummy content
+        ArrayList<Game> dummyGames = new ArrayList<Game>();
+        for (int i = 0; i < 50; i++) {
+            Game game = new Game();
+            game.setTitle("Game " + i);
+            dummyGames.add(game);
+        }
+
+        mProfile.getGames().addAll(dummyGames);
     }
 
     public interface HomeFragmentListener {
