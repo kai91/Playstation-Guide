@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.squareup.picasso.Picasso;
@@ -117,16 +116,6 @@ public class HomeFragment extends Fragment {
         Log.i("Game size", Integer.toString(mProfile.getGames().size()));
         GameListAdapter adapter = new GameListAdapter(getActivity(), mProfile.getGames());
         mGameList.setAdapter(adapter);
-
-        // Dummy game with dummy content
-        ArrayList<Game> dummyGames = new ArrayList<Game>();
-        for (int i = 0; i < 50; i++) {
-            Game game = new Game();
-            game.setTitle("Game " + i);
-            dummyGames.add(game);
-        }
-
-        mProfile.getGames().addAll(dummyGames);
     }
 
     public interface HomeFragmentListener {
