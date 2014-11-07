@@ -9,6 +9,8 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.squareup.picasso.Picasso;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -57,7 +59,6 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
         startActivity(intent);
         finish();
     }
-
 
     @Override
     protected int getLayoutResource() {
