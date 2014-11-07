@@ -73,6 +73,7 @@ public class JsonFactory {
 
 
             JsonObject comparedUser = jsGame.get("comparedUser").getAsJsonObject();
+            game.setProgress(comparedUser.get("progress").getAsInt());
             JsonObject trophiesInfo = comparedUser.get("earnedTrophies").getAsJsonObject();
             game.setBronze(trophiesInfo.get("bronze").getAsInt());
             game.setSilver(trophiesInfo.get("silver").getAsInt());
