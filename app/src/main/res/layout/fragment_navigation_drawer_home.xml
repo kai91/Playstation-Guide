@@ -1,9 +1,26 @@
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="robustgametools.playstation.NavigationDrawerFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:choiceMode="singleChoice"
-    android:divider="@android:color/transparent"
-    android:dividerHeight="0dp"
-    android:background="#cccc"
-    tools:context="robustgametools.playstation.NavigationDrawerFragment" />
+    android:orientation="vertical">
+    
+    <LinearLayout
+        android:id="@+id/profile_header"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:orientation="vertical"></LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:background="#cccc"
+    />
+
+
+    </LinearLayout>
+
+
