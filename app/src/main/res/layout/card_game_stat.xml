@@ -37,22 +37,24 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="3.5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_marginLeft="4dp"
                     android:id="@+id/platformPS3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="10sp"
                     android:text="PS3"
                     android:visibility="gone"
+                    android:layout_marginRight="4dp"
                     style="@style/PlatformText"/>
 
                 <TextView
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
                     android:id="@+id/platformPS4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -62,7 +64,6 @@
                     style="@style/PlatformText"/>
 
                 <TextView
-                    android:layout_marginLeft="4dp"
                     android:id="@+id/platformVITA"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -74,20 +75,21 @@
             </LinearLayout>
 
             <com.daimajia.numberprogressbar.NumberProgressBar
-                android:layout_marginTop="4dp"
                 android:id="@+id/progress"
                 style="@style/NumberProgressBar_Default"
                 custom:progress_reached_bar_height="2.5dp"/>
 
             <LinearLayout
+                android:layout_marginTop="3.5dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -106,7 +108,8 @@
                 <LinearLayout
                     android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -125,7 +128,8 @@
                 <LinearLayout
                     android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -144,7 +148,8 @@
                 <LinearLayout
                     android:layout_weight="0.5"
                     android:layout_width="0dp"
-                    android:layout_height="fill_parent">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
 
                     <ImageView
                         android:id="@+id/platinum"
