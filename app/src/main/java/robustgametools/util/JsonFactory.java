@@ -1,6 +1,5 @@
 package robustgametools.util;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -21,7 +20,6 @@ import robustgametools.model.Profile;
 public class JsonFactory {
 
     private static JsonFactory mJsonFactory = null;
-    private static Gson mGson;
 
     // To prevent instantiation
     private JsonFactory() {};
@@ -30,7 +28,6 @@ public class JsonFactory {
     public static JsonFactory getInstance() {
         if (mJsonFactory == null) {
             mJsonFactory = new JsonFactory();
-            mGson = new Gson();
         }
         return mJsonFactory;
     }
@@ -88,6 +85,18 @@ public class JsonFactory {
     }
 
     /**
+     * Parse the game json and return the total game
+     * count that the player has
+     * @param gameJson
+     * @return
+     */
+    public int parseGameCount(String gameJson) {
+        JsonObject jsonObject = new JsonParser().parse(gameJson).getAsJsonObject();
+        int count = jsonObject.get("totalResults").getAsInt();
+        return count;
+    }
+
+    /**
      *
      * @param userProfile - User profile in JSON from server
      * @return
@@ -117,5 +126,12 @@ public class JsonFactory {
         profile.setSilver(earnedTrophies.get("silver").getAsInt());
         profile.setBronze(earnedTrophies.get("bronze").getAsInt());
         return profile;
+    }
+
+    public String appendGameData(String originaljson, String newJson) {
+        JsonParser parser = new JsonParser();
+        JsonObject json = parser.parse(originaljson).getAsJsonObject();
+        JsonObject moreJson = parser.parse(newJson).getAsJsonObject();
+        return json.getAsString();
     }
 }

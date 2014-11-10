@@ -12,6 +12,7 @@ public class Profile {
     private int mLevel, mProgress, mPlatinum, mGold, mSilver, mBronze;
     private boolean mPlus;
     private ArrayList<Game> mGames;
+    private int mGameCount;
 
     public String getOnlineId() {
         return mOnlineId;
@@ -91,5 +92,13 @@ public class Profile {
 
     public void setGames(ArrayList<Game> games) {
         mGames = games;
+    }
+
+    public int getGameCount() {
+        return mGameCount;
+    }
+
+    public void setGameCount(int totalGames) {
+        mGameCount = totalGames;
     }
 }

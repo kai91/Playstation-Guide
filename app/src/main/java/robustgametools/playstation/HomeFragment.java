@@ -59,6 +59,8 @@ public class HomeFragment extends Fragment {
         String gameData = storage.readGameData();
         ArrayList<Game> recentGames = jsonFactory.parseGames(gameData);
         mProfile.setGames(recentGames);
+        int gameCount = jsonFactory.parseGameCount(gameData);
+        mProfile.setGameCount(gameCount);
     }
 
     @Override
