@@ -61,6 +61,24 @@ public class HomeFragment extends Fragment {
         mProfile.setGames(recentGames);
         int gameCount = jsonFactory.parseGameCount(gameData);
         mProfile.setGameCount(gameCount);
+
+        // Update the user game list
+        // If we already got all user's games, return
+        if (mProfile.getGameCount() == recentGames.size()) {
+            return;
+        }
+
+        Bundle args = getArguments();
+        boolean justUpdated = args.getBoolean("RECENTLY_UPDATED");
+        if (justUpdated) {
+            updateList(100);
+            Log.i("Updating: Skip first 100 games");
+        } else {
+            updateList(0);
+            Log.i("Updating: All games");
+        }
+
+
     }
 
     @Override
@@ -123,6 +141,14 @@ public class HomeFragment extends Fragment {
         Log.i("Game size", Integer.toString(mProfile.getGames().size()));
         GameListAdapter adapter = new GameListAdapter(getActivity(), mProfile.getGames());
         mGameList.setAdapter(adapter);
+    }
+
+    /**
+     * Updates game list in background
+     * @param offset of the games to skip
+     */
+    private void updateList(int offset) {
+
     }
 
     public interface HomeFragmentListener {

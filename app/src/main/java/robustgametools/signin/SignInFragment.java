@@ -40,9 +40,6 @@ public class SignInFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_sign_in_form, container, false);
         ButterKnife.inject(this, rootView);
         mStorage = Storage.getInstance(getActivity());
-        if (mStorage.userDataExists()) {
-            mListener.onSignInSuccess();
-        }
         return rootView;
     }
 
@@ -129,13 +126,11 @@ public class SignInFragment extends Fragment {
      * @param data
      */
     private void persistUserData(String data) {
-        Storage storage = Storage.getInstance(getActivity());
-        storage.persistUserData(data);
+        mStorage.persistUserData(data);
     }
 
     private void persistRecentGames(String data) {
-        Storage storage = Storage.getInstance(getActivity());
-        storage.persistRecentGames(data);
+        mStorage.persistRecentGames(data);
     }
 
     private void showLoadingDialog() {

@@ -28,8 +28,16 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
         ButterKnife.inject(this);
 
         if (savedInstanceState == null) {
+            // Propogate the state of user's data
+            HomeFragment fragment = new HomeFragment();
+            Bundle bundle = getIntent().getExtras();
+            Bundle argBundle = new Bundle();
+            boolean justUpdated = bundle.getBoolean("RECENTLY_UPDATED");
+            argBundle.putBoolean("RECENTLY_UPDATED", justUpdated);
+            fragment.setArguments(argBundle);
+
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new HomeFragment())
+                    .add(R.id.container, fragment)
                     .commit();
         }
 
