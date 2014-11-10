@@ -24,6 +24,7 @@ import robustgametools.adapter.GameListAdapter;
 import robustgametools.model.Game;
 import robustgametools.model.Profile;
 import robustgametools.playstation_guide.R;
+import robustgametools.util.HttpClient;
 import robustgametools.util.JsonFactory;
 import robustgametools.util.Log;
 import robustgametools.util.Storage;
@@ -61,6 +62,8 @@ public class HomeFragment extends Fragment {
         mProfile.setGames(recentGames);
         int gameCount = jsonFactory.parseGameCount(gameData);
         mProfile.setGameCount(gameCount);
+
+        HttpClient.setUsername(mProfile.getOnlineId());
 
         // Update the user game list
         // If we already got all user's games, return
@@ -138,7 +141,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void initGameList() {
-        Log.i("Game size", Integer.toString(mProfile.getGames().size()));
         GameListAdapter adapter = new GameListAdapter(getActivity(), mProfile.getGames());
         mGameList.setAdapter(adapter);
     }
@@ -148,7 +150,10 @@ public class HomeFragment extends Fragment {
      * @param offset of the games to skip
      */
     private void updateList(int offset) {
+        int totalGameCount = mProfile.getGameCount();
+        for (int i = offset; i < totalGameCount; i += 100) {
 
+        }
     }
 
     public interface HomeFragmentListener {

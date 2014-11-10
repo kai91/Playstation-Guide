@@ -31,7 +31,7 @@ public class HttpClient {
     }
 
     /**
-     * This sends a GET request with username. Error 'No such PSN id will
+     * Sends a GET request with username. Error 'No such PSN id will
      * be returned in case of incorrect id. If the PSN id is valid user's profile
      * data will be returned.
      * @param username
@@ -44,10 +44,20 @@ public class HttpClient {
         mUsername = username;
     }
 
+    /**
+     * Sends a GET request with username and returns the JSON file for
+     * the first 100 games
+     * @param responseHandler
+     */
     public static void getRecentlyPlayedGames(AsyncHttpResponseHandler responseHandler) {
         init();
         String url = serverUrl + "psn/" + mUsername + "/" + "trophies";
         mRequestHandles.add(mAsyncHttpClient.get(url, null, responseHandler));
+    }
+
+    public static void getGames(int offset, AsyncHttpResponseHandler responseHandler) {
+        init();
+        String url = serverUrl + "psn/" + mUsername + "/" + "trophies";
     }
 
     /**
