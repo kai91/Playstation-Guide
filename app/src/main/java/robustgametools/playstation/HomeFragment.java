@@ -45,6 +45,7 @@ public class HomeFragment extends Fragment {
     @InjectView(R.id.gold) TextView mGold;
     @InjectView(R.id.platinum) TextView mPlatinum;
     @InjectView(R.id.games) ListView mGameList;
+    @InjectView(R.id.plus) ImageView mPlus;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,7 @@ public class HomeFragment extends Fragment {
         ButterKnife.inject(this, view);
         initHeader();
         initGameList();
+
         return view;
     }
 
@@ -110,6 +112,9 @@ public class HomeFragment extends Fragment {
         mSilver.setText(Integer.toString(mProfile.getSilver()));
         mGold.setText(Integer.toString(mProfile.getGold()));
         mPlatinum.setText(Integer.toString(mProfile.getPlatinum()));
+        if (mProfile.isPlus()) {
+            mPlus.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initGameList() {
