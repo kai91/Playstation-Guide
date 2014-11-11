@@ -127,11 +127,4 @@ public class JsonFactory {
         profile.setBronze(earnedTrophies.get("bronze").getAsInt());
         return profile;
     }
-
-    public String appendGameData(String originaljson, String newJson) {
-        JsonParser parser = new JsonParser();
-        JsonObject json = parser.parse(originaljson).getAsJsonObject();
-        JsonObject moreJson = parser.parse(newJson).getAsJsonObject();
-        return json.getAsString();
-    }
 }

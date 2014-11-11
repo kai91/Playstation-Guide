@@ -52,7 +52,7 @@ public class SignInFragment extends Fragment {
     @OnEditorAction(R.id.username)
     public boolean signInClicked() {
 
-        String username = mUsername.getText().toString();
+        final String username = mUsername.getText().toString();
         showLoadingDialog();
         HttpClient.signIn(username, new AsyncHttpResponseHandler() {
 
@@ -62,7 +62,7 @@ public class SignInFragment extends Fragment {
 
                 String response = new String(responseBody);
                 persistUserData(response);
-                getRecentlyPlayedGames();
+                getRecentlyPlayedGames(username);
             }
 
             @Override
@@ -95,8 +95,8 @@ public class SignInFragment extends Fragment {
         HttpClient.cancelRequests();
     }
 
-    private void getRecentlyPlayedGames() {
-        HttpClient.getRecentlyPlayedGames(new AsyncHttpResponseHandler() {
+    private void getRecentlyPlayedGames(String username) {
+        HttpClient.getRecentlyPlayedGames(username, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String response = new String(responseBody);

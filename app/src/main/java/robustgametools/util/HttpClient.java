@@ -3,6 +3,9 @@ package robustgametools.util;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
+import com.loopj.android.http.SyncHttpClient;
+
+import org.apache.http.Header;
 
 import java.util.ArrayList;
 
@@ -11,18 +14,12 @@ import java.util.ArrayList;
  */
 public class HttpClient {
 
-    // Stored variable for future uses
-    private static String mUsername;
-
     private static AsyncHttpClient mAsyncHttpClient = null;
     private static ArrayList<RequestHandle> mRequestHandles = new ArrayList<RequestHandle>();
 
     // This is the domain name/ip address of the server
     private static String serverUrl = "http://boiling-bastion-9577.herokuapp.com/";
 
-    public static void setUsername(String username) {
-        mUsername = username;
-    }
 
     private static void init() {
         if (mAsyncHttpClient == null) {
@@ -41,7 +38,6 @@ public class HttpClient {
         init();
         String url = serverUrl + "psn/" + username;
         mRequestHandles.add(mAsyncHttpClient.get(url, null, responseHandler));
-        mUsername = username;
     }
 
     /**
@@ -49,15 +45,18 @@ public class HttpClient {
      * the first 100 games
      * @param responseHandler
      */
-    public static void getRecentlyPlayedGames(AsyncHttpResponseHandler responseHandler) {
+    public static void getRecentlyPlayedGames(String username,
+                                              AsyncHttpResponseHandler responseHandler) {
         init();
-        String url = serverUrl + "psn/" + mUsername + "/" + "trophies";
+        String url = serverUrl + "psn/" + username + "/" + "trophies";
         mRequestHandles.add(mAsyncHttpClient.get(url, null, responseHandler));
     }
 
-    public static void getGames(int offset, AsyncHttpResponseHandler responseHandler) {
+    public static void getGames(String username, int offset, int upperBound,
+                                AsyncHttpResponseHandler responseHandler) {
         init();
-        String url = serverUrl + "psn/" + mUsername + "/" + "trophies";
+        String url = serverUrl + "psn/" + username + "/" + "trophies/offset/" + Integer.toString(offset);
+        mRequestHandles.add(mAsyncHttpClient.get(url, null, responseHandler));
     }
 
     /**
