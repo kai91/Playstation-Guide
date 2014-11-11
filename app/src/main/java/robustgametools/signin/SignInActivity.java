@@ -6,6 +6,7 @@ import android.os.Bundle;
 import robustgametools.model.BaseActivity;
 import robustgametools.playstation.HomeActivity;
 import robustgametools.playstation_guide.R;
+import robustgametools.util.Log;
 import robustgametools.util.Storage;
 
 
@@ -38,6 +39,7 @@ public class SignInActivity extends BaseActivity implements SignInFragment.onSig
 
     @Override
     public void onSignInSuccess() {
+        Log.i("SignInActivity: onSignInSuccess");
         Intent intent = new Intent(this, HomeActivity.class);
         intent.putExtra("RECENTLY_UPDATED", true);
         startActivity(intent);
@@ -45,6 +47,7 @@ public class SignInActivity extends BaseActivity implements SignInFragment.onSig
     }
 
     public void alreadySignedIn() {
+        Log.i("SignInActivity: Already signed in");
         Intent intent = new Intent(this, HomeActivity.class);
         intent.putExtra("RECENTLY_UPDATED", false);
         startActivity(intent);
