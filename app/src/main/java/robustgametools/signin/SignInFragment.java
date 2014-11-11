@@ -92,7 +92,7 @@ public class SignInFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        HttpClient.cancelRequests();
+        HttpClient.cancelSignInRequest();
     }
 
     private void getRecentlyPlayedGames(String username) {
@@ -118,6 +118,7 @@ public class SignInFragment extends Fragment {
      */
     private void successfullyLoggedIn() {
         hideKeyboard();
+        mProgressDialog.dismiss();
         mListener.onSignInSuccess();
     }
 
@@ -140,8 +141,8 @@ public class SignInFragment extends Fragment {
         mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialogInterface) {
-                // Cancels all connection in case user wants to cancel it
-                HttpClient.cancelRequests();
+                // Cancels signin in case user wants to cancel it
+                HttpClient.cancelSignInRequest();
             }
         });
         mProgressDialog.show();

@@ -69,11 +69,6 @@ public class HomeFragment extends Fragment {
         mProfile.setGameCount(gameCount);
 
         // Update the user game list
-        // If we already got all user's games, return
-        if (mProfile.getGameCount() == recentGames.size()) {
-            return;
-        }
-
         Bundle args = getArguments();
         boolean justUpdated = args.getBoolean("RECENTLY_UPDATED");
         if (justUpdated) {
@@ -148,24 +143,57 @@ public class HomeFragment extends Fragment {
         mGameList.setAdapter(adapter);
     }
 
+    private void updateList(int offet) {
+        if (offet == 0) {
+            HttpClient.getRecentlyPlayedGames(mProfile.getOnlineId(), new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    String data = new String(responseBody);
+                    Log.i("Updating game list: Retrieved " + data);
+                    JsonFactory jsonFactory = JsonFactory.getInstance();
+                    ArrayList<Game> games = jsonFactory.parseGames(data);
+                    ArrayList<Game> current = mProfile.getGames();
+                    current.clear();
+                    current.addAll(games);
+                    updateList(mProfile.getGames().size());
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    Log.i("Updating game list: Failed");
+                    Toast.makeText(getActivity(), "Failed updating data", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+        int totalGameCount = mProfile.getGameCount();
+        if (totalGameCount == offet) {
+            // Finished updating all games
+            return;
+        } else {
+            retrieveList(mProfile.getGames().size());
+        }
+    }
+
     /**
      * Updates game list in background
      * @param offset of the games to skip
      */
-    private void updateList(int offset) {
-        int totalGameCount = mProfile.getGameCount();
-        HttpClient.getGames(mProfile.getOnlineId(), offset, totalGameCount,
+    private void retrieveList(int offset) {
+        HttpClient.getGames(mProfile.getOnlineId(), offset,
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         String data = new String(responseBody);
+                        Log.i("Updating game list: Retrieved " + data);
                         JsonFactory jsonFactory = JsonFactory.getInstance();
                         jsonFactory.parseGames(data, mProfile.getGames());
                         Log.i("Game size: " + mProfile.getGames().size());
+                        updateList(mProfile.getGames().size());
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.i("Updating game list: Failed");
                         Toast.makeText(getActivity(), "Failed updating data", Toast.LENGTH_LONG).show();
                     }
                 });

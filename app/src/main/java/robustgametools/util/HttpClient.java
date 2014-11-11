@@ -17,6 +17,8 @@ public class HttpClient {
     private static AsyncHttpClient mAsyncHttpClient = null;
     private static ArrayList<RequestHandle> mRequestHandles = new ArrayList<RequestHandle>();
 
+    private static RequestHandle mSignInRequest;
+
     // This is the domain name/ip address of the server
     private static String serverUrl = "http://boiling-bastion-9577.herokuapp.com/";
 
@@ -37,7 +39,7 @@ public class HttpClient {
     public static void signIn(String username, AsyncHttpResponseHandler responseHandler) {
         init();
         String url = serverUrl + "psn/" + username;
-        mRequestHandles.add(mAsyncHttpClient.get(url, null, responseHandler));
+        mSignInRequest = mAsyncHttpClient.get(url, null, responseHandler);
     }
 
     /**
@@ -52,10 +54,11 @@ public class HttpClient {
         mRequestHandles.add(mAsyncHttpClient.get(url, null, responseHandler));
     }
 
-    public static void getGames(String username, int offset, int upperBound,
+    public static void getGames(String username, int offset,
                                 AsyncHttpResponseHandler responseHandler) {
         init();
         String url = serverUrl + "psn/" + username + "/" + "trophies/offset/" + Integer.toString(offset);
+        Log.i("GET request: " + url);
         mRequestHandles.add(mAsyncHttpClient.get(url, null, responseHandler));
     }
 
@@ -68,6 +71,15 @@ public class HttpClient {
             for (int j = 0; j < size; j++ ) {
                 mRequestHandles.get(j).cancel(true);
             }
+        }
+    }
+
+    /**
+     * Cancel sign in request
+     */
+    public static void cancelSignInRequest() {
+        if (mSignInRequest != null) {
+            mSignInRequest.cancel(true);
         }
     }
 }
