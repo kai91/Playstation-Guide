@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import robustgametools.adapter.GameListAdapter;
 import robustgametools.model.Game;
 import robustgametools.model.Profile;
@@ -51,6 +52,7 @@ public class HomeFragment extends Fragment {
     @InjectView(R.id.platinum) TextView mPlatinum;
     @InjectView(R.id.games) ListView mGameList;
     @InjectView(R.id.plus) ImageView mPlus;
+    @InjectView(R.id.loading)SmoothProgressBar mLoading;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -168,6 +170,7 @@ public class HomeFragment extends Fragment {
         int totalGameCount = mProfile.getGameCount();
         if (totalGameCount <= offset) {
             // Finished updating all games
+            mLoading.setVisibility(View.GONE);
             return;
         } else {
             retrieveList(mProfile.getGames().size());
