@@ -1,6 +1,7 @@
 package robustgametools.adapter;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,13 @@ public class GameListAdapter extends BaseAdapter {
         mInflater = LayoutInflater.from(context);
         mGames = games;
         mContext = context.getApplicationContext();
+        registerDataSetObserver(new DataSetObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
