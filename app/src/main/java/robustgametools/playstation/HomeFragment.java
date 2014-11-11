@@ -143,13 +143,12 @@ public class HomeFragment extends Fragment {
         mGameList.setAdapter(adapter);
     }
 
-    private void updateList(int offet) {
-        if (offet == 0) {
+    private void updateList(int offset) {
+        if (offset == 0) {
             HttpClient.getRecentlyPlayedGames(mProfile.getOnlineId(), new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     String data = new String(responseBody);
-                    Log.i("Updating game list: Retrieved " + data);
                     JsonFactory jsonFactory = JsonFactory.getInstance();
                     ArrayList<Game> games = jsonFactory.parseGames(data);
                     ArrayList<Game> current = mProfile.getGames();
@@ -164,9 +163,10 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getActivity(), "Failed updating data", Toast.LENGTH_LONG).show();
                 }
             });
+            return;
         }
         int totalGameCount = mProfile.getGameCount();
-        if (totalGameCount == offet) {
+        if (totalGameCount <= offset) {
             // Finished updating all games
             return;
         } else {
@@ -184,7 +184,6 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         String data = new String(responseBody);
-                        Log.i("Updating game list: Retrieved " + data);
                         JsonFactory jsonFactory = JsonFactory.getInstance();
                         jsonFactory.parseGames(data, mProfile.getGames());
                         Log.i("Game size: " + mProfile.getGames().size());
