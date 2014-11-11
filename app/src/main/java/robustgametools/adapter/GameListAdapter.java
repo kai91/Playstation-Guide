@@ -33,13 +33,6 @@ public class GameListAdapter extends BaseAdapter {
         mInflater = LayoutInflater.from(context);
         mGames = games;
         mContext = context.getApplicationContext();
-        registerDataSetObserver(new DataSetObserver() {
-            @Override
-            public void onChanged() {
-                super.onChanged();
-                notifyDataSetChanged();
-            }
-        });
     }
 
     @Override

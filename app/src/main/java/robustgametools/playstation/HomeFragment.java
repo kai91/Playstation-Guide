@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -41,6 +42,7 @@ public class HomeFragment extends Fragment {
     private static Profile mProfile;
 
     private HomeFragmentListener mListener;
+    private GameListAdapter adapter;
 
     @InjectView(R.id.profile_image) ImageView mProfileImage;
     @InjectView(R.id.username) TextView mUsername;
@@ -69,6 +71,15 @@ public class HomeFragment extends Fragment {
         mProfile.setGames(recentGames);
         int gameCount = jsonFactory.parseGameCount(gameData);
         mProfile.setGameCount(gameCount);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        ButterKnife.inject(this, view);
+        initHeader();
+        initGameList();
 
         // Update the user game list
         Bundle args = getArguments();
@@ -80,18 +91,6 @@ public class HomeFragment extends Fragment {
             updateList(0);
             Log.i("Updating: All games");
         }
-
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-        ButterKnife.inject(this, view);
-        initHeader();
-        initGameList();
-
         return view;
     }
 
@@ -120,6 +119,17 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.refresh:
+                updateList(0);
+                mLoading.setVisibility(View.VISIBLE);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
@@ -141,7 +151,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void initGameList() {
-        GameListAdapter adapter = new GameListAdapter(getActivity(), mProfile.getGames());
+        adapter = new GameListAdapter(getActivity(), mProfile.getGames());
         mGameList.setAdapter(adapter);
     }
 
@@ -156,6 +166,7 @@ public class HomeFragment extends Fragment {
                     ArrayList<Game> current = mProfile.getGames();
                     current.clear();
                     current.addAll(games);
+                    adapter.notifyDataSetChanged();
                     updateList(mProfile.getGames().size());
                 }
 
@@ -189,6 +200,7 @@ public class HomeFragment extends Fragment {
                         String data = new String(responseBody);
                         JsonFactory jsonFactory = JsonFactory.getInstance();
                         jsonFactory.parseGames(data, mProfile.getGames());
+                        adapter.notifyDataSetChanged();
                         Log.i("Game size: " + mProfile.getGames().size());
                         updateList(mProfile.getGames().size());
                     }
