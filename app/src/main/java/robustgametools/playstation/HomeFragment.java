@@ -12,9 +12,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.squareup.picasso.Picasso;
+
+import org.apache.http.Header;
 
 import java.util.ArrayList;
 
@@ -51,6 +55,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setHasOptionsMenu(true);
         JsonFactory jsonFactory = JsonFactory.getInstance();
         Storage storage = Storage.getInstance(getActivity());
@@ -62,8 +67,6 @@ public class HomeFragment extends Fragment {
         mProfile.setGames(recentGames);
         int gameCount = jsonFactory.parseGameCount(gameData);
         mProfile.setGameCount(gameCount);
-
-        HttpClient.setUsername(mProfile.getOnlineId());
 
         // Update the user game list
         // If we already got all user's games, return
@@ -151,9 +154,21 @@ public class HomeFragment extends Fragment {
      */
     private void updateList(int offset) {
         int totalGameCount = mProfile.getGameCount();
-        for (int i = offset; i < totalGameCount; i += 100) {
+        HttpClient.getGames(mProfile.getOnlineId(), offset, totalGameCount,
+                new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        String data = new String(responseBody);
+                        JsonFactory jsonFactory = JsonFactory.getInstance();
+                        jsonFactory.parseGames(data, mProfile.getGames());
+                        Log.i("Game size: " + mProfile.getGames().size());
+                    }
 
-        }
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Toast.makeText(getActivity(), "Failed updating data", Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     public interface HomeFragmentListener {
