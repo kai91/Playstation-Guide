@@ -88,6 +88,7 @@ public class HomeFragment extends Fragment {
             updateList(100);
             Log.i("Updating: Skip first 100 games");
         } else {
+            updateHeader();
             updateList(0);
             Log.i("Updating: All games");
         }
@@ -122,6 +123,7 @@ public class HomeFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
+                updateHeader();
                 updateList(0);
                 mLoading.setVisibility(View.VISIBLE);
                 return true;
@@ -148,6 +150,32 @@ public class HomeFragment extends Fragment {
         if (mProfile.isPlus()) {
             mPlus.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void updateHeader() {
+        HttpClient.signIn(mProfile.getOnlineId(), new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String data = new String(responseBody);
+                Storage storage = Storage.getInstance(getActivity());
+                storage.persistUserData(data);
+                JsonFactory json = JsonFactory.getInstance();
+                Profile newProfile = json.parseUserProfile(data);
+                mProfile.setLevel(newProfile.getLevel());
+                mProfile.setProgress(newProfile.getProgress());
+                mProfile.setBronze(newProfile.getBronze());
+                mProfile.setSilver(newProfile.getSilver());
+                mProfile.setGold(newProfile.getGold());
+                mProfile.setPlatinum(newProfile.getPlatinum());
+                mProfile.setAvatarUrl(newProfile.getAvatarUrl());
+                initHeader();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("HomeFragment: something wrong when updating header");
+            }
+        });
     }
 
     private void initGameList() {
