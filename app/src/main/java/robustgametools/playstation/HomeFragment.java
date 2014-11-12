@@ -182,7 +182,6 @@ public class HomeFragment extends Fragment {
         if (totalGameCount <= offset) {
             // Finished updating all games
             mLoading.setVisibility(View.GONE);
-            return;
         } else {
             retrieveList(mProfile.getGames().size());
         }

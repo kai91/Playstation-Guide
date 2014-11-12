@@ -66,9 +66,6 @@ public class JsonFactory {
                 Platform platform = Platform.valueOf(platformString[j].toUpperCase());
                 platforms.add(platform);
             }
-            if (platforms.size() == 0) {
-                Log.i("PS", "size 0: " + game.getTitle());
-            }
             game.setPlatform(platforms);
 
 

@@ -3,9 +3,6 @@ package robustgametools.util;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
-import com.loopj.android.http.SyncHttpClient;
-
-import org.apache.http.Header;
 
 import java.util.ArrayList;
 
