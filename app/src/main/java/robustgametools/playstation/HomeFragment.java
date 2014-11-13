@@ -2,14 +2,18 @@ package robustgametools.playstation;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,8 +42,8 @@ import robustgametools.util.Storage;
 
 public class HomeFragment extends Fragment {
 
-    private static final String TAG = "HomeFragment";
     private static Profile mProfile;
+    private static Playstation mPlaystation;
 
     private HomeFragmentListener mListener;
     private GameListAdapter adapter;
@@ -61,16 +65,8 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
-        JsonFactory jsonFactory = JsonFactory.getInstance();
-        Storage storage = Storage.getInstance(getActivity());
-        String data = storage.readUserData();
-        Log.i(TAG, data);
-        mProfile = jsonFactory.parseUserProfile(data);
-        String gameData = storage.readGameData();
-        ArrayList<Game> recentGames = jsonFactory.parseGames(gameData);
-        mProfile.setGames(recentGames);
-        int gameCount = jsonFactory.parseGameCount(gameData);
-        mProfile.setGameCount(gameCount);
+        mPlaystation = Playstation.getInstance(getActivity());
+        mProfile = mPlaystation.getProfile();
     }
 
     @Override
@@ -83,15 +79,23 @@ public class HomeFragment extends Fragment {
 
         // Update the user game list
         Bundle args = getArguments();
-        boolean justUpdated = args.getBoolean("RECENTLY_UPDATED");
-        if (justUpdated) {
-            updateList(100);
-            Log.i("Updating: Skip first 100 games");
-        } else {
-            updateHeader();
-            updateList(0);
-            Log.i("Updating: All games");
+        if (args != null) {
+            boolean justUpdated = args.getBoolean("RECENTLY_UPDATED");
+            if (justUpdated) {
+                updateList(100);
+                Log.i("Updating: Skip first 100 games");
+            } else {
+                updateHeader();
+                updateList(0);
+                Log.i("Updating: All games");
+            }
         }
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        int index = preferences.getInt("index", 0);
+        int top = preferences.getInt("top", 0);
+        mGameList.setSelectionFromTop(index, top);
+
         return view;
     }
 
@@ -107,6 +111,22 @@ public class HomeFragment extends Fragment {
             mListener.onGameClicked(uri);
         }
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+        int index = mGameList.getFirstVisiblePosition();
+        View v = mGameList.getChildAt(0);
+        int top = (v == null) ? 0 : v.getTop();
+        bundle.putInt("index", index);
+        bundle.putInt("top", top);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("index", index);
+        editor.putInt("top", top);
+        editor.apply();
+    }
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -157,8 +177,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String data = new String(responseBody);
-                Storage storage = Storage.getInstance(getActivity());
-                storage.persistUserData(data);
+                mPlaystation.persistProfile(data);
                 JsonFactory json = JsonFactory.getInstance();
                 Profile newProfile = json.parseUserProfile(data);
                 mProfile.setLevel(newProfile.getLevel());
@@ -182,9 +201,17 @@ public class HomeFragment extends Fragment {
     private void initGameList() {
         adapter = new GameListAdapter(getActivity(), mProfile.getGames());
         mGameList.setAdapter(adapter);
+        mGameList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), GameActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void updateList(int offset) {
+        mLoading.setVisibility(View.VISIBLE);
         if (offset == 0) {
             HttpClient.getRecentlyPlayedGames(mProfile.getOnlineId(), new AsyncHttpResponseHandler() {
                 @Override
@@ -194,6 +221,7 @@ public class HomeFragment extends Fragment {
                     ArrayList<Game> games = jsonFactory.parseGames(data);
                     ArrayList<Game> current = mProfile.getGames();
                     current.clear();
+                    adapter.notifyDataSetChanged();
                     current.addAll(games);
                     adapter.notifyDataSetChanged();
                     updateList(mProfile.getGames().size());
@@ -202,7 +230,7 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     Log.i("Updating game list: Failed");
-                    Toast.makeText(getActivity(), "Failed updating data", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getActivity(), "Failed updating data", Toast.LENGTH_LONG).show();
                 }
             });
             return;

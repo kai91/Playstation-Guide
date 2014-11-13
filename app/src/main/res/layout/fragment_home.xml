@@ -23,6 +23,7 @@
         app:spb_progressiveStart_activated="true"
         app:spb_progressiveStart_speed="1.5"
         app:spb_progressiveStop_speed="3.4"
+        android:visibility="gone"
         />
 
     <RelativeLayout

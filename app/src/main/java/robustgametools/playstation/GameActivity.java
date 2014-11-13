@@ -5,14 +5,20 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import robustgametools.model.BaseActivity;
 import robustgametools.playstation_guide.R;
 
-public class GameActivity extends Activity {
+public class GameActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game);
+        setDisplayHomeAsUp();
+    }
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.activity_game;
     }
 
 

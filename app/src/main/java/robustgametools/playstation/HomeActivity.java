@@ -32,9 +32,12 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
             HomeFragment fragment = new HomeFragment();
             Bundle bundle = getIntent().getExtras();
             Bundle argBundle = new Bundle();
-            boolean justUpdated = bundle.getBoolean("RECENTLY_UPDATED");
-            argBundle.putBoolean("RECENTLY_UPDATED", justUpdated);
-            fragment.setArguments(argBundle);
+            if (bundle != null) {
+                boolean justUpdated = bundle.getBoolean("RECENTLY_UPDATED");
+                argBundle.putBoolean("RECENTLY_UPDATED", justUpdated);
+                fragment.setArguments(argBundle);
+            }
+
 
             getFragmentManager().beginTransaction()
                     .add(R.id.container, fragment)
