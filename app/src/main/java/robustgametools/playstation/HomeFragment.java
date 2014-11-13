@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment {
     @InjectView(R.id.platinum) TextView mPlatinum;
     @InjectView(R.id.games) ListView mGameList;
     @InjectView(R.id.plus) ImageView mPlus;
-    @InjectView(R.id.loading)SmoothProgressBar mLoading;
+    @InjectView(R.id.loading) SmoothProgressBar mLoading;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -169,6 +169,7 @@ public class HomeFragment extends Fragment {
                 mProfile.setPlatinum(newProfile.getPlatinum());
                 mProfile.setAvatarUrl(newProfile.getAvatarUrl());
                 initHeader();
+                Log.i("HomeFragment: updated header");
             }
 
             @Override
@@ -236,6 +237,7 @@ public class HomeFragment extends Fragment {
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         Log.i("Updating game list: Failed");
                         Toast.makeText(getActivity(), "Failed updating data", Toast.LENGTH_LONG).show();
+                        mLoading.setVisibility(View.GONE);
                     }
                 });
     }
