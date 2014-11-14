@@ -1,5 +1,6 @@
 package robustgametools.util;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -91,6 +92,16 @@ public class JsonFactory {
         JsonObject jsonObject = new JsonParser().parse(gameJson).getAsJsonObject();
         int count = jsonObject.get("totalResults").getAsInt();
         return count;
+    }
+
+    public String appendJson(String data, String newData) {
+        JsonObject object = new JsonParser().parse(data).getAsJsonObject();
+        JsonObject newObject = new JsonParser().parse(newData).getAsJsonObject();
+        JsonArray array = object.get("trophyTitles").getAsJsonArray();
+        JsonArray newArray = newObject.get("trophyTitles").getAsJsonArray();
+        array.addAll(newArray);
+        object.add("trophyTitles", array);
+        return new Gson().toJson(object);
     }
 
     /**

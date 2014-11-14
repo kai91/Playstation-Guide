@@ -17,12 +17,18 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.apache.http.Header;
 
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
+import robustgametools.model.Game;
+import robustgametools.playstation.Playstation;
 import robustgametools.playstation_guide.R;
 import robustgametools.util.HttpClient;
+import robustgametools.util.JsonFactory;
+import robustgametools.util.Log;
 import robustgametools.util.Storage;
 
 
@@ -32,6 +38,7 @@ public class SignInFragment extends Fragment {
     private onSignInListener mListener;
     private ProgressDialog mProgressDialog;
     private Storage mStorage;
+    private JsonFactory jsonFactory = JsonFactory.getInstance();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,7 +69,7 @@ public class SignInFragment extends Fragment {
 
                 String response = new String(responseBody);
                 persistUserData(response);
-                getRecentlyPlayedGames(username);
+                getGames(username);
             }
 
             @Override
@@ -95,13 +102,13 @@ public class SignInFragment extends Fragment {
         HttpClient.cancelSignInRequest();
     }
 
-    private void getRecentlyPlayedGames(String username) {
+    private void getGames(final String username) {
         HttpClient.getRecentlyPlayedGames(username, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String response = new String(responseBody);
-                persistRecentGames(response);
-                successfullyLoggedIn();
+                int gameCount = jsonFactory.parseGameCount(response);
+                updateList(response, username, 100, gameCount);
             }
 
             @Override
@@ -112,11 +119,39 @@ public class SignInFragment extends Fragment {
         });
     }
 
+    private void updateList(String data, String username, int offset, int total) {
+        if (total <= offset) {
+            // Finished updating all games
+            persistRecentGames(data);
+            successfullySignedIn();
+        } else {
+            retrieveList(data, username, offset, total);
+        }
+    }
+
+    private void retrieveList(final String data, final String username, final int offset, final int total) {
+        HttpClient.getGames(username, offset,
+                new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        String newData = new String(responseBody);
+                        newData = jsonFactory.appendJson(data, newData);
+                        updateList(newData, username, offset + 128, total);
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.i("Updating game list: Failed");
+                        Toast.makeText(getActivity(), "Failed updating data", Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
     /**
      * Called upon successfully logged in. Clean up
      * and finally pass on to the activity to handle
      */
-    private void successfullyLoggedIn() {
+    private void successfullySignedIn() {
         hideKeyboard();
         mProgressDialog.dismiss();
         mListener.onSignInSuccess();

@@ -78,7 +78,7 @@ public class HomeFragment extends Fragment {
         initGameList();
 
         // Update the user game list
-        Bundle args = getArguments();
+        /*Bundle args = getArguments();
         if (args != null) {
             boolean justUpdated = args.getBoolean("RECENTLY_UPDATED");
             if (justUpdated) {
@@ -89,7 +89,7 @@ public class HomeFragment extends Fragment {
                 updateList(0);
                 Log.i("Updating: All games");
             }
-        }
+        }*/
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         int index = preferences.getInt("index", 0);
