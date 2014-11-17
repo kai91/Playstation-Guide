@@ -60,4 +60,8 @@ public class Playstation {
     public boolean isUpdated() {
         return updated;
     }
+
+    public void destroy() {
+        profile = null;
+    }
 }

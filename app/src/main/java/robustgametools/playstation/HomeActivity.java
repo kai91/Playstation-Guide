@@ -64,6 +64,8 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
     public void signOut() {
         Storage storage = Storage.getInstance(this);
         storage.deleteUserData();
+        Playstation playstation = Playstation.getInstance(this);
+        playstation.destroy();
         Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
         finish();
@@ -101,7 +103,7 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
     }
 
     @Override
-    public void onGameClicked(Uri uri) {
+    public void showGameDetail(Uri uri) {
 
     }
 }
