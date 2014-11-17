@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
+import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
@@ -108,7 +109,7 @@ public class HomeFragment extends Fragment {
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onGameClicked(uri);
+            mListener.showGameDetail(uri);
         }
     }
 
@@ -144,7 +145,9 @@ public class HomeFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.refresh:
                 updateHeader();
-                updateList(0);
+                Storage storage = Storage.getInstance(getActivity());
+                String data = storage.readGameData();
+                updateList(data, 0);
                 mLoading.setVisibility(View.VISIBLE);
                 return true;
         }
@@ -205,32 +208,32 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), GameActivity.class);
+                Game game = adapter.getItem(position);
+                String gameData = new Gson().toJson(game);
+                //Log.i(gameData);
+                intent.putExtra("info", gameData);
                 startActivity(intent);
             }
         });
     }
 
-    private void updateList(int offset) {
+    private void updateList(String data, int offset) {
         mLoading.setVisibility(View.VISIBLE);
         if (offset == 0) {
             HttpClient.getRecentlyPlayedGames(mProfile.getOnlineId(), new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     String data = new String(responseBody);
-                    JsonFactory jsonFactory = JsonFactory.getInstance();
-                    ArrayList<Game> games = jsonFactory.parseGames(data);
-                    ArrayList<Game> current = mProfile.getGames();
-                    current.clear();
-                    adapter.notifyDataSetChanged();
-                    current.addAll(games);
-                    adapter.notifyDataSetChanged();
-                    updateList(mProfile.getGames().size());
+                    updateList(data, mProfile.getGames().size());
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     Log.i("Updating game list: Failed");
-                    //Toast.makeText(getActivity(), "Failed updating data", Toast.LENGTH_LONG).show();
+                    mLoading.setVisibility(View.GONE);
+                    if (getActivity() != null) {
+                        Toast.makeText(getActivity(), "Failed updating data", Toast.LENGTH_LONG).show();
+                    }
                 }
             });
             return;
@@ -239,8 +242,16 @@ public class HomeFragment extends Fragment {
         if (totalGameCount <= offset) {
             // Finished updating all games
             mLoading.setVisibility(View.GONE);
+            Storage storage = Storage.getInstance(getActivity());
+            storage.persistRecentGames(data);
+            JsonFactory jsonFactory = JsonFactory.getInstance();
+            ArrayList<Game> games = jsonFactory.parseGames(data);
+            mProfile.getGames().clear();
+            adapter.notifyDataSetChanged();
+            mProfile.getGames().addAll(games);
+            adapter.notifyDataSetChanged();
         } else {
-            retrieveList(mProfile.getGames().size());
+            retrieveList(data, mProfile.getGames().size());
         }
     }
 
@@ -248,30 +259,31 @@ public class HomeFragment extends Fragment {
      * Updates game list in background
      * @param offset of the games to skip
      */
-    private void retrieveList(int offset) {
+    private void retrieveList(final String oldData, int offset) {
         HttpClient.getGames(mProfile.getOnlineId(), offset,
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         String data = new String(responseBody);
                         JsonFactory jsonFactory = JsonFactory.getInstance();
-                        jsonFactory.parseGames(data, mProfile.getGames());
-                        adapter.notifyDataSetChanged();
+                        String newData = jsonFactory.appendJson(oldData, data);
                         Log.i("Game size: " + mProfile.getGames().size());
-                        updateList(mProfile.getGames().size());
+                        updateList(newData, mProfile.getGames().size());
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         Log.i("Updating game list: Failed");
-                        Toast.makeText(getActivity(), "Failed updating data", Toast.LENGTH_LONG).show();
                         mLoading.setVisibility(View.GONE);
+                        if (getActivity() != null) {
+                            Toast.makeText(getActivity(), "Failed updating data", Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
     }
 
     public interface HomeFragmentListener {
-        public void onGameClicked(Uri uri);
+        public void showGameDetail(Uri uri);
     }
 
 }
