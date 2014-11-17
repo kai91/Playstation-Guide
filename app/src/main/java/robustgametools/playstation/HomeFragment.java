@@ -224,7 +224,7 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     String data = new String(responseBody);
-                    updateList(data, mProfile.getGames().size());
+                    updateList(data, 100);
                 }
 
                 @Override
@@ -259,7 +259,7 @@ public class HomeFragment extends Fragment {
      * Updates game list in background
      * @param offset of the games to skip
      */
-    private void retrieveList(final String oldData, int offset) {
+    private void retrieveList(final String oldData, final int offset) {
         HttpClient.getGames(mProfile.getOnlineId(), offset,
                 new AsyncHttpResponseHandler() {
                     @Override
@@ -268,7 +268,7 @@ public class HomeFragment extends Fragment {
                         JsonFactory jsonFactory = JsonFactory.getInstance();
                         String newData = jsonFactory.appendJson(oldData, data);
                         Log.i("Game size: " + mProfile.getGames().size());
-                        updateList(newData, mProfile.getGames().size());
+                        updateList(newData, offset + 128);
                     }
 
                     @Override
