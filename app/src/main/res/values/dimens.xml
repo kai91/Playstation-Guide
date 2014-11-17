@@ -11,5 +11,6 @@
     <dimen name="card_vertical_margin">8dp</dimen>
     <dimen name="trophy_icon_size">18dp</dimen>
     <dimen name="trophy_count_spacing">1dp</dimen>
+    <dimen name="trophy_icon_size_medium">22dp</dimen>
 
 </resources>

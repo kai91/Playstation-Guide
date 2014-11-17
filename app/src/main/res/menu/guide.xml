@@ -5,7 +5,7 @@
         android:title="@string/refresh"
         android:showAsAction="withText|ifRoom" />
     <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+        android:title="@string/action_refresh_trophy"
         android:orderInCategory="100"
         android:showAsAction="never" />
 </menu>

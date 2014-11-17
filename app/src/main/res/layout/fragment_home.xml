@@ -16,7 +16,7 @@
         app:spb_interpolator="spb_interpolator_acceleratedecelerate"
         app:spb_sections_count="3"
         app:spb_speed="1.0"
-        app:spb_stroke_width="4dp"
+        app:spb_stroke_width="3dp"
         app:spb_stroke_separator_length="4dp"
         app:spb_reversed="true"
         app:spb_mirror_mode="true"
@@ -33,7 +33,7 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin">
 
         <android.support.v7.widget.CardView
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="5dp"
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
