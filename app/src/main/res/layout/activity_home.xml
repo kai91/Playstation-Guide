@@ -36,24 +36,8 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="260dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:divider="@drawable/gray_divider"
-            android:showDividers="middle"
-            android:orientation="vertical"
-            android:background="#ffffff">
-
-            <TextView
-                android:id="@+id/signOut"
-                android:textSize="23sp"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/sign_out"/>
-
-        </LinearLayout>
+        <include
+            layout="@layout/drawer_layout" />
 
     </android.support.v4.widget.DrawerLayout>
 
