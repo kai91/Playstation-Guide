@@ -15,6 +15,7 @@ public class HttpClient {
     private static ArrayList<RequestHandle> mRequestHandles = new ArrayList<RequestHandle>();
 
     private static RequestHandle mSignInRequest;
+    private static RequestHandle mTrophyRequest;
 
     // This is the domain name/ip address of the server
     private static String serverUrl = "http://boiling-bastion-9577.herokuapp.com/";
@@ -57,6 +58,12 @@ public class HttpClient {
         String url = serverUrl + "psn/" + username + "/" + "trophies/offset/" + Integer.toString(offset);
         Log.i("GET request: " + url);
         mRequestHandles.add(mAsyncHttpClient.get(url, null, responseHandler));
+    }
+
+    public static void getTrophies(String username, String npId, AsyncHttpResponseHandler handler) {
+        init();
+        String url = serverUrl + "psn/" + username + "/" + "trophies/" + npId;
+        mTrophyRequest = mAsyncHttpClient.get(url, null, handler);
     }
 
     /**

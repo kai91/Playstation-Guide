@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import robustgametools.model.Game;
 import robustgametools.model.Platform;
 import robustgametools.model.Profile;
+import robustgametools.model.Trophy;
+import robustgametools.model.TrophyLevel;
 
 /**
  * JsonFactory utility class to convert Json into
@@ -134,5 +136,35 @@ public class JsonFactory {
         profile.setSilver(earnedTrophies.get("silver").getAsInt());
         profile.setBronze(earnedTrophies.get("bronze").getAsInt());
         return profile;
+    }
+
+    public ArrayList<Trophy> parseTrophyList(String json) {
+        JsonObject object = new JsonParser().parse(json).getAsJsonObject();
+        JsonArray trophyList = object.get("trophies").getAsJsonArray();
+        ArrayList<Trophy> trophies = new ArrayList<Trophy>();
+
+        int length = trophyList.size();
+        for (int i = 0; i < length; i++) {
+            JsonObject trophyJson = trophyList.get(i).getAsJsonObject();
+            Trophy trophy = new Trophy();
+            trophies.add(trophy);
+
+            boolean isHidden = trophyJson.get("trophyHidden").getAsBoolean();
+            trophy.setHidden(isHidden);
+
+            JsonObject userJson = trophyJson.get("comparedUser").getAsJsonObject();
+            boolean isEarned = userJson.get("earned").getAsBoolean();
+            trophy.setIsEarned(isEarned);
+
+            if (isHidden) continue;
+
+            String trophyType = trophyJson.get("trophyType").getAsString();
+            TrophyLevel level = TrophyLevel.valueOf(trophyType.toUpperCase());
+            trophy.setTrophyLevel(level);
+            trophy.setTitle(trophyJson.get("trophyName").getAsString());
+            trophy.setDescription(trophyJson.get("trophyDetail").getAsString());
+            trophy.setIconUrl(trophyJson.get("trophyIconUrl").getAsString());
+        }
+        return  trophies;
     }
 }

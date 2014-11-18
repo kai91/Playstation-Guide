@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import robustgametools.model.Game;
 import robustgametools.model.Profile;
 import robustgametools.util.JsonFactory;
-import robustgametools.util.Log;
 import robustgametools.util.Storage;
 
 /**

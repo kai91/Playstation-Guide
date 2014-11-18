@@ -17,14 +17,10 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.apache.http.Header;
 
-import java.util.ArrayList;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
-import robustgametools.model.Game;
-import robustgametools.playstation.Playstation;
 import robustgametools.playstation_guide.R;
 import robustgametools.util.HttpClient;
 import robustgametools.util.JsonFactory;

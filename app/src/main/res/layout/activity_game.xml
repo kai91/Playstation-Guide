@@ -82,7 +82,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:gravity="center_vertical"
-                                android:textColor="#000000"/>
+                                android:textColor="#000000"
+                                android:ellipsize="end"
+                                android:singleLine="true"/>
 
                             <com.daimajia.numberprogressbar.NumberProgressBar
                                 android:id="@+id/progress"
@@ -99,7 +101,8 @@
                                 <LinearLayout
                                     android:layout_weight="1"
                                     android:layout_width="0dp"
-                                    android:layout_height="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
                                     android:orientation="horizontal">
 
                                     <ImageView
@@ -111,14 +114,16 @@
                                         android:id="@+id/bronze"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginLeft="6dp"/>
+                                        android:layout_marginLeft="1.5dp"
+                                        android:layout_gravity="bottom"/>
 
                                 </LinearLayout>
 
                                 <LinearLayout
                                     android:layout_weight="1"
                                     android:layout_width="0dp"
-                                    android:layout_height="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
                                     android:orientation="horizontal">
 
                                     <ImageView
@@ -130,13 +135,16 @@
                                         android:id="@+id/silver"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginLeft="6dp"/>
+                                        android:layout_marginLeft="1.5dp"
+                                        android:layout_gravity="bottom"/>
+
                                 </LinearLayout>
 
                                 <LinearLayout
                                     android:layout_weight="1"
                                     android:layout_width="0dp"
-                                    android:layout_height="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
                                     android:orientation="horizontal">
 
                                     <ImageView
@@ -148,7 +156,8 @@
                                         android:id="@+id/gold"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginLeft="6dp"/>
+                                        android:layout_marginLeft="1.5dp"
+                                        android:layout_gravity="bottom" />
 
                                 </LinearLayout>
 
@@ -156,7 +165,8 @@
                                     android:id="@+id/platinum"
                                     android:layout_weight="0.5"
                                     android:layout_width="0dp"
-                                    android:layout_height="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
                                     android:orientation="horizontal">
 
                                     <ImageView
@@ -174,25 +184,34 @@
 
                 </android.support.v7.widget.CardView>
 
-                <FrameLayout
+                <android.support.v7.widget.CardView
                     android:layout_below="@id/header"
-                    android:id="@+id/content"
                     android:layout_width="match_parent"
-                    android:layout_height="fill_parent">
+                    android:layout_height="match_parent"
+                    card_view:cardCornerRadius="2dp">
 
-                    <ListView
-                        android:id="@+id/trophies"
+                    <FrameLayout
+                        android:layout_below="@id/header"
+                        android:id="@+id/content"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></ListView>
+                        android:layout_height="fill_parent">
+
+                        <ListView
+                            android:id="@+id/trophies"
+                            android:focusableInTouchMode="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></ListView>
 
 
-                    <ProgressBar
-                        android:id="@+id/loading_progress"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"></ProgressBar>
+                        <ProgressBar
+                            android:id="@+id/loading_progress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"></ProgressBar>
 
-                </FrameLayout>
+                    </FrameLayout>
+
+                </android.support.v7.widget.CardView>
 
             </RelativeLayout>
 

@@ -10,6 +10,7 @@ public class Trophy {
     private String mDescription;
     private boolean mIsEarned;
     private TrophyLevel mTrophyLevel;
+    private  boolean mIsHidden;
 
     public String getTitle() {
         return mTitle;
@@ -49,6 +50,14 @@ public class Trophy {
 
     public void setTrophyLevel(TrophyLevel trophyLevel) {
         this.mTrophyLevel = trophyLevel;
+    }
+
+    public boolean isHidden() {
+        return mIsHidden;
+    }
+
+    public void setHidden(boolean hide) {
+        mIsHidden = hide;
     }
 
 

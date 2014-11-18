@@ -7,23 +7,36 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.squareup.picasso.Picasso;
+
+import org.apache.http.Header;
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
+import robustgametools.adapter.TrophyListAdapter;
 import robustgametools.model.BaseActivity;
 import robustgametools.model.Game;
+import robustgametools.model.Profile;
+import robustgametools.model.Trophy;
 import robustgametools.playstation_guide.R;
+import robustgametools.util.HttpClient;
+import robustgametools.util.JsonFactory;
 import robustgametools.util.Log;
 
 public class GameActivity extends BaseActivity {
 
     private Game mGame;
+    private Profile mProfile;
 
     @InjectView(R.id.game_image) ImageView mGameImage;
     @InjectView(R.id.title) TextView mTitle;
@@ -32,16 +45,22 @@ public class GameActivity extends BaseActivity {
     @InjectView(R.id.gold) TextView mGold;
     @InjectView(R.id.platinum) LinearLayout mPlatinum;
     @InjectView(R.id.progress) NumberProgressBar mProgress;
+    @InjectView(R.id.trophies) ListView mTrophyList;
+    @InjectView(R.id.loading) SmoothProgressBar mLoadingBar;
+    @InjectView(R.id.loading_progress) ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.inject(this);
+        Playstation playstation = Playstation.getInstance(this);
+        mProfile = playstation.getProfile();
+
         setDisplayHomeAsUp();
         getGameInfo();
         setTitle(mGame.getTitle());
         initHeader();
-        displayInfo();
+        getTrophyList();
     }
 
     private void initHeader() {
@@ -62,7 +81,29 @@ public class GameActivity extends BaseActivity {
         mGame = new Gson().fromJson(gameData, Game.class);
     }
 
-    private void displayInfo() {
+    private void getTrophyList() {
+        HttpClient.getTrophies(mProfile.getOnlineId(), mGame.getNpCommunicationId(),
+                new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        String data = new String(responseBody);
+                        initTrophyList(data);
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.i("Get trophy info failed");
+                    }
+                });
+    }
+
+    private void initTrophyList(String data) {
+        JsonFactory jsonFactory = JsonFactory.getInstance();
+        ArrayList<Trophy> trophies = jsonFactory.parseTrophyList(data);
+        TrophyListAdapter adapter = new TrophyListAdapter(this, trophies);
+        mTrophyList.setAdapter(adapter);
+        mLoadingBar.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.GONE);
     }
 
     @Override
