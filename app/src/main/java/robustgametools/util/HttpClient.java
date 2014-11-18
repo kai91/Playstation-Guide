@@ -63,6 +63,7 @@ public class HttpClient {
     public static void getTrophies(String username, String npId, AsyncHttpResponseHandler handler) {
         init();
         String url = serverUrl + "psn/" + username + "/" + "trophies/" + npId;
+        Log.i(url);
         mTrophyRequest = mAsyncHttpClient.get(url, null, handler);
     }
 
