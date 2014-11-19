@@ -8,10 +8,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import robustgametools.adapter.NavigationDrawerAdapter;
 import robustgametools.model.BaseActivity;
 import robustgametools.playstation_guide.R;
 import robustgametools.signin.SignInActivity;
@@ -19,6 +21,7 @@ import robustgametools.util.Storage;
 
 public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragmentListener {
     @InjectView(R.id.drawer) DrawerLayout mDrawer;
+    @InjectView(R.id.drawer_menu) ListView mDrawerMenu;
 
     private ActionBarDrawerToggle mDrawerToggle;
 
@@ -58,9 +61,10 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
                 R.string.app_name
         );
         mDrawer.setDrawerListener(mDrawerToggle);
+        mDrawerMenu.setAdapter(new NavigationDrawerAdapter(this));
     }
 
-    @OnClick(R.id.signOut)
+    /*@OnClick(R.id.signOut)
     public void signOut() {
         Storage storage = Storage.getInstance(this);
         storage.deleteUserData();
@@ -69,7 +73,7 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
         Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
         finish();
-    }
+    }*/
 
     @Override
     protected int getLayoutResource() {

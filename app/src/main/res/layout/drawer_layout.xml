@@ -3,24 +3,14 @@
     android:layout_width="260dp"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:divider="@drawable/gray_divider"
-    android:showDividers="middle"
     android:orientation="vertical"
     android:background="#ffffff">
 
-    <FrameLayout
-        android:id="@+id/header"
+    <ListView
+        android:id="@+id/drawer_menu"
+        android:choiceMode="singleChoice"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
-
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/signOut"
-        android:textSize="23sp"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_out"/>
+        android:layout_height="wrap_content">
+    </ListView>
 
 </LinearLayout>
