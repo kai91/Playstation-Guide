@@ -19,5 +19,7 @@
     <string name="title_activity_game">GameActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="sign_out">Sign out</string>
+    <string name="action_example">Example action</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
