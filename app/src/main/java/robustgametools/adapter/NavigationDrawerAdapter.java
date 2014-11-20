@@ -1,10 +1,12 @@
 package robustgametools.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
@@ -19,10 +21,15 @@ public class NavigationDrawerAdapter extends BaseAdapter {
 
     private String[] mChoices = {"Home", "Guides", "Sign out"};
     private LayoutInflater mInflater;
+    private int mCurrentlySelected = 0;
 
-    public NavigationDrawerAdapter(Context context) {
+    private NavigationCallback mCallback;
+
+    public NavigationDrawerAdapter(Context context, NavigationCallback callback) {
         mInflater = LayoutInflater.from(context);
+        mCallback = callback;
     }
+
     @Override
     public int getCount() {
         return mChoices.length;
@@ -38,6 +45,10 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         return 0;
     }
 
+    public void selectItem(int i) {
+        mCurrentlySelected = i;
+    }
+
     @Override
     public View getView(int position, View view, ViewGroup parent) {
 
@@ -51,18 +62,30 @@ public class NavigationDrawerAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        holder.menu.setText(mChoices[position]);
+        holder.text.setText(mChoices[position]);
+
+        if (position == mCurrentlySelected) {
+            int c = Color.parseColor("#EF5350"); // white
+            holder.text.setTextColor(c);
+        } else {
+            int c = Color.parseColor("#757575"); // grey
+            holder.text.setTextColor(c);
+        }
 
         return view;
     }
 
     public static class ViewHolder {
 
-        @InjectView(R.id.menu) TextView menu;
-
+        @InjectView(R.id.menu) TextView text;
+        @InjectView(R.id.background) LinearLayout background;
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
         }
 
+    }
+
+    public interface NavigationCallback{
+        public void onNavigationItemSelected(int position);
     }
 }

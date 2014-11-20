@@ -37,7 +37,6 @@
         </LinearLayout>
 
         <include
-            android:clickable="true"
             layout="@layout/drawer_layout" />
 
     </android.support.v4.widget.DrawerLayout>

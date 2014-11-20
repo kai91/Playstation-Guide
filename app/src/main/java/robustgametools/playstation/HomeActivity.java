@@ -1,5 +1,6 @@
 package robustgametools.playstation;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -16,8 +17,12 @@ import butterknife.InjectView;
 import robustgametools.adapter.NavigationDrawerAdapter;
 import robustgametools.model.BaseActivity;
 import robustgametools.playstation_guide.R;
+import robustgametools.signin.SignInActivity;
+import robustgametools.util.Storage;
 
-public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragmentListener {
+public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragmentListener,
+        NavigationDrawerAdapter.NavigationCallback {
+
     @InjectView(R.id.drawer) DrawerLayout mDrawer;
     @InjectView(R.id.drawer_menu) ListView mDrawerMenu;
 
@@ -39,7 +44,6 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
                 fragment.setArguments(argBundle);
             }
 
-
             getFragmentManager().beginTransaction()
                     .add(R.id.container, fragment)
                     .commit();
@@ -59,17 +63,21 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
                 R.string.app_name
         );
         mDrawer.setDrawerListener(mDrawerToggle);
-        mDrawerMenu.setAdapter(new NavigationDrawerAdapter(this));
+        final NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(getApplicationContext(), this);
+        mDrawerMenu.setAdapter(adapter);
         mDrawerMenu.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mDrawerMenu.setItemChecked(position, true);
+                adapter.selectItem(position);
+                if (position == 2) {
+                    onNavigationItemSelected(position);
+                }
             }
         });
 
     }
 
-    /*@OnClick(R.id.signOut)
     public void signOut() {
         Storage storage = Storage.getInstance(this);
         storage.deleteUserData();
@@ -78,7 +86,7 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
         Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
         finish();
-    }*/
+    }
 
     @Override
     protected int getLayoutResource() {
@@ -114,5 +122,12 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
     @Override
     public void showGameDetail(Uri uri) {
 
+    }
+
+    @Override
+    public void onNavigationItemSelected(int position) {
+        if (position == 2) {
+            signOut();
+        }
     }
 }
