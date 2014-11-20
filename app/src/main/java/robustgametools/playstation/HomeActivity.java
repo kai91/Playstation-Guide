@@ -26,6 +26,9 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
     @InjectView(R.id.drawer_menu) ListView mDrawerMenu;
 
     private ActionBarDrawerToggle mDrawerToggle;
+    private int mCurrentlySelectedSection = 0;
+
+    private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,8 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
             getFragmentManager().beginTransaction()
                     .add(R.id.container, fragment)
                     .commit();
+        } else {
+            mCurrentlySelectedSection = savedInstanceState.getInt(STATE_SELECTED_POSITION);
         }
 
         initDrawer();
@@ -71,9 +76,11 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
                 adapter.selectItem(position);
                 onNavigationItemSelected(position);
                 mDrawer.closeDrawers();
+                mCurrentlySelectedSection = position;
             }
         });
 
+        adapter.selectItem(mCurrentlySelectedSection);
     }
 
     public void signOut() {
@@ -91,11 +98,17 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
         return R.layout.activity_home;
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt(STATE_SELECTED_POSITION,
+                mCurrentlySelectedSection);
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
