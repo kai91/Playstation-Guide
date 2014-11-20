@@ -20,8 +20,7 @@ import robustgametools.playstation_guide.R;
 import robustgametools.signin.SignInActivity;
 import robustgametools.util.Storage;
 
-public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragmentListener,
-        NavigationDrawerAdapter.NavigationCallback {
+public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragmentListener {
 
     @InjectView(R.id.drawer) DrawerLayout mDrawer;
     @InjectView(R.id.drawer_menu) ListView mDrawerMenu;
@@ -63,16 +62,15 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
                 R.string.app_name
         );
         mDrawer.setDrawerListener(mDrawerToggle);
-        final NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(getApplicationContext(), this);
+        final NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(this);
         mDrawerMenu.setAdapter(adapter);
         mDrawerMenu.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mDrawerMenu.setItemChecked(position, true);
                 adapter.selectItem(position);
-                if (position == 2) {
-                    onNavigationItemSelected(position);
-                }
+                onNavigationItemSelected(position);
+                mDrawer.closeDrawers();
             }
         });
 
@@ -124,8 +122,7 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
 
     }
 
-    @Override
-    public void onNavigationItemSelected(int position) {
+    private void onNavigationItemSelected(int position) {
         if (position == 2) {
             signOut();
         }

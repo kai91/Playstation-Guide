@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
@@ -23,11 +22,8 @@ public class NavigationDrawerAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private int mCurrentlySelected = 0;
 
-    private NavigationCallback mCallback;
-
-    public NavigationDrawerAdapter(Context context, NavigationCallback callback) {
+    public NavigationDrawerAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
-        mCallback = callback;
     }
 
     @Override
@@ -65,7 +61,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         holder.text.setText(mChoices[position]);
 
         if (position == mCurrentlySelected) {
-            int c = Color.parseColor("#EF5350"); // white
+            int c = Color.parseColor("#EF5350"); // red
             holder.text.setTextColor(c);
         } else {
             int c = Color.parseColor("#757575"); // grey
@@ -78,14 +74,9 @@ public class NavigationDrawerAdapter extends BaseAdapter {
     public static class ViewHolder {
 
         @InjectView(R.id.menu) TextView text;
-        @InjectView(R.id.background) LinearLayout background;
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
         }
 
-    }
-
-    public interface NavigationCallback{
-        public void onNavigationItemSelected(int position);
     }
 }
