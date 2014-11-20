@@ -1,7 +1,6 @@
 package robustgametools.playstation;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,10 +11,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import robustgametools.adapter.NavigationDrawerAdapter;
 import robustgametools.model.BaseActivity;
+import robustgametools.model.Game;
 import robustgametools.playstation_guide.R;
 import robustgametools.signin.SignInActivity;
 import robustgametools.util.Storage;
@@ -131,8 +133,11 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
     }
 
     @Override
-    public void showGameDetail(Uri uri) {
-
+    public void showGameDetail(Game game) {
+        Intent intent = new Intent(this, GameActivity.class);
+        String gameData = new Gson().toJson(game);
+        intent.putExtra("info", gameData);
+        startActivity(intent);
     }
 
     private void onNavigationItemSelected(int position) {

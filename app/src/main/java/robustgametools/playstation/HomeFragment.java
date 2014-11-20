@@ -2,9 +2,7 @@ package robustgametools.playstation;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -20,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
-import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
@@ -107,9 +104,9 @@ public class HomeFragment extends Fragment {
         inflater.inflate(R.menu.home, menu);
     }
 
-    public void onButtonPressed(Uri uri) {
+    public void showGameDetail(Game game) {
         if (mListener != null) {
-            mListener.showGameDetail(uri);
+            mListener.showGameDetail(game);
         }
     }
 
@@ -207,12 +204,8 @@ public class HomeFragment extends Fragment {
         mGameList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), GameActivity.class);
                 Game game = adapter.getItem(position);
-                String gameData = new Gson().toJson(game);
-                //Log.i(gameData);
-                intent.putExtra("info", gameData);
-                startActivity(intent);
+                showGameDetail(game);
             }
         });
     }
@@ -283,7 +276,7 @@ public class HomeFragment extends Fragment {
     }
 
     public interface HomeFragmentListener {
-        public void showGameDetail(Uri uri);
+        public void showGameDetail(Game game);
     }
 
 }

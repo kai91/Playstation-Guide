@@ -88,11 +88,13 @@ public class GameActivity extends BaseActivity {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         String data = new String(responseBody);
                         initTrophyList(data);
+                        changeLoadingVisibility(View.GONE);
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         Log.i("Get trophy info failed");
+                        changeLoadingVisibility(View.GONE);
                     }
                 });
     }
@@ -102,8 +104,11 @@ public class GameActivity extends BaseActivity {
         ArrayList<Trophy> trophies = jsonFactory.parseTrophyList(data);
         TrophyListAdapter adapter = new TrophyListAdapter(this, trophies);
         mTrophyList.setAdapter(adapter);
-        mLoadingBar.setVisibility(View.GONE);
-        mProgressBar.setVisibility(View.GONE);
+    }
+
+    private void changeLoadingVisibility(int visibility) {
+        mLoadingBar.setVisibility(visibility);
+        mProgressBar.setVisibility(visibility);
     }
 
     @Override
@@ -125,7 +130,9 @@ public class GameActivity extends BaseActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_refresh_game) {
+            getTrophyList();
+            mLoadingBar.setVisibility(View.VISIBLE);
             return true;
         }
         return super.onOptionsItemSelected(item);
