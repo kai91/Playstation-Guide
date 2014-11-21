@@ -1,18 +1,28 @@
 package robustgametools.guide;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import robustgametools.playstation_guide.R;
 
 public class GuideListFragment extends Fragment {
+
+    @InjectView(R.id.total) TextView mTotal;
 
     private OnFragmentInteractionListener mListener;
 
@@ -21,6 +31,7 @@ public class GuideListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_guide, container, false);
         ButterKnife.inject(this, view);
+
         return view;
     }
 

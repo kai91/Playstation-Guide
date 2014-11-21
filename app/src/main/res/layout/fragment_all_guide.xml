@@ -5,15 +5,10 @@
     android:orientation="vertical">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:text="Total guide available: "/>
-
-    <TextView
+        android:id="@+id/total"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-        android:text="Last guide addition: "/>
+        android:text="Total guide available: "/>
 
 </LinearLayout>

@@ -32,6 +32,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="robustgametools.playstation.HomeActivity" />
         </activity>
+        <activity
+            android:name="robustgametools.guide.GuideActivity"
+            android:label="@string/title_activity_guide" >
+        </activity>
     </application>
 
 </manifest>
