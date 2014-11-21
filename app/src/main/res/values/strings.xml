@@ -7,9 +7,8 @@
     <string name="sign_in">Sign In</string>
     <string name="hint">psn id</string>
     <string name="title_activity_home">PS Trophy Guide</string>
-    <string name="title_section1">Guides</string>
-    <string name="title_section2">Home</string>
-    <string name="title_section3">Settings</string>
+    <string name="title_section1">All Guides</string>
+    <string name="title_section2">My Guides</string>
     <string name="title_activity_guide">GuideActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -21,5 +20,6 @@
     <string name="sign_out">Sign out</string>
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
+    <string name="action_update_guide">Update guide list</string>
 
 </resources>

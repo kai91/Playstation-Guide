@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import robustgametools.adapter.NavigationDrawerAdapter;
+import robustgametools.guide.MyGuideFragment;
 import robustgametools.model.BaseActivity;
 import robustgametools.model.Game;
 import robustgametools.playstation_guide.R;
@@ -28,9 +29,6 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
     @InjectView(R.id.drawer_menu) ListView mDrawerMenu;
 
     private ActionBarDrawerToggle mDrawerToggle;
-    private int mCurrentlySelectedSection = 0;
-
-    private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +49,6 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
             getFragmentManager().beginTransaction()
                     .add(R.id.container, fragment)
                     .commit();
-        } else {
-            mCurrentlySelectedSection = savedInstanceState.getInt(STATE_SELECTED_POSITION);
         }
 
         initDrawer();
@@ -78,11 +74,8 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
                 adapter.selectItem(position);
                 onNavigationItemSelected(position);
                 mDrawer.closeDrawers();
-                mCurrentlySelectedSection = position;
             }
         });
-
-        adapter.selectItem(mCurrentlySelectedSection);
     }
 
     public void signOut() {
@@ -108,8 +101,6 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putInt(STATE_SELECTED_POSITION,
-                mCurrentlySelectedSection);
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -141,7 +132,17 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
     }
 
     private void onNavigationItemSelected(int position) {
-        if (position == 2) {
+        if (position == 0) {
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.container, new HomeFragment())
+                    .commit();
+        }
+        else if (position == 1) {
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.container, new MyGuideFragment())
+                    .commit();
+
+        } else if (position == 2) {
             signOut();
         }
     }
