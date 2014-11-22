@@ -17,6 +17,8 @@ import robustgametools.util.Storage;
  */
 public class Playstation {
 
+    public static boolean sDebug = true;
+
     private static Playstation playstation =  null;
     private static Profile profile;
     private static JsonFactory jsonFactory;
