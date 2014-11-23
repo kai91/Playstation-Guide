@@ -8,24 +8,17 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.Gson;
-
 import butterknife.ButterKnife;
-import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
 
 public class GuideFragment extends Fragment {
 
-    private TrophyGuide mTrophyGuide;
+    private GuideFormatter mFormatter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-
-        Bundle args = getArguments();
-        String json = args.getString("guideInfo");
-        mTrophyGuide = new Gson().fromJson(json, TrophyGuide.class);
+        mFormatter = GuideFormatter.getInstance(getActivity());
     }
 
     @Override
@@ -33,7 +26,6 @@ public class GuideFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_guide, container, false);
         ButterKnife.inject(this, view);
-        getActivity().setTitle(mTrophyGuide.getTitle());
         return view;
     }
 

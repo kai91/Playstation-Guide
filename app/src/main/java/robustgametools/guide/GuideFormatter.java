@@ -18,11 +18,11 @@ import robustgametools.model.TrophyGuide;
 public class GuideFormatter {
 
     private static GuideFormatter mFormatter = null;
-    private Context mContext;
+    private static Context mContext;
 
     private GuideFormatter() {};
 
-    public GuideFormatter getInstance(Context context) {
+    public static GuideFormatter getInstance(Context context) {
         if (mFormatter == null) {
             mFormatter = new GuideFormatter();
             mContext = context;

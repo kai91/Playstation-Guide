@@ -8,13 +8,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.google.gson.Gson;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import robustgametools.adapter.NavigationDrawerAdapter;
 import robustgametools.model.BaseActivity;
 import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
@@ -25,17 +24,17 @@ public class GuideActivity extends BaseActivity {
     @InjectView(R.id.drawer_menu) ListView mDrawerMenu;
 
     private ActionBarDrawerToggle mDrawerToggle;
+    private TrophyGuide mTrophyGuide;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.inject(this);
+        getTrophyGuideInfo();
 
         if (savedInstanceState == null) {
             Fragment frag = new GuideFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("guideInfo", getTrophyGuideInfo());
-            frag.setArguments(bundle);
 
             getFragmentManager().beginTransaction()
                     .add(R.id.container, frag)
@@ -45,10 +44,10 @@ public class GuideActivity extends BaseActivity {
         initDrawer();
     }
 
-    private String getTrophyGuideInfo() {
+    private void getTrophyGuideInfo() {
         Intent intent = getIntent();
         String json = intent.getStringExtra("guideInfo");
-        return json;
+        mTrophyGuide = new Gson().fromJson(json, TrophyGuide.class);
     }
 
     private void initDrawer() {
