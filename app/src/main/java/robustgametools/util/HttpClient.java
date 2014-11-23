@@ -80,6 +80,14 @@ public class HttpClient {
     }
 
     /**
+     * Downloads game guide
+     */
+    public static void getGameGuide(String url, AsyncHttpResponseHandler handler) {
+        init();
+        mAsyncHttpClient.get(url, null, handler);
+    }
+
+    /**
      * Cancel sign in request
      */
     public static void cancelSignInRequest() {
