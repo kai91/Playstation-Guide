@@ -12,13 +12,21 @@ public class Log {
 
     public static void i(String tag, String msg) {
         if(Playstation.sDebug) {
-            android.util.Log.i(tag,msg);
+            longInfo(tag,msg);
         }
     }
 
     public static void i(String msg) {
         if (Playstation.sDebug) {
-            android.util.Log.i(TAG, msg);
+            longInfo(TAG, msg);
         }
+    }
+
+    public static void longInfo(String tag, String str) {
+        if(str.length() > 4000) {
+            android.util.Log.i(tag, str.substring(0, 4000));
+            longInfo(tag, str.substring(4000));
+        } else
+            android.util.Log.i(tag, str);
     }
 }
