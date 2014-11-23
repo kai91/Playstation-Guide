@@ -51,7 +51,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         ViewHolder holder;
 
         if (view == null) {
-            view = mInflater.inflate(R.layout.drawer_layout_item, parent, false);
+            view = mInflater.inflate(R.layout.drawer_item_home_menu, parent, false);
             holder = new ViewHolder(view);
             view.setTag(holder);
         } else {

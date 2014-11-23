@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import robustgametools.model.TrophyGuide;
 
 /**
@@ -19,6 +21,7 @@ public class GuideFormatter {
 
     private static GuideFormatter mFormatter = null;
     private static Context mContext;
+    private static ArrayList<View> views;
 
     private GuideFormatter() {};
 
@@ -30,16 +33,18 @@ public class GuideFormatter {
         return mFormatter;
     }
 
-    public View getView(String rawGuide) {
-        LinearLayout linearLayout = new LinearLayout(mContext);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT );
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
+    public GuideFormatter format(String rawGuide) {
+        views = new ArrayList<View>();
         TextView text = new TextView(mContext);
         text.setText(rawGuide);
-        linearLayout.addView(text);
-        return linearLayout;
+        views.add(text);
+        return this;
+    }
+
+    public void into(LinearLayout containerLayout) {
+        for (int i = 0; i < views.size(); i++) {
+            containerLayout.addView(views.get(i));
+        }
     }
 
     //TODO

@@ -42,7 +42,7 @@ public class MyGuideFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_refresh_guide:
+            case R.id.action_update_guide:
                 return true;
         }
         return super.onOptionsItemSelected(item);

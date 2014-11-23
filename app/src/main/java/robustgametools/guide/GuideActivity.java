@@ -35,6 +35,8 @@ public class GuideActivity extends BaseActivity {
         if (savedInstanceState == null) {
             Fragment frag = new GuideFragment();
             Bundle bundle = new Bundle();
+            bundle.putString("rawGuide", mTrophyGuide.getRoadmap());
+            frag.setArguments(bundle);
 
             getFragmentManager().beginTransaction()
                     .add(R.id.container, frag)
@@ -88,7 +90,7 @@ public class GuideActivity extends BaseActivity {
             return true;
         }
         int id = item.getItemId();
-        if (id == R.id.action_refresh_guide) {
+        if (id == R.id.action_update_trophy_info) {
             return true;
         }
         return super.onOptionsItemSelected(item);
