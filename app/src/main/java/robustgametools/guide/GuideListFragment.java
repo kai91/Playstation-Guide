@@ -1,30 +1,30 @@
 package robustgametools.guide;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.Bundle;
 import android.app.Fragment;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import org.apache.http.Header;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import robustgametools.playstation_guide.R;
+import robustgametools.util.HttpClient;
+import robustgametools.util.Log;
 
 public class GuideListFragment extends Fragment {
 
     @InjectView(R.id.total) TextView mTotal;
 
-    private OnFragmentInteractionListener mListener;
+    private GuideListListener mListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,22 +35,35 @@ public class GuideListFragment extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    @OnClick(R.id.guide)
+    public void onGuideSelected() {
+        HttpClient.getGameGuide("https://api.myjson.com/bins/4yb63", new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String response = new String(responseBody);
+                Log.i(response);
+                mListener.onGuideSelected(response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                if (getActivity() == null) {
+                    Toast.makeText(getActivity(), "Error downloading guide, check your network and" +
+                            "try again", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        /*try {
-            mListener = (OnFragmentInteractionListener) activity;
+        try {
+            mListener = (GuideListListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
-        }*/
+        }
     }
 
     @Override
@@ -59,9 +72,8 @@ public class GuideListFragment extends Fragment {
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+    public interface GuideListListener {
+        public void onGuideSelected(String guideContent);
     }
 
 }

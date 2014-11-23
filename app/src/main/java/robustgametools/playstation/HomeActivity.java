@@ -16,6 +16,8 @@ import com.google.gson.Gson;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import robustgametools.adapter.NavigationDrawerAdapter;
+import robustgametools.guide.GuideActivity;
+import robustgametools.guide.GuideListFragment;
 import robustgametools.guide.MyGuideFragment;
 import robustgametools.model.BaseActivity;
 import robustgametools.model.Game;
@@ -23,7 +25,9 @@ import robustgametools.playstation_guide.R;
 import robustgametools.signin.SignInActivity;
 import robustgametools.util.Storage;
 
-public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragmentListener {
+public class HomeActivity extends BaseActivity
+        implements HomeFragment.HomeFragmentListener,
+        GuideListFragment.GuideListListener {
 
     @InjectView(R.id.drawer) DrawerLayout mDrawer;
     @InjectView(R.id.drawer_menu) ListView mDrawerMenu;
@@ -145,5 +149,12 @@ public class HomeActivity extends BaseActivity implements HomeFragment.HomeFragm
         } else if (position == 2) {
             signOut();
         }
+    }
+
+    @Override
+    public void onGuideSelected(String guideContent) {
+        Intent intent = new Intent(this, GuideActivity.class);
+        intent.putExtra("guideInfo", guideContent);
+        startActivity(intent);
     }
 }

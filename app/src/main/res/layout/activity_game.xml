@@ -210,12 +210,8 @@
                             android:layout_gravity="center"></ProgressBar>
 
                     </FrameLayout>
-
                 </android.support.v7.widget.CardView>
-
             </RelativeLayout>
-
         </FrameLayout>
-
     </LinearLayout>
 </FrameLayout>

@@ -102,6 +102,11 @@ public class GameActivity extends BaseActivity {
     private void initTrophyList(String data) {
         JsonFactory jsonFactory = JsonFactory.getInstance();
         ArrayList<Trophy> trophies = jsonFactory.parseTrophyList(data);
+
+        //if (Playstation.sDebug) {
+        //    TrophyGuide.parseFromTrophyList(trophies);
+        //}
+
         TrophyListAdapter adapter = new TrophyListAdapter(this, trophies);
         mTrophyList.setAdapter(adapter);
     }

@@ -11,4 +11,15 @@
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
         android:text="Total guide available: "/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Supposed to be guide list but placeholder for now"/>
+
+    <Button
+        android:id="@+id/guide"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Click here to view guide"/>
+
 </LinearLayout>
