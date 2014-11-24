@@ -1,10 +1,7 @@
 package robustgametools.guide;
 
 import android.content.Context;
-import android.text.SpannableString;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,6 +19,16 @@ public class GuideFormatter {
     private static GuideFormatter mFormatter = null;
     private static Context mContext;
     private static ArrayList<View> views;
+    private static boolean mIsOffline;
+
+    private static final String mImageSeparatorStart = "{{{{";
+    private static final String mImageSeparatorStEnd = "}}}}";
+    private static final String mTextBoldStart = "{{{";
+    private static final String mTextBoldEnd = "}}}";
+    private static final String mLinkStart = "{{";
+    private static final String mLinkEnd = "}}";
+    private static final String mSymbolStart = "{";
+    private static final String mSymbolEnd = "}";
 
     private GuideFormatter() {};
 
@@ -34,10 +41,20 @@ public class GuideFormatter {
     }
 
     public GuideFormatter format(String rawGuide) {
-        views = new ArrayList<View>();
-        TextView text = new TextView(mContext);
-        text.setText(rawGuide);
-        views.add(text);
+        // checks for empty string with just spaces
+        if (rawGuide.trim().length() != 0) {
+            views = new ArrayList<View>();
+            TextView text = new TextView(mContext);
+            mIsOffline = false;
+            text.setText(rawGuide);
+            views.add(text);
+        }
+
+        return this;
+    }
+
+    public GuideFormatter isOffline() {
+        mIsOffline = true;
         return this;
     }
 
@@ -47,17 +64,26 @@ public class GuideFormatter {
         }
     }
 
-    //TODO
-    private ImageView getImage(TrophyGuide guide) {
-        return null;
+    private void extractImage(String rawGuide) {
+        int index = rawGuide.indexOf(mImageSeparatorStart);
+        if (index  == -1) {
+            // no image in guide, return
+            return;
+        } else {
+            int start = index;
+            format(rawGuide.substring(0, start));
+            String guide = rawGuide.replace(mImageSeparatorStart, "");
+            int end = guide.indexOf(mImageSeparatorStEnd);
+            guide = guide.replace(mImageSeparatorStEnd, "");
+            String url = guide.substring(start, end);
+            format(guide.substring(end, guide.length()));
+        }
     }
 
-    private TextView getText(TrophyGuide guide) {
-        return null;
+    private void extractText(String rawGuide) {
     }
 
-    private SpannableString getButtonSymbols(TrophyGuide guide) {
-        return null;
+    private void extractButtons(String rawGuide) {
     }
 
 
