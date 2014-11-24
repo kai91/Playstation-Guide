@@ -17,6 +17,7 @@ public class TrophyGuide {
     private int guideId, revision;
     private ArrayList<Types> platforms;
     private ArrayList<Guide> guides;
+    private boolean offlineMode;
 
     // Not for used in runtime, this is
     // a function to automate the making of a
@@ -90,5 +91,13 @@ public class TrophyGuide {
 
     public void setRoadmap(String roadmap) {
         this.roadmap = roadmap;
+    }
+
+    public boolean isOfflineMode() {
+        return offlineMode;
+    }
+
+    public void setOfflineMode(boolean offlineMode) {
+        this.offlineMode = offlineMode;
     }
 }

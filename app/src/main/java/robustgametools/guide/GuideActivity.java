@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import robustgametools.adapter.TrophyGuideAdapter;
 import robustgametools.model.BaseActivity;
 import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
@@ -43,6 +44,7 @@ public class GuideActivity extends BaseActivity {
                     .commit();
         }
 
+        setTitle(mTrophyGuide.getTitle());
         initDrawer();
     }
 
@@ -63,6 +65,8 @@ public class GuideActivity extends BaseActivity {
                 R.string.app_name
         );
         mDrawer.setDrawerListener(mDrawerToggle);
+        TrophyGuideAdapter adapter = new TrophyGuideAdapter(this, mTrophyGuide);
+        mDrawerMenu.setAdapter(adapter);
     }
 
     @Override
@@ -80,7 +84,7 @@ public class GuideActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.guide, menu);
+        getMenuInflater().inflate(R.menu.trophy_guide, menu);
         return true;
     }
 
@@ -92,7 +96,10 @@ public class GuideActivity extends BaseActivity {
         int id = item.getItemId();
         if (id == R.id.action_update_trophy_info) {
             return true;
+        } else if (id == R.id.action_exit_guide) {
+            finish();
         }
+
         return super.onOptionsItemSelected(item);
     }
 }
