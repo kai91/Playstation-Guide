@@ -29,9 +29,9 @@ public class GameListAdapter extends BaseAdapter {
     private Context mContext;
 
     public GameListAdapter(Context context, ArrayList<Game> games) {
-        mInflater = LayoutInflater.from(context);
-        mGames = games;
         mContext = context.getApplicationContext();
+        mInflater = LayoutInflater.from(mContext);
+        mGames = games;
     }
 
     @Override

@@ -29,7 +29,7 @@ public class TrophyGuideAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
 
     public TrophyGuideAdapter(Context context, TrophyGuide trophyGuide) {
-        mContext = context;
+        mContext = context.getApplicationContext();
         mTrophyGuide = trophyGuide;
         guides = mTrophyGuide.getGuides();
         mInflater = LayoutInflater.from(mContext);

@@ -26,7 +26,7 @@ public class Storage {
 
     public static Storage getInstance(Context context) {
         if (mStorage != null) {
-            mContext = context;
+            mContext = context.getApplicationContext();
 
             return mStorage;
         } else throw new NullPointerException();

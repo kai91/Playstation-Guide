@@ -30,7 +30,7 @@ public class TrophyListAdapter extends BaseAdapter{
 
     public TrophyListAdapter(Context context, ArrayList<Trophy> trophies) {
         mTrophies = trophies;
-        mContext = context;
+        mContext = context.getApplicationContext();
         mInflater = LayoutInflater.from(context.getApplicationContext());
     }
 

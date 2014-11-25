@@ -89,7 +89,8 @@ public class HomeFragment extends Fragment {
             }
         }*/
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(getActivity().getApplicationContext());
         int index = preferences.getInt("index", 0);
         int top = preferences.getInt("top", 0);
         mGameList.setSelectionFromTop(index, top);
@@ -118,7 +119,8 @@ public class HomeFragment extends Fragment {
         int top = (v == null) ? 0 : v.getTop();
         bundle.putInt("index", index);
         bundle.putInt("top", top);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(getActivity().getApplicationContext());
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt("index", index);
         editor.putInt("top", top);
@@ -142,7 +144,8 @@ public class HomeFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.refresh:
                 updateHeader();
-                Storage storage = Storage.getInstance(getActivity());
+                Storage storage = Storage.getInstance(getActivity().
+                        getApplicationContext());
                 String data = storage.readGameData();
                 updateList(data, 0);
                 mLoading.setVisibility(View.VISIBLE);
@@ -158,7 +161,8 @@ public class HomeFragment extends Fragment {
     }
 
     private void initHeader() {
-        Picasso.with(getActivity()).load(mProfile.getAvatarUrl())
+        Picasso.with(getActivity().getApplicationContext())
+                .load(mProfile.getAvatarUrl())
                 .into(mProfileImage);
         mUsername.setText(mProfile.getOnlineId());
         mLevel.setText("Level " + mProfile.getLevel());
@@ -199,7 +203,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void initGameList() {
-        adapter = new GameListAdapter(getActivity(), mProfile.getGames());
+        adapter = new GameListAdapter(getActivity().getApplicationContext(), mProfile.getGames());
         mGameList.setAdapter(adapter);
         mGameList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
