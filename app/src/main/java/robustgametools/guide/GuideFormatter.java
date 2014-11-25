@@ -1,13 +1,15 @@
 package robustgametools.guide;
 
 import android.content.Context;
+import android.graphics.Typeface;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-
-import robustgametools.model.TrophyGuide;
+import java.util.regex.Pattern;
 
 /**
  * A GuideFormatter class to
@@ -19,7 +21,7 @@ public class GuideFormatter {
     private static GuideFormatter mFormatter = null;
     private static Context mContext;
     private static ArrayList<View> views;
-    private static boolean mIsOffline;
+    private boolean mIsOffline;
 
     private static final String mImageSeparatorStart = "{{{{";
     private static final String mImageSeparatorStEnd = "}}}}";
@@ -27,8 +29,8 @@ public class GuideFormatter {
     private static final String mTextBoldEnd = "}}}";
     private static final String mLinkStart = "{{";
     private static final String mLinkEnd = "}}";
-    private static final String mSymbolStart = "{";
-    private static final String mSymbolEnd = "}";
+    private static final String mSymbolStart = "\\{";
+    private static final String mSymbolEnd = "\\}";
 
     private GuideFormatter() {};
 
@@ -44,10 +46,8 @@ public class GuideFormatter {
         // checks for empty string with just spaces
         if (rawGuide.trim().length() != 0) {
             views = new ArrayList<View>();
-            TextView text = new TextView(mContext);
             mIsOffline = false;
-            text.setText(rawGuide);
-            views.add(text);
+            formatImage(rawGuide);
         }
 
         return this;
@@ -64,27 +64,47 @@ public class GuideFormatter {
         }
     }
 
-    private void extractImage(String rawGuide) {
+    private void formatImage(String rawGuide) {
         int index = rawGuide.indexOf(mImageSeparatorStart);
         if (index  == -1) {
-            // no image in guide, return
-            return;
+            // no image in guide, proceed to extract text
+            formatText(rawGuide);
         } else {
             int start = index;
-            format(rawGuide.substring(0, start));
+            formatText(rawGuide.substring(0, start));
             String guide = rawGuide.replace(mImageSeparatorStart, "");
             int end = guide.indexOf(mImageSeparatorStEnd);
             guide = guide.replace(mImageSeparatorStEnd, "");
             String url = guide.substring(start, end);
-            format(guide.substring(end, guide.length()));
+            formatImage(guide.substring(end, guide.length()));
         }
     }
 
-    private void extractText(String rawGuide) {
+    private void formatText(String rawString) {
+        SpannableStringBuilder builder = new SpannableStringBuilder(rawString);
+        formatBold(builder, rawString);
+        TextView text = new TextView(mContext);
+        text.setText(builder);
+        views.add(text);
+    }
+
+    private void formatBold(SpannableStringBuilder spannable, String string) {
+        int start = string.indexOf(mTextBoldStart);
+        while(start != -1) {
+            string = string.replaceFirst(Pattern.quote(mTextBoldStart), "");
+            int end = string.indexOf(mTextBoldEnd);
+            string = string.replaceFirst(Pattern.quote(mTextBoldEnd), "");
+            String bold = string.substring(start, end);
+            spannable.replace(start, end + mTextBoldEnd.length() * 2, bold);
+            spannable.setSpan(new StyleSpan(Typeface.BOLD), start, end, 0);
+            start = string.indexOf(mTextBoldStart);
+        }
     }
 
     private void extractButtons(String rawGuide) {
     }
+
+
 
 
 }
