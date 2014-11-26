@@ -2,6 +2,7 @@ package robustgametools.guide;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.ParcelableSpan;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 import android.view.View;
@@ -16,33 +17,33 @@ import java.util.regex.Pattern;
  * return the right view to be
  * displayed on the screen
  */
-public class GuideFormatter {
+public class GuideFactory {
 
-    private static GuideFormatter mFormatter = null;
+    private static GuideFactory mFormatter = null;
     private static Context mContext;
     private static ArrayList<View> views;
     private boolean mIsOffline;
 
-    private static final String mImageSeparatorStart = "{{{{";
-    private static final String mImageSeparatorStEnd = "}}}}";
-    private static final String mTextBoldStart = "{{{";
-    private static final String mTextBoldEnd = "}}}";
-    private static final String mLinkStart = "{{";
-    private static final String mLinkEnd = "}}";
-    private static final String mSymbolStart = "\\{";
-    private static final String mSymbolEnd = "\\}";
+    private static final String mImageRegex = "[D]";
+    private static final String mTextBoldRegex = "[T]";
+    private static final String mSymbolRegex = "[+]";
+    private static final String mPlatinumRegex = "[P]";
+    private static final String mGoldRegex = "[G]";
+    private static final String mSilverRegex = "[S]";
+    private static final String mBronzeRegex = "[B]";
 
-    private GuideFormatter() {};
 
-    public static GuideFormatter getInstance(Context context) {
+    private GuideFactory() {};
+
+    public static GuideFactory getInstance(Context context) {
         if (mFormatter == null) {
-            mFormatter = new GuideFormatter();
+            mFormatter = new GuideFactory();
             mContext = context;
         }
         return mFormatter;
     }
 
-    public GuideFormatter format(String rawGuide) {
+    public GuideFactory format(String rawGuide) {
         // checks for empty string with just spaces
         if (rawGuide.trim().length() != 0) {
             views = new ArrayList<View>();
@@ -53,7 +54,7 @@ public class GuideFormatter {
         return this;
     }
 
-    public GuideFormatter isOffline() {
+    public GuideFactory isOffline() {
         mIsOffline = true;
         return this;
     }
@@ -65,16 +66,16 @@ public class GuideFormatter {
     }
 
     private void formatImage(String rawGuide) {
-        int index = rawGuide.indexOf(mImageSeparatorStart);
+        int index = rawGuide.indexOf(mImageRegex);
         if (index  == -1) {
             // no image in guide, proceed to extract text
             formatText(rawGuide);
         } else {
             int start = index;
             formatText(rawGuide.substring(0, start));
-            String guide = rawGuide.replace(mImageSeparatorStart, "");
-            int end = guide.indexOf(mImageSeparatorStEnd);
-            guide = guide.replace(mImageSeparatorStEnd, "");
+            String guide = rawGuide.replace(mImageRegex, "");
+            int end = guide.indexOf(mImageRegex);
+            guide = guide.replace(mImageRegex, "");
             String url = guide.substring(start, end);
             formatImage(guide.substring(end, guide.length()));
         }
@@ -82,23 +83,27 @@ public class GuideFormatter {
 
     private void formatText(String rawString) {
         SpannableStringBuilder builder = new SpannableStringBuilder(rawString);
-        formatBold(builder, rawString);
+        rawString = formatRegex(builder, rawString, mTextBoldRegex, null);
+        //rawString = formatRegex(builder, rawString, mBronzeRegex, null);
         TextView text = new TextView(mContext);
         text.setText(builder);
         views.add(text);
     }
 
-    private void formatBold(SpannableStringBuilder spannable, String string) {
-        int start = string.indexOf(mTextBoldStart);
+    private String formatRegex(SpannableStringBuilder spannable,
+                               String string, String regex,
+                               ArrayList<ParcelableSpan> spans) {
+        int start = string.indexOf(regex);
         while(start != -1) {
-            string = string.replaceFirst(Pattern.quote(mTextBoldStart), "");
-            int end = string.indexOf(mTextBoldEnd);
-            string = string.replaceFirst(Pattern.quote(mTextBoldEnd), "");
+            string = string.replaceFirst(Pattern.quote(regex), "");
+            int end = string.indexOf(regex);
+            string = string.replaceFirst(Pattern.quote(regex), "");
             String bold = string.substring(start, end);
-            spannable.replace(start, end + mTextBoldEnd.length() * 2, bold);
+            spannable.replace(start, end + regex.length() * 2, bold);
             spannable.setSpan(new StyleSpan(Typeface.BOLD), start, end, 0);
-            start = string.indexOf(mTextBoldStart);
+            start = string.indexOf(regex);
         }
+        return string;
     }
 
     private void extractButtons(String rawGuide) {

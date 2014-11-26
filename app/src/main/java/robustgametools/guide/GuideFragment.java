@@ -15,14 +15,14 @@ import robustgametools.playstation_guide.R;
 
 public class GuideFragment extends Fragment {
 
-    private GuideFormatter mFormatter;
+    private GuideFactory mFormatter;
     private String mRawGuide;
     @InjectView(R.id.container) LinearLayout mContainer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFormatter = GuideFormatter.getInstance(getActivity());
+        mFormatter = GuideFactory.getInstance(getActivity());
         Bundle args = getArguments();
         mRawGuide = args.getString("rawGuide");
     }

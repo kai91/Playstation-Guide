@@ -37,7 +37,7 @@ public class GuideListFragment extends Fragment {
 
     @OnClick(R.id.guide)
     public void onGuideSelected() {
-        HttpClient.getGameGuide("https://api.myjson.com/bins/4gbvb", new AsyncHttpResponseHandler() {
+        HttpClient.getGameGuide("https://api.myjson.com/bins/469zj", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String response = new String(responseBody);
