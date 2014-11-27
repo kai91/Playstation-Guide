@@ -90,6 +90,11 @@ public class GuideFactory {
     }
 
     private void formatText(String rawString) {
+
+        if (rawString.trim().length() == 0) {
+            return;
+        }
+
         SpannableStringBuilder builder = new SpannableStringBuilder(rawString);
         rawString = formatBold(builder, rawString, mTextBoldRegex);
         rawString = formatBronze(builder, rawString);
