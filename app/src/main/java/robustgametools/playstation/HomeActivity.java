@@ -33,6 +33,7 @@ public class HomeActivity extends BaseActivity
     @InjectView(R.id.drawer_menu) ListView mDrawerMenu;
 
     private ActionBarDrawerToggle mDrawerToggle;
+    private int mCurrentlySelected = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,7 @@ public class HomeActivity extends BaseActivity
                 mDrawerMenu.setItemChecked(position, true);
                 adapter.selectItem(position);
                 onNavigationItemSelected(position);
+                mCurrentlySelected = position;
                 mDrawer.closeDrawers();
             }
         });
@@ -135,7 +137,31 @@ public class HomeActivity extends BaseActivity
         startActivity(intent);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mDrawer.isDrawerOpen(Gravity.START)) {
+            mDrawer.closeDrawers();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+   /* @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_BACK && mDrawer.isDrawerOpen(Gravity.START)) {
+            mDrawer.closeDrawers();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }*/
+
     private void onNavigationItemSelected(int position) {
+
+        if (position == mCurrentlySelected) {
+            return;
+        }
+
         if (position == 0) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, new HomeFragment())

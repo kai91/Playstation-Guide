@@ -8,6 +8,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
@@ -26,7 +28,7 @@ public class GuideActivity extends BaseActivity {
 
     private ActionBarDrawerToggle mDrawerToggle;
     private TrophyGuide mTrophyGuide;
-
+    private int mCurrentPosition = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +69,40 @@ public class GuideActivity extends BaseActivity {
         mDrawer.setDrawerListener(mDrawerToggle);
         TrophyGuideAdapter adapter = new TrophyGuideAdapter(this, mTrophyGuide);
         mDrawerMenu.setAdapter(adapter);
+        mDrawerMenu.setOnItemClickListener(new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mDrawerMenu.setItemChecked(position, true);
+                //adapter.selectItem(position);
+                onNavigationItemSelected(position);
+                mCurrentPosition = position;
+                mDrawer.closeDrawers();
+            }
+        });
+    }
+
+    private void onNavigationItemSelected(int position) {
+
+        if (position == mCurrentPosition) {
+            return;
+        }
+
+        String guide;
+
+        if (position == 0) {
+            guide = mTrophyGuide.getRoadmap();
+        } else {
+            guide = mTrophyGuide.getGuides().get(position-1).guide;
+        }
+
+        Fragment frag = new GuideFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("rawGuide",guide);
+        frag.setArguments(bundle);
+
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, frag)
+                .commit();
     }
 
     @Override
@@ -75,11 +111,19 @@ public class GuideActivity extends BaseActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        if (mDrawer.isDrawerOpen(Gravity.START)) {
+            mDrawer.closeDrawers();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
