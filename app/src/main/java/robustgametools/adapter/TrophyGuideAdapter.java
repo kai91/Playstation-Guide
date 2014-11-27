@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
@@ -65,8 +67,11 @@ public class TrophyGuideAdapter extends BaseAdapter {
 
         if (position == 0) {
             holder.title.setText("Roadmap");
+            holder.trophyIcon.setImageDrawable(null);
         } else {
-            holder.title.setText(guides.get(position-1).title);
+            Guide guide = guides.get(position-1);
+            Picasso.with(mContext).load(guide.url).into(holder.trophyIcon);
+            holder.title.setText(guide.title);
         }
 
 

@@ -34,7 +34,7 @@
         </ScrollView>
 
         <include
-            layout="@layout/drawer_home_menu" />
+            layout="@layout/drawer_trophy_guide" />
 
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>

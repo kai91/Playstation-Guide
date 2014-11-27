@@ -79,6 +79,7 @@ public class GuideActivity extends BaseActivity {
                 mDrawer.closeDrawers();
             }
         });
+        mDrawer.openDrawer(Gravity.START);
     }
 
     private void onNavigationItemSelected(int position) {

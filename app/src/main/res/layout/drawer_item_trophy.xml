@@ -2,25 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingTop="3.5dp"
+    android:paddingBottom="3.5dp"
+    android:paddingLeft="5dp"
     android:orientation="horizontal">
 
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/trophy_icon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:border_width="1.75dp"
-        app:border_color="#0D47A1"/>
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        app:border_width="2.5dp"
+        app:border_color="#ffffff" />
 
     <TextView
         android:id="@+id/trophy_title"
+        android:paddingLeft="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
         android:layout_gravity="center_vertical"
         android:singleLine="true"
         android:textColor="@android:color/black"
-        android:ellipsize="end"/>
+        android:ellipsize="end"
+        android:textSize="15sp"/>
 
 
 </LinearLayout>
