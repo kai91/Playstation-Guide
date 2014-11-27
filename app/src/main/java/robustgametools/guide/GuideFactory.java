@@ -7,6 +7,7 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -53,7 +54,8 @@ public class GuideFactory {
 
     public GuideFactory format(String rawGuide) {
         // checks for empty string with just spaces
-        if (rawGuide.trim().length() != 0) {
+        rawGuide = rawGuide.trim();
+        if (rawGuide.length() != 0) {
             views = new ArrayList<View>();
             mIsOffline = false;
             formatImage(rawGuide);
@@ -69,6 +71,10 @@ public class GuideFactory {
 
     public void into(LinearLayout containerLayout) {
         for (int i = 0; i < views.size(); i++) {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            views.get(i).setLayoutParams(params);
             containerLayout.addView(views.get(i));
         }
     }
