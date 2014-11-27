@@ -35,7 +35,7 @@ public class GuideFactory {
 
     private static final int mBronze = Color.parseColor("#cd7f32");
     private static final int mSilver = Color.parseColor("#808080");
-    private static final int mGold = Color.parseColor("#ffd700");
+    private static final int mGold = Color.parseColor("#E2B227");
     private static final int mPlatinum = Color.parseColor("#a5b6ec");
 
     private GuideFactory() {
