@@ -42,6 +42,11 @@ public class GuideFactory {
     private static final int mGold = Color.parseColor("#E2B227");
     private static final int mPlatinum = Color.parseColor("#a5b6ec");
 
+    private static final int mGreen = Color.parseColor("#2db680");
+    private static final int mBlue = Color.parseColor("#5f7ab9");
+    private static final int mPurple = Color.parseColor("#c67eb1");
+    private static final int mRed = Color.parseColor("#e76c78");
+
     private GuideFactory() {}
 
     public static GuideFactory getInstance(Context context) {
@@ -206,6 +211,18 @@ public class GuideFactory {
             spannable.replace(start, end + mSymbolRegex.length() * 2, bold);
             spannable.setSpan(new PlaystationTypefaceSpan("", font), start, end, 0);
             spannable.setSpan(new RelativeSizeSpan(1.4f), start, end, 0);
+            for (int i = start; i < end; i++) {
+                char button = spannable.charAt(i);
+                if (button == 's' || button == 'S') {
+                    spannable.setSpan(new ForegroundColorSpan(mPurple), i, i+1, 0);
+                } else if (button == 'c' || button == 'C') {
+                    spannable.setSpan(new ForegroundColorSpan(mRed), i, i+1, 0);
+                } else if (button == 't' || button == 'T') {
+                    spannable.setSpan(new ForegroundColorSpan(mGreen), i, i+1, 0);
+                } else if (button == 'x' || button == 'X') {
+                    spannable.setSpan(new ForegroundColorSpan(mBlue), i, i+1, 0);
+                }
+            }
             start = string.indexOf(mSymbolRegex);
         }
         return string;
