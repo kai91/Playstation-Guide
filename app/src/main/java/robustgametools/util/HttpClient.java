@@ -87,12 +87,20 @@ public class HttpClient {
         mAsyncHttpClient.get(url, null, handler);
     }
 
+    public static void cancelTrophyRequest() {
+        if (mTrophyRequest != null) {
+            mTrophyRequest.cancel(true);
+            mTrophyRequest = null;
+        }
+    }
+
     /**
      * Cancel sign in request
      */
     public static void cancelSignInRequest() {
         if (mSignInRequest != null) {
             mSignInRequest.cancel(true);
+            mSignInRequest = null;
         }
     }
 }

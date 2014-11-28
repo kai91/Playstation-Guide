@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.google.gson.Gson;
@@ -95,6 +96,8 @@ public class GameActivity extends BaseActivity {
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         Log.i("Get trophy info failed");
                         changeLoadingVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), "Update failed. Check your network and try again.",
+                                Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -141,5 +144,11 @@ public class GameActivity extends BaseActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        HttpClient.cancelTrophyRequest();
+        super.onBackPressed();
     }
 }
