@@ -1,6 +1,7 @@
 package robustgametools.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +30,17 @@ public class TrophyGuideAdapter extends BaseAdapter {
     private ArrayList<Guide> guides;
     private Context mContext;
     private LayoutInflater mInflater;
+    private int mCurrentSelected = 0;
 
     public TrophyGuideAdapter(Context context, TrophyGuide trophyGuide) {
         mContext = context.getApplicationContext();
         mTrophyGuide = trophyGuide;
         guides = mTrophyGuide.getGuides();
         mInflater = LayoutInflater.from(mContext);
+    }
+
+    public void setSelection(int currentSelected) {
+        mCurrentSelected = currentSelected;
     }
 
     @Override
@@ -68,10 +74,13 @@ public class TrophyGuideAdapter extends BaseAdapter {
         if (position == 0) {
             holder.title.setText("Roadmap");
             holder.trophyIcon.setImageDrawable(null);
+            holder.status.setVisibility(View.GONE);
         } else {
             Guide guide = guides.get(position-1);
             Picasso.with(mContext).load(guide.url).into(holder.trophyIcon);
+            int c = Color.parseColor("#EF5350"); // red
             holder.title.setText(guide.title);
+
         }
 
 
@@ -82,6 +91,7 @@ public class TrophyGuideAdapter extends BaseAdapter {
 
         @InjectView(R.id.trophy_icon) CircleImageView trophyIcon;
         @InjectView(R.id.trophy_title) TextView title;
+        @InjectView(R.id.status) TextView status;
 
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
