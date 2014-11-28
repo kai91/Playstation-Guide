@@ -167,8 +167,15 @@ public class GuideActivity extends BaseActivity {
         } else if (id == R.id.action_exit_guide) {
             finish();
             return true;
+        } else if (id == R.id.action_save_trophy_guide) {
+            persistTrophyGuide();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void persistTrophyGuide() {
+
     }
 }

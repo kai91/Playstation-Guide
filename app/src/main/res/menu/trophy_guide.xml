@@ -3,6 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="robustgametools.guide.GuideActivity" >
 
+    <item android:id="@+id/action_save_trophy_guide"
+        android:title="@string/action_save_trophy_guide"
+        android:orderInCategory="100"
+        app:showAsAction="always" />
     <item android:id="@+id/action_update_trophy_info"
         android:title="@string/action_update_trophy_info"
         android:orderInCategory="100"

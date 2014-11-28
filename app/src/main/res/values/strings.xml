@@ -23,5 +23,6 @@
     <string name="action_update_guide">Update guide list</string>
     <string name="action_exit_guide">Exit guide</string>
     <string name="action_update_trophy_info">Update trophy info</string>
+    <string name="action_save_trophy_guide">Save</string>
 
 </resources>
