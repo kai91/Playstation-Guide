@@ -2,6 +2,7 @@ package robustgametools.playstation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -34,6 +36,7 @@ public class HomeActivity extends BaseActivity
 
     private ActionBarDrawerToggle mDrawerToggle;
     private int mCurrentlySelected = 0;
+    private boolean mExit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,7 +145,18 @@ public class HomeActivity extends BaseActivity
         if (mDrawer.isDrawerOpen(Gravity.START)) {
             mDrawer.closeDrawers();
         } else {
-            super.onBackPressed();
+            if (mExit) {
+                super.onBackPressed();
+            } else {
+                mExit = true;
+                Toast.makeText(this, "Press Back again to exit", Toast.LENGTH_SHORT).show();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mExit = false;
+                    }
+                }, 2000);
+            }
         }
     }
 
