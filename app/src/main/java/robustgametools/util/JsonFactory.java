@@ -152,8 +152,14 @@ public class JsonFactory {
             boolean isHidden = trophyJson.get("trophyHidden").getAsBoolean();
             trophy.setHidden(isHidden);
 
-            JsonObject userJson = trophyJson.get("comparedUser").getAsJsonObject();
-            boolean isEarned = userJson.get("earned").getAsBoolean();
+            boolean isEarned;
+            if (trophyJson.get("comparedUser") == null) {
+                isEarned = false;
+            } else {
+                JsonObject userJson = trophyJson.get("comparedUser").getAsJsonObject();
+                isEarned = userJson.get("earned").getAsBoolean();
+            }
+
             trophy.setIsEarned(isEarned);
 
             if (isHidden) continue;
