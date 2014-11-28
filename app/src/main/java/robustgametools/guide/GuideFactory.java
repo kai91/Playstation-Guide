@@ -5,10 +5,14 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -76,17 +80,19 @@ public class GuideFactory {
     }
 
     private void formatImage(String rawGuide) {
-        int index = rawGuide.indexOf(mImageRegex);
-        if (index == -1) {
+        int start = rawGuide.indexOf(mImageRegex);
+        if (start == -1) {
             // no image in guide, proceed to extract text
             formatText(rawGuide);
         } else {
-            int start = index;
             formatText(rawGuide.substring(0, start));
             String guide = rawGuide.replace(mImageRegex, "");
             int end = guide.indexOf(mImageRegex);
             guide = guide.replace(mImageRegex, "");
             String url = guide.substring(start, end);
+            ImageView imageView = new ImageView(mContext);
+            Picasso.with(mContext).load(url).into(imageView);
+            views.add(imageView);
             formatImage(guide.substring(end, guide.length()));
         }
     }
@@ -103,6 +109,7 @@ public class GuideFactory {
         rawString = formatSilver(builder, rawString);
         rawString = formatGold(builder, rawString);
         rawString = formatPlatinum(builder, rawString);
+        formatButton(builder, rawString);
         TextView text = new TextView(mContext);
         text.setText(builder);
         views.add(text);
@@ -183,6 +190,23 @@ public class GuideFactory {
             spannable.setSpan(new StyleSpan(Typeface.BOLD), start, end, 0);
             spannable.setSpan(new ForegroundColorSpan(mPlatinum), start, end, 0);
             start = string.indexOf(mPlatinumRegex);
+        }
+        return string;
+    }
+
+    private String formatButton(SpannableStringBuilder spannable,
+                                  String string) {
+        int start = string.indexOf(mSymbolRegex);
+        Typeface font = Typeface.createFromAsset(mContext.getAssets(), "playstation.TTF");
+        while (start != -1) {
+            string = string.replaceFirst(Pattern.quote(mSymbolRegex), "");
+            int end = string.indexOf(mSymbolRegex);
+            string = string.replaceFirst(Pattern.quote(mSymbolRegex), "");
+            String bold = string.substring(start, end);
+            spannable.replace(start, end + mSymbolRegex.length() * 2, bold);
+            spannable.setSpan(new PlaystationTypefaceSpan("", font), start, end, 0);
+            spannable.setSpan(new RelativeSizeSpan(1.4f), start, end, 0);
+            start = string.indexOf(mSymbolRegex);
         }
         return string;
     }
