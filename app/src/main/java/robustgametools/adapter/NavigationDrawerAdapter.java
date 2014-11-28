@@ -72,8 +72,8 @@ public class NavigationDrawerAdapter extends BaseAdapter {
     }
 
     public static class ViewHolder {
-
         @InjectView(R.id.menu) TextView text;
+
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
         }
