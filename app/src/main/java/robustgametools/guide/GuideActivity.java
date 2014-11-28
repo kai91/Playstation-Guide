@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import robustgametools.adapter.TrophyGuideAdapter;
 import robustgametools.model.BaseActivity;
 import robustgametools.model.TrophyGuide;
@@ -27,6 +28,7 @@ public class GuideActivity extends BaseActivity {
 
     @InjectView(R.id.drawer) DrawerLayout mDrawer;
     @InjectView(R.id.drawer_menu) ListView mDrawerMenu;
+    @InjectView(R.id.loading) SmoothProgressBar mLoading;
 
     private ActionBarDrawerToggle mDrawerToggle;
     private TrophyGuide mTrophyGuide;
@@ -105,13 +107,14 @@ public class GuideActivity extends BaseActivity {
             bundle.putString("guide", guide);
         }
 
-
-
         frag.setArguments(bundle);
-
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, frag)
                 .commit();
+    }
+
+    private void updateTrophyInfo() {
+        mLoading.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -159,9 +162,11 @@ public class GuideActivity extends BaseActivity {
         }
         int id = item.getItemId();
         if (id == R.id.action_update_trophy_info) {
+            updateTrophyInfo();
             return true;
         } else if (id == R.id.action_exit_guide) {
             finish();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

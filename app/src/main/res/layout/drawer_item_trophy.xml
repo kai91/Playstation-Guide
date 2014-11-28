@@ -12,7 +12,7 @@
         android:id="@+id/trophy_icon"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        app:border_width="2.5dp"
+        app:border_width="1dp"
         app:border_color="#ffffff" />
 
     <LinearLayout
