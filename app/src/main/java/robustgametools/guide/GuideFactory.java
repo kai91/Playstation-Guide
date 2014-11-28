@@ -7,6 +7,7 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,6 +17,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+
+import robustgametools.playstation_guide.R;
 
 /**
  * A GuideFormatter class to
@@ -71,11 +74,21 @@ public class GuideFactory {
 
     public void into(LinearLayout containerLayout) {
         for (int i = 0; i < views.size(); i++) {
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
-            views.get(i).setLayoutParams(params);
-            containerLayout.addView(views.get(i));
+            View view = views.get(i);
+            if (view instanceof ImageView) {
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                params.gravity = Gravity.CENTER;
+                view.setLayoutParams(params);
+                //((ImageView) view).setScaleType(ImageView.ScaleType.FIT_XY);
+            } else {
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                view.setLayoutParams(params);
+            }
+
+            containerLayout.addView(view);
         }
     }
 
@@ -86,14 +99,14 @@ public class GuideFactory {
             formatText(rawGuide);
         } else {
             formatText(rawGuide.substring(0, start));
-            String guide = rawGuide.replace(mImageRegex, "");
-            int end = guide.indexOf(mImageRegex);
-            guide = guide.replace(mImageRegex, "");
-            String url = guide.substring(start, end);
+            rawGuide = rawGuide.replaceFirst(Pattern.quote(mImageRegex), "");
+            int end = rawGuide.indexOf(mImageRegex);
+            rawGuide = rawGuide.replaceFirst(Pattern.quote(mImageRegex), "");
+            String url = rawGuide.substring(start, end);
             ImageView imageView = new ImageView(mContext);
-            Picasso.with(mContext).load(url).into(imageView);
+            Picasso.with(mContext).load(url).resizeDimen(R.dimen.guide_image,R.dimen.guide_image).centerInside().into(imageView);
             views.add(imageView);
-            formatImage(guide.substring(end, guide.length()));
+            formatImage(rawGuide.substring(end, rawGuide.length()));
         }
     }
 
