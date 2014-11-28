@@ -96,8 +96,8 @@ public class GameActivity extends BaseActivity {
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         Log.i("Get trophy info failed");
                         changeLoadingVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), "Update failed. Check your network and try again.",
-                                Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Failed to retrieve data." +
+                                        " Check your network and try again.", Toast.LENGTH_LONG).show();
                     }
                 });
     }
