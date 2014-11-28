@@ -31,6 +31,7 @@ public class TrophyGuideAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
     private int mCurrentSelected = 0;
+    private final int mColorRed = Color.parseColor("#EF5350"); // red
 
     public TrophyGuideAdapter(Context context, TrophyGuide trophyGuide) {
         mContext = context.getApplicationContext();
@@ -71,6 +72,12 @@ public class TrophyGuideAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
+        if (position == mCurrentSelected) {
+            holder.title.setTextColor(mColorRed);
+        } else {
+            holder.title.setTextColor(Color.BLACK);
+        }
+
         if (position == 0) {
             holder.title.setText("Roadmap");
             holder.trophyIcon.setImageDrawable(null);
@@ -78,7 +85,6 @@ public class TrophyGuideAdapter extends BaseAdapter {
         } else {
             Guide guide = guides.get(position-1);
             Picasso.with(mContext).load(guide.url).into(holder.trophyIcon);
-            int c = Color.parseColor("#EF5350"); // red
             holder.title.setText(guide.title);
 
         }
