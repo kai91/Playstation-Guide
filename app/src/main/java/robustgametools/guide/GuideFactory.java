@@ -38,10 +38,7 @@ public class GuideFactory {
     private static final int mGold = Color.parseColor("#E2B227");
     private static final int mPlatinum = Color.parseColor("#a5b6ec");
 
-    private GuideFactory() {
-    }
-
-    ;
+    private GuideFactory() {}
 
     public static GuideFactory getInstance(Context context) {
         if (mFormatter == null) {
@@ -71,7 +68,7 @@ public class GuideFactory {
     public void into(LinearLayout containerLayout) {
         for (int i = 0; i < views.size(); i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.MATCH_PARENT);
             views.get(i).setLayoutParams(params);
             containerLayout.addView(views.get(i));

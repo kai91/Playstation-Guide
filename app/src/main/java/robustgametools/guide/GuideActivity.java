@@ -67,13 +67,13 @@ public class GuideActivity extends BaseActivity {
                 R.string.app_name
         );
         mDrawer.setDrawerListener(mDrawerToggle);
-        TrophyGuideAdapter adapter = new TrophyGuideAdapter(this, mTrophyGuide);
+        final TrophyGuideAdapter adapter = new TrophyGuideAdapter(this, mTrophyGuide);
         mDrawerMenu.setAdapter(adapter);
         mDrawerMenu.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mDrawerMenu.setItemChecked(position, true);
-                //adapter.selectItem(position);
+                adapter.setSelection(position);
                 onNavigationItemSelected(position);
                 mCurrentPosition = position;
                 mDrawer.closeDrawers();
@@ -90,15 +90,19 @@ public class GuideActivity extends BaseActivity {
 
         String guide;
 
-        if (position == 0) {
-            guide = mTrophyGuide.getRoadmap();
-        } else {
-            guide = mTrophyGuide.getGuides().get(position-1).guide;
-        }
-
         Fragment frag = new GuideFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("rawGuide",guide);
+
+        if (position == 0) {
+            guide = mTrophyGuide.getRoadmap();
+            bundle.putString("rawGuide",guide);
+        } else {
+            guide = new Gson().toJson(mTrophyGuide.getGuides().get(position-1));
+            bundle.putString("guide", guide);
+        }
+
+
+
         frag.setArguments(bundle);
 
         getFragmentManager().beginTransaction()
