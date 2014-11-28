@@ -17,6 +17,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import robustgametools.model.Guide;
+import robustgametools.model.TrophyGuide;
+
 /**
  * A GuideFormatter class to
  * return the right view to be
@@ -226,6 +229,33 @@ public class GuideFactory {
             start = string.indexOf(mSymbolRegex);
         }
         return string;
+    }
+
+    public ArrayList<String> extractImageUrl(TrophyGuide trophyGuide) {
+        ArrayList<String> result = new ArrayList<String>();
+        result.addAll(extractImageFrom(trophyGuide.getRoadmap()));
+
+        ArrayList<Guide> guides = trophyGuide.getGuides();
+        for (int i = guides.size(); i >= 0; i--) {
+            result.addAll(extractImageFrom(guides.get(i).guide));
+        }
+
+        return result;
+    }
+
+    private ArrayList<String> extractImageFrom(String guide) {
+        ArrayList<String> links = new ArrayList<String>();
+
+        int start = guide.indexOf(mImageRegex);
+        while(start != -1) {
+            guide = guide.replaceFirst(Pattern.quote(mImageRegex), "");
+            int end = guide.indexOf(mImageRegex);
+            guide = guide.replaceFirst(Pattern.quote(mImageRegex), "");
+            String url = guide.substring(start, end);
+            links.add(url);
+        }
+
+        return links;
     }
 
 }
