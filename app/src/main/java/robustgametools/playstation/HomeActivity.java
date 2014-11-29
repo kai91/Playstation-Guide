@@ -160,16 +160,6 @@ public class HomeActivity extends BaseActivity
         }
     }
 
-   /* @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_BACK && mDrawer.isDrawerOpen(Gravity.START)) {
-            mDrawer.closeDrawers();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }*/
-
     private void onNavigationItemSelected(int position) {
 
         if (position == mCurrentlySelected) {
