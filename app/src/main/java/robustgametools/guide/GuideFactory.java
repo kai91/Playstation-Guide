@@ -128,7 +128,8 @@ public class GuideFactory {
             rawGuide = rawGuide.replaceFirst(Pattern.quote(mSpoilerRegex), "");
             int end = rawGuide.indexOf(mSpoilerRegex);
             rawGuide = rawGuide.replaceFirst(Pattern.quote(mSpoilerRegex), "");
-            String rawSpoiler = rawGuide.substring(start, end);
+            // add an extra line
+            String rawSpoiler = "\n" + rawGuide.substring(start, end);
             SpoilerTextView spoiler = new SpoilerTextView(mContext);
             spoiler.setSpoiler(placeHolderFormat(rawSpoiler));
             formatSpoiler(rawGuide.substring(end, rawGuide.length()));
