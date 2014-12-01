@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 import robustgametools.model.Guide;
 import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
+import robustgametools.util.SpoilerTextView;
 
 /**
  * A GuideFormatter class to
@@ -41,6 +42,7 @@ public class GuideFactory {
     private static final String mGoldRegex = "[G]";
     private static final String mSilverRegex = "[S]";
     private static final String mBronzeRegex = "[B]";
+    private static final String mSpoilerRegex = "[Q]";
 
     private static final int mBronze = Color.parseColor("#cd7f32");
     private static final int mSilver = Color.parseColor("#808080");
@@ -102,9 +104,9 @@ public class GuideFactory {
         int start = rawGuide.indexOf(mImageRegex);
         if (start == -1) {
             // no image in guide, proceed to extract text
-            formatText(rawGuide);
+            formatSpoiler(rawGuide);
         } else {
-            formatText(rawGuide.substring(0, start));
+            formatSpoiler(rawGuide.substring(0, start));
             rawGuide = rawGuide.replaceFirst(Pattern.quote(mImageRegex), "");
             int end = rawGuide.indexOf(mImageRegex);
             rawGuide = rawGuide.replaceFirst(Pattern.quote(mImageRegex), "");
@@ -115,6 +117,35 @@ public class GuideFactory {
             views.add(imageView);
             formatImage(rawGuide.substring(end, rawGuide.length()));
         }
+    }
+
+    private void formatSpoiler(String rawGuide) {
+        int start = rawGuide.indexOf(mSpoilerRegex);
+        if (start == -1) {
+            formatText(rawGuide);
+        } else {
+            formatText(rawGuide.substring(0, start));
+            rawGuide = rawGuide.replaceFirst(Pattern.quote(mSpoilerRegex), "");
+            int end = rawGuide.indexOf(mSpoilerRegex);
+            rawGuide = rawGuide.replaceFirst(Pattern.quote(mSpoilerRegex), "");
+            String rawSpoiler = rawGuide.substring(start, end);
+            SpoilerTextView spoiler = new SpoilerTextView(mContext);
+            spoiler.setSpoiler(placeHolderFormat(rawSpoiler));
+            formatSpoiler(rawGuide.substring(end, rawGuide.length()));
+        }
+
+    }
+
+    // This should be refactored after this, as this is redundant code, see formatText() below
+    private SpannableStringBuilder placeHolderFormat(String rawString) {
+        SpannableStringBuilder builder = new SpannableStringBuilder(rawString);
+        rawString = formatBold(builder, rawString, mTextBoldRegex);
+        rawString = formatBronze(builder, rawString);
+        rawString = formatSilver(builder, rawString);
+        rawString = formatGold(builder, rawString);
+        rawString = formatPlatinum(builder, rawString);
+        formatButton(builder, rawString);
+        return builder;
     }
 
     private void formatText(String rawString) {
