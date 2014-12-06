@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,8 @@ import robustgametools.util.Log;
 public class GuideListFragment extends Fragment {
 
     @InjectView(R.id.total) TextView mTotal;
+    @InjectView(R.id.content) LinearLayout mContent;
+    @InjectView(R.id.loading) ProgressBar mLoading;
 
     private GuideListListener mListener;
 
@@ -31,26 +35,23 @@ public class GuideListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_guide, container, false);
         ButterKnife.inject(this, view);
-
+        initGuide();
         return view;
     }
 
-    @OnClick(R.id.guide)
-    public void onGuideSelected() {
-        HttpClient.getGameGuide("https://api.myjson.com/bins/5aefj", new AsyncHttpResponseHandler() {
+    public void initGuide() {
+        HttpClient.getGuideList(0, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String response = new String(responseBody);
-                Log.i(response);
-                mListener.onGuideSelected(response);
+                Toast.makeText(getActivity(), new String (responseBody), Toast.LENGTH_LONG).show();
+                mContent.setVisibility(View.VISIBLE);
+                mLoading.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                if (getActivity() == null) {
-                    Toast.makeText(getActivity(), "Error downloading guide, check your network and" +
-                            "try again", Toast.LENGTH_LONG).show();
-                }
+                Toast.makeText(getActivity(), ":C", Toast.LENGTH_LONG).show();
+
             }
         });
     }

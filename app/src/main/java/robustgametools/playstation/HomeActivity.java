@@ -20,6 +20,7 @@ import butterknife.InjectView;
 import robustgametools.adapter.NavigationDrawerAdapter;
 import robustgametools.guide.GuideActivity;
 import robustgametools.guide.GuideListFragment;
+import robustgametools.guide.GuideHomeFragment;
 import robustgametools.guide.MyGuideFragment;
 import robustgametools.model.BaseActivity;
 import robustgametools.model.Game;
@@ -29,7 +30,8 @@ import robustgametools.util.Storage;
 
 public class HomeActivity extends BaseActivity
         implements HomeFragment.HomeFragmentListener,
-        GuideListFragment.GuideListListener {
+        GuideListFragment.GuideListListener,
+        MyGuideFragment.OnFragmentInteractionListener {
 
     @InjectView(R.id.drawer) DrawerLayout mDrawer;
     @InjectView(R.id.drawer_menu) ListView mDrawerMenu;
@@ -173,7 +175,7 @@ public class HomeActivity extends BaseActivity
         }
         else if (position == 1) {
             getFragmentManager().beginTransaction()
-                    .replace(R.id.container, new MyGuideFragment())
+                    .replace(R.id.container, new GuideHomeFragment())
                     .commit();
 
         } else if (position == 2) {
@@ -186,5 +188,10 @@ public class HomeActivity extends BaseActivity
         Intent intent = new Intent(this, GuideActivity.class);
         intent.putExtra("guideInfo", guideContent);
         startActivity(intent);
+    }
+
+    @Override
+    public void onDownloadedGuideSelected(String name) {
+
     }
 }
