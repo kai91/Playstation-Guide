@@ -18,7 +18,7 @@ public class HttpClient {
     private static RequestHandle mTrophyRequest;
 
     // This is the domain name/ip address of the server
-    private static String serverUrl = "http://boiling-bastion-9577.herokuapp.com/";
+    private static String serverUrl = "http://104.236.62.4/";
 
 
     private static void init() {
@@ -85,6 +85,12 @@ public class HttpClient {
     public static void getGameGuide(String url, AsyncHttpResponseHandler handler) {
         init();
         mAsyncHttpClient.get(url, null, handler);
+    }
+
+    public static void getGuideList(int offset, AsyncHttpResponseHandler handler) {
+        init();
+        String url = serverUrl + "psn/getGuide/" + offset;
+        mAsyncHttpClient.get(url, handler);
     }
 
     public static void cancelTrophyRequest() {
