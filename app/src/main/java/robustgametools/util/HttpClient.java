@@ -82,14 +82,15 @@ public class HttpClient {
     /**
      * Downloads game guide
      */
-    public static void getGameGuide(String url, AsyncHttpResponseHandler handler) {
+    public static void getGameGuide(String name, AsyncHttpResponseHandler handler) {
         init();
+        String url = serverUrl + "psn/getGuide/" + name;
         mAsyncHttpClient.get(url, null, handler);
     }
 
     public static void getGuideList(int offset, AsyncHttpResponseHandler handler) {
         init();
-        String url = serverUrl + "psn/getGuide/" + offset;
+        String url = serverUrl + "psn/listGuide/" + offset;
         mAsyncHttpClient.get(url, handler);
     }
 
