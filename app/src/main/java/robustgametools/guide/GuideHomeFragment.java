@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 
@@ -25,6 +26,10 @@ public class GuideHomeFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+
+    // Keep a reference to MyGuideFragment to notify it to
+    // refresh downloaded guides list
+    private MyGuideFragment mMyGuideFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,10 +46,13 @@ public class GuideHomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_guide_home, container, false);
+        if (mMyGuideFragment == null) {
+            mMyGuideFragment = new MyGuideFragment();
+        }
 
-        // Create the adapter that will return a fragment for each of the three
+        // Create the adapter that will return a fragment for each of the two
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager(), mMyGuideFragment);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) view.findViewById(R.id.pager);
@@ -53,6 +61,24 @@ public class GuideHomeFragment extends Fragment {
         // Bind the tabs to the ViewPager
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
         tabs.setViewPager(mViewPager);
+
+        // When user switched to MyGuideFragment, refresh the list in MyGuideFragment
+        // in case user downloaded new guide
+        tabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(
+                    int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 1) {
+                    mMyGuideFragment.refresh();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
 
         return view;
     }
@@ -87,8 +113,11 @@ public class GuideHomeFragment extends Fragment {
 
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        private MyGuideFragment fragment;
+
+        public SectionsPagerAdapter(FragmentManager fm, MyGuideFragment fragment) {
             super(fm);
+            this.fragment = fragment;
         }
 
         @Override
@@ -98,7 +127,7 @@ public class GuideHomeFragment extends Fragment {
                 return new GuideListFragment();
             }
             else {
-                return new MyGuideFragment();
+                return fragment;
             }
         }
 
