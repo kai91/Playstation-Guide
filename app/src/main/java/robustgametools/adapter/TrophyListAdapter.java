@@ -55,7 +55,7 @@ public class TrophyListAdapter extends BaseAdapter{
         ViewHolder holder;
 
         if (view == null) {
-            view = mInflater.inflate(R.layout.card_trophy_stat, viewGroup, false);
+            view = mInflater.inflate(R.layout.list_trophy_stat, viewGroup, false);
             holder = new ViewHolder(view);
             view.setTag(holder);
         } else {

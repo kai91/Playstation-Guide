@@ -2,16 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="1dp"
-    android:paddingBottom="1dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
     android:paddingLeft="5dp"
     android:orientation="horizontal">
 
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/trophy_icon"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         app:border_width="1dp"
         app:border_color="#ffffff" />
 
@@ -30,7 +30,7 @@
             android:singleLine="true"
             android:textColor="@android:color/black"
             android:ellipsize="end"
-            android:textSize="15sp"/>
+            android:textSize="13sp"/>
 
         <TextView
             android:id="@+id/status"

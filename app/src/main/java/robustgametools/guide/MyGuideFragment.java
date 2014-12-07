@@ -1,9 +1,8 @@
 package robustgametools.guide;
 
 import android.app.Activity;
-import android.net.Uri;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +23,7 @@ public class MyGuideFragment extends Fragment {
         return view;
     }
 
-    public void refresh() {
-        Toast.makeText(getActivity(), "refresh", Toast.LENGTH_LONG).show();
+    public void initDownloadedList() {
     }
 
     public void onButtonPressed(String name) {

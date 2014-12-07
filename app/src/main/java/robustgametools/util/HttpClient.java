@@ -85,6 +85,7 @@ public class HttpClient {
     public static void getGameGuide(String name, AsyncHttpResponseHandler handler) {
         init();
         String url = serverUrl + "psn/getGuide/" + name;
+        Log.i(url);
         mAsyncHttpClient.get(url, null, handler);
     }
 

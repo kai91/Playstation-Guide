@@ -56,7 +56,7 @@ public class GameListAdapter extends BaseAdapter {
         if (view != null) {
             holder = (ViewHolder) view.getTag();
         } else {
-            view = mInflater.inflate(R.layout.card_game_stat, parent, false);
+            view = mInflater.inflate(R.layout.list_game_stat, parent, false);
             holder = new ViewHolder(view);
             view.setTag(holder);
         }

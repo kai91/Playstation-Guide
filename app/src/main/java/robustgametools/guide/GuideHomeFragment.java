@@ -1,6 +1,5 @@
 package robustgametools.guide;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -9,26 +8,22 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 
 import java.util.Locale;
 
-import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
 
 public class GuideHomeFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
 
     // Keep a reference to MyGuideFragment to notify it to
-    // refresh downloaded guides list
+    // initDownloadedList downloaded guides list
     private MyGuideFragment mMyGuideFragment;
 
     @Override
@@ -62,7 +57,7 @@ public class GuideHomeFragment extends Fragment {
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
         tabs.setViewPager(mViewPager);
 
-        // When user switched to MyGuideFragment, refresh the list in MyGuideFragment
+        // When user switched to MyGuideFragment, initDownloadedList the list in MyGuideFragment
         // in case user downloaded new guide
         tabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -72,7 +67,7 @@ public class GuideHomeFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 if (position == 1) {
-                    mMyGuideFragment.refresh();
+                    mMyGuideFragment.initDownloadedList();
                 }
             }
 
@@ -81,34 +76,6 @@ public class GuideHomeFragment extends Fragment {
         });
 
         return view;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(TrophyGuide guide) {
-        if (mListener != null) {
-            mListener.showGameGuide(guide);
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        /*try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }*/
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        public void showGameGuide(TrophyGuide guide);
     }
 
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
