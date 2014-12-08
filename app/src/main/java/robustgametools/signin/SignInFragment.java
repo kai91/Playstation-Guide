@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -21,6 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import robustgametools.playstation_guide.R;
 import robustgametools.util.HttpClient;
 import robustgametools.util.JsonFactory;
@@ -32,7 +36,7 @@ public class SignInFragment extends Fragment {
     @InjectView(R.id.username) EditText mUsername;
 
     private onSignInListener mListener;
-    private ProgressDialog mProgressDialog;
+    private SweetAlertDialog mProgressDialog;
     private Storage mStorage;
     private JsonFactory jsonFactory = JsonFactory.getInstance();
 
@@ -64,8 +68,15 @@ public class SignInFragment extends Fragment {
                                   byte[] responseBody) {
 
                 String response = new String(responseBody);
-                persistUserData(response);
-                getGames(username);
+                JsonObject responseJson = new JsonParser().parse(response).getAsJsonObject();
+                if (responseJson.has("error")) {
+                    Toast.makeText(getActivity(), responseJson.get("message").getAsString(),
+                            Toast.LENGTH_LONG).show();
+                    mProgressDialog.dismissWithAnimation();
+                } else {
+                    persistUserData(response);
+                    getGames(username);
+                }
             }
 
             @Override
@@ -149,7 +160,7 @@ public class SignInFragment extends Fragment {
      */
     private void successfullySignedIn() {
         hideKeyboard();
-        mProgressDialog.dismiss();
+        mProgressDialog.dismissWithAnimation();
         mListener.onSignInSuccess();
     }
 
@@ -166,17 +177,32 @@ public class SignInFragment extends Fragment {
     }
 
     private void showLoadingDialog() {
-        if (mProgressDialog == null)
+
+        mProgressDialog = new SweetAlertDialog(
+                getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+        mProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        mProgressDialog.setTitleText("Signing in...");
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setCancelText("Cancel");
+        mProgressDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                HttpClient.cancelSignInRequest();
+                mProgressDialog.dismissWithAnimation();
+            }
+        });
+        mProgressDialog.show();
+        /*if (mProgressDialog == null)
             mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage("Logging in...");
         mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialogInterface) {
                 // Cancels signin in case user wants to cancel it
-                HttpClient.cancelSignInRequest();
+
             }
         });
-        mProgressDialog.show();
+        mProgressDialog.show();*/
     }
 
     private void hideLoadingDialog() {
