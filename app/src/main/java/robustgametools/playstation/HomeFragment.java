@@ -2,9 +2,7 @@ package robustgametools.playstation;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -88,13 +86,6 @@ public class HomeFragment extends Fragment {
                 Log.i("Updating: All games");
             }
         }*/
-
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(getActivity().getApplicationContext());
-        int index = preferences.getInt("index", 0);
-        int top = preferences.getInt("top", 0);
-        mGameList.setSelectionFromTop(index, top);
-
         return view;
     }
 
@@ -109,22 +100,6 @@ public class HomeFragment extends Fragment {
         if (mListener != null) {
             mListener.showGameDetail(game);
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle bundle) {
-        super.onSaveInstanceState(bundle);
-        int index = mGameList.getFirstVisiblePosition();
-        View v = mGameList.getChildAt(0);
-        int top = (v == null) ? 0 : v.getTop();
-        bundle.putInt("index", index);
-        bundle.putInt("top", top);
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(getActivity().getApplicationContext());
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt("index", index);
-        editor.putInt("top", top);
-        editor.apply();
     }
 
 
