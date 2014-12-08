@@ -3,6 +3,7 @@ package robustgametools.guide;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import robustgametools.adapter.TrophyGuideListAdapter;
 import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
@@ -38,6 +40,7 @@ public class GuideListFragment extends Fragment {
     private GuideListListener mListener;
     private ArrayList<TrophyGuide> mGuides;
     private TrophyGuideListAdapter mAdapter;
+    private SweetAlertDialog mLoadingDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,22 +76,41 @@ public class GuideListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String title = mGuides.get(position).getTitle();
+                showProgressDialog();
                 HttpClient.getGameGuide(title, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         String guideInfo = new String (responseBody);
                         Intent intent = new Intent(getActivity(), GuideActivity.class);
                         intent.putExtra("guideInfo", guideInfo);
+                        mLoadingDialog.dismissWithAnimation();
                         startActivity(intent);
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         Toast.makeText(getActivity(), "Download error", Toast.LENGTH_LONG).show();
+                        mLoadingDialog.dismissWithAnimation();
                     }
                 });
             }
         });
+    }
+
+    private void showProgressDialog() {
+        mLoadingDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+        mLoadingDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        mLoadingDialog.setTitleText("Loading...");
+        mLoadingDialog.setCancelable(false);
+        mLoadingDialog.setCancelText("Cancel");
+        mLoadingDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                HttpClient.cancelGuideRequest();
+                mLoadingDialog.dismissWithAnimation();
+            }
+        });
+        mLoadingDialog.show();
     }
 
     @Override

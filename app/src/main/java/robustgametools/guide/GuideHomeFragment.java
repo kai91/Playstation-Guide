@@ -13,8 +13,10 @@ import android.view.ViewGroup;
 
 import com.astuetz.PagerSlidingTabStrip;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
+import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
 
 public class GuideHomeFragment extends Fragment {
@@ -25,6 +27,8 @@ public class GuideHomeFragment extends Fragment {
     // Keep a reference to MyGuideFragment to notify it to
     // initDownloadedList downloaded guides list
     private MyGuideFragment mMyGuideFragment;
+
+    private ArrayList<TrophyGuide> mDownloadedGuide;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

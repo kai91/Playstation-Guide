@@ -16,6 +16,7 @@ public class HttpClient {
 
     private static RequestHandle mSignInRequest;
     private static RequestHandle mTrophyRequest;
+    private static RequestHandle mGuideRequest;
 
     // This is the domain name/ip address of the server
     private static String serverUrl = "http://104.236.62.4/";
@@ -86,7 +87,13 @@ public class HttpClient {
         init();
         String url = serverUrl + "psn/getGuide/" + name;
         Log.i(url);
-        mAsyncHttpClient.get(url, null, handler);
+        mGuideRequest = mAsyncHttpClient.get(url, null, handler);
+    }
+
+    public static void cancelGuideRequest() {
+        if (mGuideRequest != null) {
+            mGuideRequest.cancel(true);
+        }
     }
 
     public static void getGuideList(int offset, AsyncHttpResponseHandler handler) {
