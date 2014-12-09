@@ -40,6 +40,7 @@ public class HomeActivity extends BaseActivity
 
     private ActionBarDrawerToggle mDrawerToggle;
     private int mCurrentlySelected = 0;
+    private int mNavigationIndex = -1;
     private boolean mExit = false;
 
     @Override
@@ -78,7 +79,25 @@ public class HomeActivity extends BaseActivity
                 mToolbar,
                 R.string.app_name,
                 R.string.app_name
-        );
+        ) {
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                if (mNavigationIndex == 0) {
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.container, new HomeFragment())
+                            .commit();
+                }
+                else if (mNavigationIndex == 1) {
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.container, new GuideHomeFragment())
+                            .commit();
+
+                } else if (mNavigationIndex == 2) {
+                    signOut();
+                }
+                mNavigationIndex = -1;
+            }
+        };
         mDrawer.setDrawerListener(mDrawerToggle);
         final NavigationDrawerAdapter adapter =
                 new NavigationDrawerAdapter(this, mCurrentlySelected);
@@ -174,23 +193,8 @@ public class HomeActivity extends BaseActivity
     }
 
     private void onNavigationItemSelected(int position) {
-
-        if (position == mCurrentlySelected) {
-            return;
-        }
-
-        if (position == 0) {
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.container, new HomeFragment())
-                    .commit();
-        }
-        else if (position == 1) {
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.container, new GuideHomeFragment())
-                    .commit();
-
-        } else if (position == 2) {
-            signOut();
+        if (position != mCurrentlySelected) {
+            mNavigationIndex = position;
         }
     }
 
