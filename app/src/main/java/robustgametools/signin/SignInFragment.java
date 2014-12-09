@@ -175,7 +175,6 @@ public class SignInFragment extends Fragment {
     }
 
     private void showLoadingDialog() {
-
         mProgressDialog = new SweetAlertDialog(
                 getActivity(), SweetAlertDialog.PROGRESS_TYPE);
         mProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
@@ -190,17 +189,6 @@ public class SignInFragment extends Fragment {
             }
         });
         mProgressDialog.show();
-        /*if (mProgressDialog == null)
-            mProgressDialog = new ProgressDialog(getActivity());
-        mProgressDialog.setMessage("Logging in...");
-        mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialogInterface) {
-                // Cancels signin in case user wants to cancel it
-
-            }
-        });
-        mProgressDialog.show();*/
     }
 
     private void hideLoadingDialog() {
