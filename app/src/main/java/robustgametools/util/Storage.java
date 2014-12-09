@@ -5,6 +5,8 @@ import android.content.Context;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Storage is a util class used to write and read
@@ -16,9 +18,10 @@ public class Storage {
     private static Storage mStorage = new Storage();
     private static Context mContext = null;
 
-    private static String mActiveUser = "activeUser.json";
-    private static String mActiveGame = "activeGame.json";
-    private static String mJsonDir = "json/";
+    private static final String mActiveUser = "activeUser.json";
+    private static final String mActiveGame = "activeGame.json";
+    private static final String mJsonDir = "json/";
+    private static final String mGuideDir = "guide/";
 
     protected Storage() {
         // Exists only to defeat instantiation.
@@ -27,7 +30,6 @@ public class Storage {
     public static Storage getInstance(Context context) {
         if (mStorage != null) {
             mContext = context.getApplicationContext();
-
             return mStorage;
         } else throw new NullPointerException();
     }
@@ -97,6 +99,21 @@ public class Storage {
 
     public String readGameData() {
         return readFile("", mActiveGame);
+    }
+
+    public boolean persistGuideData(String title, String data) {
+        return createFile(mGuideDir, title, data);
+    }
+
+    public ArrayList<String> getGuideList() {
+        File root = mContext.getFilesDir();
+        File dir = new File(root, mGuideDir);
+        String[] guides = dir.list();
+        ArrayList<String> list = new ArrayList<>();
+        if (guides != null) {
+            list = new ArrayList<>(Arrays.asList(guides));
+        }
+        return list;
     }
 
     public void deleteUserData() {
