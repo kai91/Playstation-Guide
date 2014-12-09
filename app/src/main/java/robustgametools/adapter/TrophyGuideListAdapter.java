@@ -1,6 +1,7 @@
 package robustgametools.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,20 +18,26 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
 import robustgametools.util.HttpClient;
+import robustgametools.util.Storage;
 
 public class TrophyGuideListAdapter extends BaseAdapter {
 
     private ArrayList<TrophyGuide> mGuides;
+    private ArrayList<String> mDownloadedGuides;
     private Context mContext;
     private LayoutInflater mInflater;
+    private SweetAlertDialog mDownloadDialog;
 
-    public TrophyGuideListAdapter(Context context, ArrayList<TrophyGuide> guides) {
+    public TrophyGuideListAdapter(Context context, ArrayList<TrophyGuide> guides,
+                                  ArrayList<String> downloadedGuide) {
         mContext = context;
         mGuides = guides;
         mInflater = LayoutInflater.from(mContext);
+        mDownloadedGuides = downloadedGuide;
     }
 
     @Override
@@ -51,7 +58,7 @@ public class TrophyGuideListAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View view, ViewGroup viewGroup) {
 
-        ViewHolder holder;
+        final ViewHolder holder;
         if (view == null) {
             view = mInflater.inflate(R.layout.list_available_guide, viewGroup, false);
             holder = new ViewHolder(view);
@@ -62,14 +69,77 @@ public class TrophyGuideListAdapter extends BaseAdapter {
         }
 
         holder.guideTitle.setText(mGuides.get(position).getTitle());
+        if (mDownloadedGuides.contains(mGuides.get(position).getTitle())) {
+            holder.downloadIcon.setImageResource(R.drawable.ic_delete);
+            holder.downloadIcon.setTag(R.drawable.ic_delete);
+        } else {
+            holder.downloadIcon.setImageResource(R.drawable.ic_file_download);
+            holder.downloadIcon.setTag(R.drawable.ic_file_download);
+        }
+
         holder.downloadIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "Download clicked: " + position, Toast.LENGTH_LONG).show();
+                int tag = (int) holder.downloadIcon.getTag();
+                if (tag == R.drawable.ic_file_download) {
+                    downloadGuide(position);
+                } else {
+                    deleteGuide(mGuides.get(position).getTitle());
+                }
+
             }
         });
 
         return view;
+    }
+
+    private void downloadGuide(int position) {
+        downloadGuide(mGuides.get(position).getTitle());
+        mDownloadDialog = new SweetAlertDialog(mContext, SweetAlertDialog.PROGRESS_TYPE);
+        mDownloadDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        mDownloadDialog.setCancelText("Cancel").setTitleText("Downloading");
+        mDownloadDialog.show();
+        mDownloadDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                HttpClient.cancelGuideRequest();
+                mDownloadDialog.dismiss();
+            }
+        });
+    }
+
+    private void persistGameGuide(String title, String data) {
+        Storage storage = Storage.getInstance(mContext);
+        storage.persistGuideData(title, data);
+
+    }
+
+    private void deleteGuide(String title) {
+        new SweetAlertDialog(mContext, SweetAlertDialog.NORMAL_TYPE)
+                .setTitleText("Guide deleted").show();
+        mDownloadedGuides.remove(title);
+        notifyDataSetChanged();
+    }
+
+    private void downloadGuide(final String title) {
+        HttpClient.getGameGuide(title, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                persistGameGuide(title, new String(responseBody));
+                mDownloadDialog.dismiss();
+                new SweetAlertDialog(mContext, SweetAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("Download complete").show();
+                mDownloadedGuides.add(title);
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Toast.makeText(mContext, "Error downloading guide. Check your network" +
+                        "and try again.", Toast.LENGTH_LONG).show();
+                mDownloadDialog.dismiss();
+            }
+        });
     }
 
     static class ViewHolder {

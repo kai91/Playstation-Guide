@@ -30,6 +30,7 @@ import robustgametools.adapter.TrophyGuideListAdapter;
 import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
 import robustgametools.util.HttpClient;
+import robustgametools.util.Storage;
 
 public class GuideListFragment extends Fragment {
 
@@ -41,12 +42,15 @@ public class GuideListFragment extends Fragment {
     private ArrayList<TrophyGuide> mGuides;
     private TrophyGuideListAdapter mAdapter;
     private SweetAlertDialog mLoadingDialog;
+    private ArrayList<String> mDownloadedTitle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_guide, container, false);
         ButterKnife.inject(this, view);
+        Storage storage = Storage.getInstance(getActivity());
+        mDownloadedTitle = storage.getGuideList();
         initGuide();
         return view;
     }
@@ -63,8 +67,10 @@ public class GuideListFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(getActivity(), ":C", Toast.LENGTH_LONG).show();
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody,
+                                  Throwable error) {
+                Toast.makeText(getActivity(), "Error downloading guide. " +
+                        "Check your network and try again.", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -74,7 +80,7 @@ public class GuideListFragment extends Fragment {
     }
 
     private void showResult() {
-        mAdapter = new TrophyGuideListAdapter(getActivity(), mGuides);
+        mAdapter = new TrophyGuideListAdapter(getActivity(), mGuides, mDownloadedTitle);
         mGuideList.setAdapter(mAdapter);
         mGuideList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
