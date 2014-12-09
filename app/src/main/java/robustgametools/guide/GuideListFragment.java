@@ -69,6 +69,10 @@ public class GuideListFragment extends Fragment {
         });
     }
 
+    public void initList() {
+
+    }
+
     private void showResult() {
         mAdapter = new TrophyGuideListAdapter(getActivity(), mGuides);
         mGuideList.setAdapter(mAdapter);

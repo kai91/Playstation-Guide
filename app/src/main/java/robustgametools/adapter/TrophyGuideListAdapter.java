@@ -7,6 +7,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import org.apache.http.Header;
 
 import java.util.ArrayList;
 
@@ -14,6 +19,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
+import robustgametools.util.HttpClient;
 
 public class TrophyGuideListAdapter extends BaseAdapter {
 
@@ -43,7 +49,7 @@ public class TrophyGuideListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup viewGroup) {
+    public View getView(final int position, View view, ViewGroup viewGroup) {
 
         ViewHolder holder;
         if (view == null) {
@@ -56,6 +62,12 @@ public class TrophyGuideListAdapter extends BaseAdapter {
         }
 
         holder.guideTitle.setText(mGuides.get(position).getTitle());
+        holder.downloadIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "Download clicked: " + position, Toast.LENGTH_LONG).show();
+            }
+        });
 
         return view;
     }

@@ -27,6 +27,7 @@ public class GuideHomeFragment extends Fragment {
     // Keep a reference to MyGuideFragment to notify it to
     // initDownloadedList downloaded guides list
     private MyGuideFragment mMyGuideFragment;
+    private GuideListFragment mGuideListFragment;
 
     private ArrayList<TrophyGuide> mDownloadedGuide;
 
@@ -47,11 +48,13 @@ public class GuideHomeFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_guide_home, container, false);
         if (mMyGuideFragment == null) {
             mMyGuideFragment = new MyGuideFragment();
+            mGuideListFragment = new GuideListFragment();
         }
 
         // Create the adapter that will return a fragment for each of the two
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager(), mMyGuideFragment);
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager(),
+                mMyGuideFragment, mGuideListFragment);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) view.findViewById(R.id.pager);
@@ -72,6 +75,8 @@ public class GuideHomeFragment extends Fragment {
             public void onPageSelected(int position) {
                 if (position == 1) {
                     mMyGuideFragment.initDownloadedList();
+                } else if (position == 0) {
+                    mGuideListFragment.initList();
                 }
             }
 
@@ -84,21 +89,24 @@ public class GuideHomeFragment extends Fragment {
 
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
-        private MyGuideFragment fragment;
+        private MyGuideFragment myGuideFragment;
+        private GuideListFragment guideListFragment;
 
-        public SectionsPagerAdapter(FragmentManager fm, MyGuideFragment fragment) {
+        public SectionsPagerAdapter(FragmentManager fm,
+                                    MyGuideFragment fragment, GuideListFragment list) {
             super(fm);
-            this.fragment = fragment;
+            myGuideFragment = fragment;
+            guideListFragment = list;
         }
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
+            // getItem is called to instantiate the myGuideFragment for the given page.
             if (position == 0) {
-                return new GuideListFragment();
+                return guideListFragment;
             }
             else {
-                return fragment;
+                return myGuideFragment;
             }
         }
 
