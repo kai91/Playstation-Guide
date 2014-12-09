@@ -1,8 +1,10 @@
 package robustgametools.playstation;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
@@ -61,6 +63,9 @@ public class HomeActivity extends BaseActivity
                     .commit();
         }
 
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        mCurrentlySelected = preferences.getInt("navigationIndex", 0);
         initDrawer();
     }
 
@@ -75,7 +80,8 @@ public class HomeActivity extends BaseActivity
                 R.string.app_name
         );
         mDrawer.setDrawerListener(mDrawerToggle);
-        final NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(this);
+        final NavigationDrawerAdapter adapter =
+                new NavigationDrawerAdapter(this, mCurrentlySelected);
         mDrawerMenu.setAdapter(adapter);
         mDrawerMenu.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
@@ -113,6 +119,11 @@ public class HomeActivity extends BaseActivity
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove("navigationIndex");
+        editor.apply();
     }
 
     @Override
@@ -185,6 +196,11 @@ public class HomeActivity extends BaseActivity
 
     @Override
     public void onGuideSelected(String guideContent) {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("navigationIndex", mCurrentlySelected);
+        editor.apply();
         Intent intent = new Intent(this, GuideActivity.class);
         intent.putExtra("guideInfo", guideContent);
         startActivity(intent);

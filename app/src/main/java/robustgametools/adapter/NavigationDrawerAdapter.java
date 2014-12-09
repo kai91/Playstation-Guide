@@ -20,10 +20,11 @@ public class NavigationDrawerAdapter extends BaseAdapter {
 
     private String[] mChoices = {"Home", "Guides", "Sign out"};
     private LayoutInflater mInflater;
-    private int mCurrentlySelected = 0;
+    private int mCurrentlySelected;
 
-    public NavigationDrawerAdapter(Context context) {
+    public NavigationDrawerAdapter(Context context, int position) {
         mInflater = LayoutInflater.from(context);
+        mCurrentlySelected = position;
     }
 
     @Override
