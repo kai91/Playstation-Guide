@@ -13,6 +13,7 @@ public class HttpClient {
 
     private static AsyncHttpClient mAsyncHttpClient = null;
     private static ArrayList<RequestHandle> mRequestHandles = new ArrayList<RequestHandle>();
+    private static ArrayList<RequestHandle> mImageRequests = new ArrayList<>();
 
     private static RequestHandle mSignInRequest;
     private static RequestHandle mTrophyRequest;
@@ -106,6 +107,20 @@ public class HttpClient {
         if (mTrophyRequest != null) {
             mTrophyRequest.cancel(true);
             mTrophyRequest = null;
+        }
+    }
+
+    public static void getImage(String url, AsyncHttpResponseHandler handler) {
+        init();
+        mImageRequests.add(mAsyncHttpClient.get(url, handler));
+    }
+
+    public static void cancelImageRequests() {
+        if (!mImageRequests.isEmpty()) {
+            int size = mImageRequests.size();
+            for (int j = 0; j < size; j++ ) {
+                mImageRequests.get(j).cancel(true);
+            }
         }
     }
 
