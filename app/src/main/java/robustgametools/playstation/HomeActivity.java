@@ -212,6 +212,8 @@ public class HomeActivity extends BaseActivity
 
     @Override
     public void onDownloadedGuideSelected(String name) {
-
+        Storage storage = Storage.getInstance(this);
+        String guideInfo = storage.readGuide(name);
+        onGuideSelected(guideInfo);
     }
 }
