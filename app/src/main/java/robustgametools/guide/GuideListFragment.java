@@ -49,8 +49,8 @@ public class GuideListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_guide, container, false);
         ButterKnife.inject(this, view);
-        Storage storage = Storage.getInstance(getActivity());
-        mDownloadedTitle = storage.getGuideList();
+        mDownloadedTitle = new ArrayList<>();
+        refreshDownloadedList();
         initGuide();
         return view;
     }
@@ -75,8 +75,14 @@ public class GuideListFragment extends Fragment {
         });
     }
 
-    public void initList() {
-
+    public void refreshDownloadedList() {
+        Storage storage = Storage.getInstance(getActivity());
+        ArrayList<String> newList = storage.getGuideList();
+        mDownloadedTitle.clear();
+        mDownloadedTitle.addAll(newList);
+        if (mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     private void showResult() {

@@ -25,7 +25,7 @@ public class GuideHomeFragment extends Fragment {
     private ViewPager mViewPager;
 
     // Keep a reference to MyGuideFragment to notify it to
-    // initDownloadedList downloaded guides list
+    // refreshDownloadedList downloaded guides list
     private MyGuideFragment mMyGuideFragment;
     private GuideListFragment mGuideListFragment;
 
@@ -64,7 +64,7 @@ public class GuideHomeFragment extends Fragment {
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
         tabs.setViewPager(mViewPager);
 
-        // When user switched to MyGuideFragment, initDownloadedList the list in MyGuideFragment
+        // When user switched to MyGuideFragment, refreshDownloadedList the list in MyGuideFragment
         // in case user downloaded new guide
         tabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -74,9 +74,9 @@ public class GuideHomeFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 if (position == 1) {
-                    mMyGuideFragment.initDownloadedList();
+                    mMyGuideFragment.refreshDownloadedList();
                 } else if (position == 0) {
-                    mGuideListFragment.initList();
+                    mGuideListFragment.refreshDownloadedList();
                 }
             }
 

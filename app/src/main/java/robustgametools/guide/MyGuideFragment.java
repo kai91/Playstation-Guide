@@ -6,23 +6,50 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
+import robustgametools.adapter.DownloadedGuideListAdapter;
 import robustgametools.playstation_guide.R;
+import robustgametools.util.Storage;
 
 public class MyGuideFragment extends Fragment {
 
+    @InjectView(R.id.downloaded_guides) ListView mDownloadedList;
+    @InjectView(R.id.empty) TextView mEmptyMessage;
+
     private OnFragmentInteractionListener mListener;
+    private ArrayList<String> mDownloadedTitle;
+    private DownloadedGuideListAdapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_guide, container, false);
         ButterKnife.inject(this, view);
+        mDownloadedTitle = new ArrayList<>();
+        refreshDownloadedList();
+        showDownloadedGuides();
         return view;
     }
 
-    public void initDownloadedList() {
+    public void refreshDownloadedList() {
+        Storage storage = Storage.getInstance(getActivity());
+        ArrayList<String> newList = storage.getGuideList();
+        mDownloadedTitle.clear();
+        mDownloadedTitle.addAll(newList);
+    }
+
+    private void showDownloadedGuides() {
+        mAdapter = new DownloadedGuideListAdapter(getActivity(), mDownloadedTitle);
+        mDownloadedList.setAdapter(mAdapter);
+        if (!mDownloadedTitle.isEmpty()) {
+            mEmptyMessage.setVisibility(View.GONE);
+        }
     }
 
     public void onButtonPressed(String name) {
