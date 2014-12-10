@@ -105,6 +105,10 @@ public class Storage {
         return createFile(mGuideDir, title, data);
     }
 
+    public String readGuide(String name) {
+        return readFile(mGuideDir, name);
+    }
+
     public boolean deleteGuide(String name) {
         return deleteFile(mGuideDir, name);
     }
