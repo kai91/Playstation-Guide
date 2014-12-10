@@ -105,6 +105,10 @@ public class Storage {
         return createFile(mGuideDir, title, data);
     }
 
+    public boolean deleteGuide(String name) {
+        return deleteFile(mGuideDir, name);
+    }
+
     public ArrayList<String> getGuideList() {
         File root = mContext.getFilesDir();
         File dir = new File(root, mGuideDir);
