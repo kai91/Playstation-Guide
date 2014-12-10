@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import robustgametools.guide.GuideFactory;
+import robustgametools.model.Guide;
 import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
 import robustgametools.util.HttpClient;
@@ -125,7 +128,14 @@ public class TrophyGuideListAdapter extends BaseAdapter {
         HttpClient.getGameGuide(title, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                persistGameGuide(title, new String(responseBody));
+                String content = new String(responseBody);
+                persistGameGuide(title, content);
+                TrophyGuide guide = new Gson().fromJson(content, TrophyGuide.class);
+                GuideFactory factory = GuideFactory.getInstance(mContext);
+                ArrayList<String> imageUrls = factory.extractImageUrl(guide);
+                //should download pictures here
+                //HttpClient
+
                 mDownloadDialog.dismiss();
                 new SweetAlertDialog(mContext, SweetAlertDialog.SUCCESS_TYPE)
                         .setTitleText("Download complete").show();
@@ -140,6 +150,10 @@ public class TrophyGuideListAdapter extends BaseAdapter {
                 mDownloadDialog.dismiss();
             }
         });
+    }
+
+    private void downloadImage(String url) {
+
     }
 
     static class ViewHolder {
