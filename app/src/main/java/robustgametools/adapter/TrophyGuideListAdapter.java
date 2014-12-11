@@ -2,6 +2,7 @@ package robustgametools.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.MutableInt;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -137,22 +138,32 @@ public class TrophyGuideListAdapter extends BaseAdapter {
                 TrophyGuide guide = new Gson().fromJson(content, TrophyGuide.class);
                 GuideFactory factory = GuideFactory.getInstance(mContext);
                 final ArrayList<String> imageUrls = factory.extractImageUrl(guide);
-                new AsyncHttpClient().get(imageUrls.get(0), new BinaryHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] binaryData) {
-                        Log.i("YAY");
-                    }
+                final ArrayList<Integer> completed = new ArrayList<Integer>();
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] binaryData, Throwable error) {
-                        Log.i("code: " + statusCode + "header: " + new String(binaryData) );
-                    }
-                });
-                mDownloadDialog.dismiss();
-                new SweetAlertDialog(mContext, SweetAlertDialog.SUCCESS_TYPE)
-                        .setTitleText("Download complete").show();
-                mDownloadedGuides.add(title);
-                notifyDataSetChanged();
+                for (int i = 0; i < imageUrls.size(); i++) {
+                    final String url = imageUrls.get(i);
+                    HttpClient.getImage(url, new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            completed.add(1);
+                            Storage storage = Storage.getInstance(mContext);
+                            storage.persistGuideImage(url, title, responseBody);
+                            if (completed.size() == imageUrls.size()) {
+                                mDownloadDialog.dismiss();
+                                new SweetAlertDialog(mContext, SweetAlertDialog.SUCCESS_TYPE)
+                                        .setTitleText("Download complete").show();
+                                mDownloadedGuides.add(title);
+                                notifyDataSetChanged();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                        }
+                    });
+                }
+
 
             }
 
