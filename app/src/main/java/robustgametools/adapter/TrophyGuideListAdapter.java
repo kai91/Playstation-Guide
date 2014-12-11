@@ -159,7 +159,7 @@ public class TrophyGuideListAdapter extends BaseAdapter {
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
+                            //TODO error handling
                         }
                     });
                 }

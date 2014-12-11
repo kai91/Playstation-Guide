@@ -110,8 +110,7 @@ public class Storage {
     }
 
     public boolean persistGuideImage(String url, String fileName, byte[] data) {
-        String[] split = url.split("/");
-        // get file name
+        String[] split = url.split("/"); // get file name
         String title = split[split.length-1];
         return createFile(mGuideDir + File.separator + title, fileName, data);
     }
