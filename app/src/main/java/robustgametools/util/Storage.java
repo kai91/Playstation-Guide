@@ -64,11 +64,17 @@ public class Storage {
         return true;
     }
 
-    private boolean deleteFile(String path, String fileName) {
+    private boolean deleteDir(String path, String fileName) {
         File root = mContext.getFilesDir();
         File dir = new File(root, path);
         File file = new File(dir, fileName);
-        if (file.exists()) {
+        if (file.exists() && !file.isDirectory()) {
+            return file.delete();
+        } else if (file.isDirectory()) {
+            String[] list = file.list();
+            for (int i = list.length-1; i >= 0; i--) {
+                deleteDir(path + File.separator + fileName, list[i]);
+            }
             return file.delete();
         }
         return false;
@@ -120,7 +126,7 @@ public class Storage {
     }
 
     public boolean deleteGuide(String name) {
-        return deleteFile(mGuideDir, name);
+        return deleteDir(mGuideDir, name);
     }
 
     public ArrayList<String> getGuideList() {
@@ -135,8 +141,8 @@ public class Storage {
     }
 
     public void deleteUserData() {
-        deleteFile("", mActiveUser);
-        deleteFile("", mActiveGame);
+        deleteDir("", mActiveUser);
+        deleteDir("", mActiveGame);
     }
 
     public boolean userDataExists() {
