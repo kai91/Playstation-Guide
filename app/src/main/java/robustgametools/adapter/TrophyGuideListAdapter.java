@@ -11,7 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.BinaryHttpResponseHandler;
 
 import org.apache.http.Header;
 
@@ -21,10 +23,10 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import robustgametools.guide.GuideFactory;
-import robustgametools.model.Guide;
 import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
 import robustgametools.util.HttpClient;
+import robustgametools.util.Log;
 import robustgametools.util.Storage;
 
 public class TrophyGuideListAdapter extends BaseAdapter {
@@ -121,6 +123,8 @@ public class TrophyGuideListAdapter extends BaseAdapter {
         new SweetAlertDialog(mContext, SweetAlertDialog.NORMAL_TYPE)
                 .setTitleText("Guide deleted").show();
         mDownloadedGuides.remove(title);
+        Storage storage = Storage.getInstance(mContext);
+        storage.deleteGuide(title);
         notifyDataSetChanged();
     }
 
@@ -132,15 +136,24 @@ public class TrophyGuideListAdapter extends BaseAdapter {
                 persistGameGuide(title, content);
                 TrophyGuide guide = new Gson().fromJson(content, TrophyGuide.class);
                 GuideFactory factory = GuideFactory.getInstance(mContext);
-                ArrayList<String> imageUrls = factory.extractImageUrl(guide);
-                //should download pictures here
-                //HttpClient
+                final ArrayList<String> imageUrls = factory.extractImageUrl(guide);
+                new AsyncHttpClient().get(imageUrls.get(0), new BinaryHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] binaryData) {
+                        Log.i("YAY");
+                    }
 
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] binaryData, Throwable error) {
+                        Log.i("code: " + statusCode + "header: " + new String(binaryData) );
+                    }
+                });
                 mDownloadDialog.dismiss();
                 new SweetAlertDialog(mContext, SweetAlertDialog.SUCCESS_TYPE)
                         .setTitleText("Download complete").show();
                 mDownloadedGuides.add(title);
                 notifyDataSetChanged();
+
             }
 
             @Override
