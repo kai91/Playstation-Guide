@@ -99,14 +99,14 @@ public class GuideListFragment extends Fragment {
                         String guideInfo = new String (responseBody);
                         Intent intent = new Intent(getActivity(), GuideActivity.class);
                         intent.putExtra("guideInfo", guideInfo);
-                        mLoadingDialog.dismissWithAnimation();
+                        mLoadingDialog.dismiss();
                         startActivity(intent);
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         Toast.makeText(getActivity(), "Download error", Toast.LENGTH_LONG).show();
-                        mLoadingDialog.dismissWithAnimation();
+                        mLoadingDialog.dismiss();
                     }
                 });
             }
