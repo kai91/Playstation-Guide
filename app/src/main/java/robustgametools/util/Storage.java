@@ -109,9 +109,9 @@ public class Storage {
         return createFile(mGuideDir + File.separator + title, title, data);
     }
 
-    public boolean persistGuideImage(String url, String fileName, byte[] data) {
+    public boolean persistGuideImage(String url, String title, byte[] data) {
         String[] split = url.split("/"); // get file name
-        String title = split[split.length-1];
+        String fileName = split[split.length-1];
         return createFile(mGuideDir + File.separator + title, fileName, data);
     }
 

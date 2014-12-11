@@ -43,6 +43,9 @@ public class MyGuideFragment extends Fragment {
         ArrayList<String> newList = storage.getGuideList();
         mDownloadedTitle.clear();
         mDownloadedTitle.addAll(newList);
+        if (mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     private void showDownloadedGuides() {
