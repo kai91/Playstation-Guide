@@ -20,8 +20,8 @@ public class Storage {
 
     private static final String mActiveUser = "activeUser.json";
     private static final String mActiveGame = "activeGame.json";
-    private static final String mJsonDir = "json/";
-    private static final String mGuideDir = "guide/";
+    private static final String mJsonDir = "json";
+    private static final String mGuideDir = "guide";
 
     protected Storage() {
         // Exists only to defeat instantiation.
@@ -39,19 +39,23 @@ public class Storage {
         File newDir = new File(root, file);
         if (!newDir.exists()) {
             newDir.mkdirs();
+            Log.i("making dir");
         }
     }
 
     private boolean createFile(String path, String fileName, String data) {
+        return createFile(path, fileName, data.getBytes());
+    }
+
+    private boolean createFile(String path, String fileName, byte[] data) {
         try {
-            byte[] content = data.getBytes();
             createDir(path);
             File root = mContext.getFilesDir();
             File newDir = new File(root, path);
             File output = new File(newDir, fileName);
             output.createNewFile();
             FileOutputStream stream = new FileOutputStream(output);
-            stream.write(content);
+            stream.write(data);
             stream.flush();
             stream.close();
         } catch (Exception e) {
@@ -102,11 +106,11 @@ public class Storage {
     }
 
     public boolean persistGuideData(String title, String data) {
-        return createFile(mGuideDir, title, data);
+        return createFile(mGuideDir + File.separator + title, title, data);
     }
 
     public String readGuide(String name) {
-        return readFile(mGuideDir, name);
+        return readFile(mGuideDir + File.separator + name, name);
     }
 
     public boolean deleteGuide(String name) {
