@@ -46,6 +46,9 @@ public class MyGuideFragment extends Fragment {
         if (mAdapter != null) {
             mAdapter.notifyDataSetChanged();
         }
+        if (!mDownloadedTitle.isEmpty()) {
+            mEmptyMessage.setVisibility(View.GONE);
+        }
     }
 
     private void showDownloadedGuides() {
@@ -57,9 +60,6 @@ public class MyGuideFragment extends Fragment {
                 mListener.onDownloadedGuideSelected(mDownloadedTitle.get(position));
             }
         });
-        if (!mDownloadedTitle.isEmpty()) {
-            mEmptyMessage.setVisibility(View.GONE);
-        }
     }
 
     public void onButtonPressed(String name) {
