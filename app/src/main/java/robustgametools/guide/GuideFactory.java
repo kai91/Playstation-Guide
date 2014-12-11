@@ -280,8 +280,9 @@ public class GuideFactory {
         result.addAll(extractImageFrom(trophyGuide.getRoadmap()));
 
         ArrayList<Guide> guides = trophyGuide.getGuides();
-        for (int i = guides.size(); i >= 0; i--) {
+        for (int i = guides.size()-1; i >= 0; i--) {
             result.addAll(extractImageFrom(guides.get(i).guide));
+            result.add(guides.get(i).url);
         }
 
         return result;
@@ -297,6 +298,7 @@ public class GuideFactory {
             guide = guide.replaceFirst(Pattern.quote(mImageRegex), "");
             String url = guide.substring(start, end);
             links.add(url);
+            start = guide.indexOf(mImageRegex);
         }
 
         return links;
