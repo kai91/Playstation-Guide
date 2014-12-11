@@ -109,6 +109,13 @@ public class Storage {
         return createFile(mGuideDir + File.separator + title, title, data);
     }
 
+    public boolean persistGuideImage(String url, String fileName, byte[] data) {
+        String[] split = url.split("/");
+        // get file name
+        String title = split[split.length-1];
+        return createFile(mGuideDir + File.separator + title, fileName, data);
+    }
+
     public String readGuide(String name) {
         return readFile(mGuideDir + File.separator + name, name);
     }
