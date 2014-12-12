@@ -158,7 +158,7 @@ public class SignInFragment extends Fragment {
      */
     private void successfullySignedIn() {
         hideKeyboard();
-        mProgressDialog.dismissWithAnimation();
+        mProgressDialog.dismiss();
         mListener.onSignInSuccess();
     }
 
