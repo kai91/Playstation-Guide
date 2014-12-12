@@ -48,6 +48,8 @@ public class MyGuideFragment extends Fragment {
         }
         if (!mDownloadedTitle.isEmpty()) {
             mEmptyMessage.setVisibility(View.GONE);
+        } else {
+            mEmptyMessage.setVisibility(View.VISIBLE);
         }
     }
 
