@@ -84,7 +84,8 @@ public class TrophyGuideAdapter extends BaseAdapter {
             holder.status.setVisibility(View.GONE);
         } else {
             Guide guide = guides.get(position - 1);
-            Picasso.with(mContext).load(guide.url).into(holder.trophyIcon);
+            Picasso.with(mContext).load(guide.url).
+                    placeholder(R.drawable.placeholder_trophy).into(holder.trophyIcon);
             holder.title.setText(guide.title);
 
         }
