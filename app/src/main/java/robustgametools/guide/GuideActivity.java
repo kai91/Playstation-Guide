@@ -23,6 +23,7 @@ import robustgametools.adapter.TrophyGuideAdapter;
 import robustgametools.model.BaseActivity;
 import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
+import robustgametools.util.Log;
 
 public class GuideActivity extends BaseActivity {
 
@@ -47,6 +48,7 @@ public class GuideActivity extends BaseActivity {
             Bundle bundle = new Bundle();
             bundle.putString("rawGuide", mTrophyGuide.getRoadmap());
             bundle.putString("title", mTrophyGuide.getTitle());
+            bundle.putBoolean("isOffline", mIsOffline);
             frag.setArguments(bundle);
 
             getFragmentManager().beginTransaction()
@@ -109,6 +111,7 @@ public class GuideActivity extends BaseActivity {
             guide = new Gson().toJson(mTrophyGuide.getGuides().get(position-1));
             bundle.putString("guide", guide);
         }
+        bundle.putString("title", mTrophyGuide.getTitle());
         bundle.putBoolean("isOffline", mIsOffline);
 
         frag.setArguments(bundle);

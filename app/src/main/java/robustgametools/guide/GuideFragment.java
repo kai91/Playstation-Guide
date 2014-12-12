@@ -38,7 +38,6 @@ public class GuideFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFormatter = GuideFactory.getInstance(getActivity(), mTitle);
         Bundle args = getArguments();
         if (args.getString("rawGuide") != null) {
             mRawGuide = args.getString("rawGuide");
@@ -49,6 +48,7 @@ public class GuideFragment extends Fragment {
         }
         mIsOffline = args.getBoolean("isOffline");
         mTitle = args.getString("title");
+        mFormatter = GuideFactory.getInstance(getActivity(), mTitle);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class GuideFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_guide, container, false);
         ButterKnife.inject(this, view);
-        mFormatter.format(mRawGuide).isOffline(mIsOffline).into(mContainer);
+        mFormatter.isOffline(mIsOffline).format(mRawGuide).into(mContainer);
         if (mGuide != null) {
             displayTrophyInfo();
         }

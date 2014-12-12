@@ -1,6 +1,7 @@
 package robustgametools.util;
 
 import android.content.Context;
+import android.net.Uri;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -121,12 +122,14 @@ public class Storage {
         return createFile(mGuideDir + File.separator + title, fileName, data);
     }
 
-    public String convertUrlToOfflineUri(String title, String url) {
+    public Uri convertUrlToOfflineUri(String title, String url) {
         String[] split = url.split("/");
         String fileName = split[split.length-1];
         String path = mContext.getFilesDir().getAbsolutePath() + File.separator
                 + mGuideDir + File.separator + title + File.separator + fileName;
-        return  path;
+        Log.i(path);
+        Uri uri =Uri.fromFile(new File(path));
+        return  uri;
     }
 
     public String readGuide(String name) {

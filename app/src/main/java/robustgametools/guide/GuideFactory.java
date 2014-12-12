@@ -3,6 +3,7 @@ package robustgametools.guide;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
@@ -21,6 +22,7 @@ import java.util.regex.Pattern;
 import robustgametools.model.Guide;
 import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
+import robustgametools.util.Log;
 import robustgametools.util.SpoilerTextView;
 import robustgametools.util.Storage;
 
@@ -84,7 +86,7 @@ public class GuideFactory {
             if (mStorage == null) {
                 mStorage = Storage.getInstance(mContext);
             }
-            mIsOffline = false;
+            Log.i("Boolean: " +mIsOffline);
             formatImage(rawGuide);
         }
 
@@ -127,10 +129,13 @@ public class GuideFactory {
             String url = rawGuide.substring(start, end);
             ImageView imageView = new ImageView(mContext);
             if (mIsOffline) {
-                url = mStorage.convertUrlToOfflineUri(mTitle, url);
+                Uri uri = mStorage.convertUrlToOfflineUri(mTitle, url);
+                Picasso.with(mContext).load(uri).resizeDimen(R.dimen.guide_image,
+                        R.dimen.guide_image).centerInside().into(imageView);
+            } else {
+                Picasso.with(mContext).load(url).resizeDimen(R.dimen.guide_image,
+                        R.dimen.guide_image).centerInside().into(imageView);
             }
-            Picasso.with(mContext).load(url).resizeDimen(R.dimen.guide_image,
-                    R.dimen.guide_image).centerInside().into(imageView);
             views.add(imageView);
             formatImage(rawGuide.substring(end, rawGuide.length()));
         }
