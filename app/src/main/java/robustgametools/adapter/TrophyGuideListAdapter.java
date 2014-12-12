@@ -1,6 +1,7 @@
 package robustgametools.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.util.MutableInt;
 import android.view.LayoutInflater;
@@ -91,6 +92,8 @@ public class TrophyGuideListAdapter extends BaseAdapter {
                     downloadGuide(position);
                 } else {
                     deleteGuide(mGuides.get(position).getTitle());
+                    new SweetAlertDialog(mContext, SweetAlertDialog.NORMAL_TYPE)
+                            .setTitleText("Guide deleted").show();
                 }
 
             }
@@ -99,17 +102,26 @@ public class TrophyGuideListAdapter extends BaseAdapter {
         return view;
     }
 
-    private void downloadGuide(int position) {
+    private void downloadGuide(final int position) {
         downloadGuide(mGuides.get(position).getTitle());
         mDownloadDialog = new SweetAlertDialog(mContext, SweetAlertDialog.PROGRESS_TYPE);
         mDownloadDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         mDownloadDialog.setCancelText("Cancel").setTitleText("Downloading");
         mDownloadDialog.show();
+        mDownloadDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                HttpClient.cancelImageRequests();
+                deleteGuide(mGuides.get(position).getTitle());
+            }
+        });
         mDownloadDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
             @Override
             public void onClick(SweetAlertDialog sweetAlertDialog) {
                 HttpClient.cancelGuideRequest();
                 mDownloadDialog.dismiss();
+                HttpClient.cancelImageRequests();
+                deleteGuide(mGuides.get(position).getTitle());
             }
         });
     }
@@ -121,8 +133,6 @@ public class TrophyGuideListAdapter extends BaseAdapter {
     }
 
     private void deleteGuide(String title) {
-        new SweetAlertDialog(mContext, SweetAlertDialog.NORMAL_TYPE)
-                .setTitleText("Guide deleted").show();
         mDownloadedGuides.remove(title);
         Storage storage = Storage.getInstance(mContext);
         storage.deleteGuide(title);
@@ -172,7 +182,7 @@ public class TrophyGuideListAdapter extends BaseAdapter {
                 Toast.makeText(mContext, "Error downloading guide. Check your network" +
                         "and try again.", Toast.LENGTH_LONG).show();
                 mDownloadDialog.dismiss();
-                HttpClient.cancelImageRequests();
+
             }
         });
     }
