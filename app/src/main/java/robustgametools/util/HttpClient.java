@@ -122,6 +122,7 @@ public class HttpClient {
                 mImageRequests.get(j).cancel(true);
             }
         }
+        mImageRequests.clear();
     }
 
     /**
