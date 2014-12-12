@@ -27,6 +27,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import robustgametools.guide.GuideFactory;
 import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
+import robustgametools.util.GuideDownloader;
 import robustgametools.util.HttpClient;
 import robustgametools.util.Log;
 import robustgametools.util.Storage;
@@ -38,6 +39,7 @@ public class TrophyGuideListAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
     private SweetAlertDialog mDownloadDialog;
+    private GuideDownloader mDownloader;
 
     public TrophyGuideListAdapter(Context context, ArrayList<TrophyGuide> guides,
                                   ArrayList<String> downloadedGuide) {
@@ -45,6 +47,7 @@ public class TrophyGuideListAdapter extends BaseAdapter {
         mGuides = guides;
         mInflater = LayoutInflater.from(mContext);
         mDownloadedGuides = downloadedGuide;
+        mDownloader = GuideDownloader.getInstance(mContext);
     }
 
     @Override
@@ -111,16 +114,15 @@ public class TrophyGuideListAdapter extends BaseAdapter {
         mDownloadDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                HttpClient.cancelImageRequests();
+                mDownloader.cancelOngoingDownload();
                 deleteGuide(mGuides.get(position).getTitle());
             }
         });
         mDownloadDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
             @Override
             public void onClick(SweetAlertDialog sweetAlertDialog) {
-                HttpClient.cancelGuideRequest();
                 mDownloadDialog.dismiss();
-                HttpClient.cancelImageRequests();
+                mDownloader.cancelOngoingDownload();
                 deleteGuide(mGuides.get(position).getTitle());
             }
         });
@@ -140,41 +142,14 @@ public class TrophyGuideListAdapter extends BaseAdapter {
     }
 
     private void downloadGuide(final String title) {
-        HttpClient.getGameGuide(title, new AsyncHttpResponseHandler() {
+        mDownloader.downloadGuide(title, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String content = new String(responseBody);
-                persistGameGuide(title, content);
-                TrophyGuide guide = new Gson().fromJson(content, TrophyGuide.class);
-                GuideFactory factory = GuideFactory.getInstance(mContext);
-                final ArrayList<String> imageUrls = factory.extractImageUrl(guide);
-                final ArrayList<Integer> completed = new ArrayList<Integer>();
-
-                for (int i = 0; i < imageUrls.size(); i++) {
-                    final String url = imageUrls.get(i);
-                    HttpClient.getImage(url, new AsyncHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                            completed.add(1);
-                            Storage storage = Storage.getInstance(mContext);
-                            storage.persistGuideImage(url, title, responseBody);
-                            if (completed.size() == imageUrls.size()) {
-                                mDownloadDialog.dismiss();
-                                new SweetAlertDialog(mContext, SweetAlertDialog.SUCCESS_TYPE)
-                                        .setTitleText("Download complete").show();
-                                mDownloadedGuides.add(title);
-                                notifyDataSetChanged();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                            //TODO error handling
-                        }
-                    });
-                }
-
-
+                mDownloadDialog.dismiss();
+                new SweetAlertDialog(mContext, SweetAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("Download complete").show();
+                mDownloadedGuides.add(title);
+                notifyDataSetChanged();
             }
 
             @Override
@@ -182,13 +157,8 @@ public class TrophyGuideListAdapter extends BaseAdapter {
                 Toast.makeText(mContext, "Error downloading guide. Check your network" +
                         "and try again.", Toast.LENGTH_LONG).show();
                 mDownloadDialog.dismiss();
-
             }
         });
-    }
-
-    private void downloadImage(String url) {
-
     }
 
     static class ViewHolder {
