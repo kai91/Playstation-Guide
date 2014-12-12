@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import robustgametools.guide.GuideFactory;
+import robustgametools.model.Guide;
+import robustgametools.model.Trophy;
 import robustgametools.model.TrophyGuide;
 
 public class GuideDownloader {
@@ -36,7 +38,8 @@ public class GuideDownloader {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] guideBytes) {
                 String guideData = new String(guideBytes);
-                mStorage.persistGuideData(title, guideData);
+                String offlineGuide = convertToOffline(guideData);
+                mStorage.persistGuideData(title, offlineGuide);
                 TrophyGuide guide = new Gson().fromJson(guideData, TrophyGuide.class);
                 GuideFactory factory = GuideFactory.getInstance(mContext);
                 ArrayList<String> imageUrls = factory.extractImageUrl(guide);
@@ -73,6 +76,17 @@ public class GuideDownloader {
                 }
             });
         }
+    }
+
+    private String convertToOffline(String content) {
+        TrophyGuide guide = new  Gson().fromJson(content, TrophyGuide.class);
+        ArrayList<Guide> guides = guide.getGuides();
+        for (int i = guides.size()-1; i >= 0; i--) {
+            Guide temp = guides.get(i);
+            String uri = mStorage.convertUrlToOfflineUri(guide.getTitle(), temp.url);
+            temp.url = "file://" + uri;
+        }
+        return new Gson().toJson(guide);
     }
 
     public void cancelOngoingDownload() {
