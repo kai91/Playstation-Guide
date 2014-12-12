@@ -121,6 +121,14 @@ public class Storage {
         return createFile(mGuideDir + File.separator + title, fileName, data);
     }
 
+    public String convertUrlToOfflineUri(String title, String url) {
+        String[] split = url.split("/");
+        String fileName = split[split.length-1];
+        String path = mContext.getFilesDir().getAbsolutePath() + File.separator
+                + mGuideDir + File.separator + title + File.separator + fileName;
+        return  path;
+    }
+
     public String readGuide(String name) {
         return readFile(mGuideDir + File.separator + name, name);
     }
