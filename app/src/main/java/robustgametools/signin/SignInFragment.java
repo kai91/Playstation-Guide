@@ -70,7 +70,7 @@ public class SignInFragment extends Fragment {
                 if (responseJson.has("error")) {
                     Toast.makeText(getActivity(), responseJson.get("message").getAsString(),
                             Toast.LENGTH_LONG).show();
-                    mProgressDialog.dismissWithAnimation();
+                    mProgressDialog.dismiss();
                 } else {
                     persistUserData(response);
                     getGames(username);
@@ -185,7 +185,7 @@ public class SignInFragment extends Fragment {
             @Override
             public void onClick(SweetAlertDialog sweetAlertDialog) {
                 HttpClient.cancelSignInRequest();
-                mProgressDialog.dismissWithAnimation();
+                mProgressDialog.dismiss();
             }
         });
         mProgressDialog.show();
