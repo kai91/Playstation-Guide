@@ -71,8 +71,11 @@ public class GuideDownloader {
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    handler.onFailure(statusCode, headers, responseBody, error);
-                    deleteGuideFolder(title);
+                    completed.add(0);
+                    if (completed.size() == urls.size()) {
+                        handler.onFailure(statusCode, headers, responseBody, error);
+                        deleteGuideFolder(title);
+                    }
                 }
             });
         }
