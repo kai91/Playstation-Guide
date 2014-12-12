@@ -172,6 +172,7 @@ public class TrophyGuideListAdapter extends BaseAdapter {
                 Toast.makeText(mContext, "Error downloading guide. Check your network" +
                         "and try again.", Toast.LENGTH_LONG).show();
                 mDownloadDialog.dismiss();
+                HttpClient.cancelImageRequests();
             }
         });
     }
