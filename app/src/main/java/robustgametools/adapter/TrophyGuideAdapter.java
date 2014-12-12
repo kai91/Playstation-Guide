@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.romainpiel.shimmer.Shimmer;
+import com.romainpiel.shimmer.ShimmerTextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import robustgametools.model.Guide;
 import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
+import robustgametools.util.Log;
 
 /**
  * TrophyGuideAdapter to display
@@ -87,8 +90,10 @@ public class TrophyGuideAdapter extends BaseAdapter {
             Picasso.with(mContext).load(guide.url).
                     placeholder(R.drawable.placeholder_trophy).into(holder.trophyIcon);
             holder.title.setText(guide.title);
-
+            holder.status.setVisibility(View.VISIBLE);
         }
+
+        new Shimmer().start(holder.status);
 
 
         return view;
@@ -98,7 +103,7 @@ public class TrophyGuideAdapter extends BaseAdapter {
 
         @InjectView(R.id.trophy_icon) CircleImageView trophyIcon;
         @InjectView(R.id.trophy_title) TextView title;
-        @InjectView(R.id.status) TextView status;
+        @InjectView(R.id.status) ShimmerTextView status;
 
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);

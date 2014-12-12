@@ -19,29 +19,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center_vertical">
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="20dp"
+        android:paddingLeft="5dp">
 
         <TextView
             android:id="@+id/trophy_title"
-            android:paddingLeft="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
             android:singleLine="true"
             android:textColor="@android:color/black"
             android:ellipsize="end"
             android:textSize="13sp"/>
 
-        <TextView
+        <com.romainpiel.shimmer.ShimmerTextView
             android:id="@+id/status"
             android:layout_marginTop="2dp"
+            android:text="@string/unlocked_trophy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
-
+            android:textColor="#444"/>
     </LinearLayout>
-
-
-
-
 </LinearLayout>
