@@ -22,6 +22,7 @@ import robustgametools.model.Guide;
 import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
 import robustgametools.util.SpoilerTextView;
+import robustgametools.util.Storage;
 
 /**
  * A GuideFormatter class to
@@ -33,7 +34,9 @@ public class GuideFactory {
     private static GuideFactory mFormatter = null;
     private static Context mContext;
     private static ArrayList<View> views;
+    private static Storage mStorage;
     private static boolean mIsOffline;
+    private static String mTitle;
 
     private static final String mImageRegex = "[D]";
     private static final String mTextBoldRegex = "[T]";
@@ -64,11 +67,23 @@ public class GuideFactory {
         return mFormatter;
     }
 
+    public static GuideFactory getInstance(Context context, String title) {
+        mTitle = title;
+        return getInstance(context);
+    }
+
     public GuideFactory format(String rawGuide) {
         // checks for empty string with just spaces
         rawGuide = rawGuide.trim();
         if (rawGuide.length() != 0) {
-            views = new ArrayList<View>();
+            if (views == null) {
+                views = new ArrayList<>();
+            } else {
+                views.clear();
+            }
+            if (mStorage == null) {
+                mStorage = Storage.getInstance(mContext);
+            }
             mIsOffline = false;
             formatImage(rawGuide);
         }
@@ -76,8 +91,8 @@ public class GuideFactory {
         return this;
     }
 
-    public GuideFactory isOffline() {
-        mIsOffline = true;
+    public GuideFactory isOffline(boolean status) {
+        mIsOffline = status;
         return this;
     }
 
@@ -89,7 +104,6 @@ public class GuideFactory {
                         LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
                 params.gravity = Gravity.CENTER;
                 view.setLayoutParams(params);
-                //((ImageView) view).setScaleType(ImageView.ScaleType.FIT_XY);
                 } else {
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -112,6 +126,9 @@ public class GuideFactory {
             rawGuide = rawGuide.replaceFirst(Pattern.quote(mImageRegex), "");
             String url = rawGuide.substring(start, end);
             ImageView imageView = new ImageView(mContext);
+            if (mIsOffline) {
+                url = mStorage.convertUrlToOfflineUri(mTitle, url);
+            }
             Picasso.with(mContext).load(url).resizeDimen(R.dimen.guide_image,
                     R.dimen.guide_image).centerInside().into(imageView);
             views.add(imageView);

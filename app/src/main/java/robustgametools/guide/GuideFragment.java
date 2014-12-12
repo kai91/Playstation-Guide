@@ -24,8 +24,9 @@ import robustgametools.playstation_guide.R;
 public class GuideFragment extends Fragment {
 
     private GuideFactory mFormatter;
-    private String mRawGuide;
+    private String mRawGuide, mTitle;
     private Guide mGuide;
+    private boolean mIsOffline;
 
     @InjectView(R.id.trophy_detail) CardView mTrophyDetail;
     @InjectView(R.id.container) LinearLayout mContainer;
@@ -37,7 +38,7 @@ public class GuideFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFormatter = GuideFactory.getInstance(getActivity());
+        mFormatter = GuideFactory.getInstance(getActivity(), mTitle);
         Bundle args = getArguments();
         if (args.getString("rawGuide") != null) {
             mRawGuide = args.getString("rawGuide");
@@ -46,6 +47,20 @@ public class GuideFragment extends Fragment {
             mGuide = new Gson().fromJson(guide, Guide.class);
             mRawGuide = mGuide.guide;
         }
+        mIsOffline = args.getBoolean("isOffline");
+        mTitle = args.getString("title");
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_guide, container, false);
+        ButterKnife.inject(this, view);
+        mFormatter.format(mRawGuide).isOffline(mIsOffline).into(mContainer);
+        if (mGuide != null) {
+            displayTrophyInfo();
+        }
+        return view;
     }
 
     private void displayTrophyInfo() {
@@ -69,18 +84,6 @@ public class GuideFragment extends Fragment {
         }
         Picasso.with(getActivity()).load(drawable).into(mTrophyType);
         mTrophyDetail.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_guide, container, false);
-        ButterKnife.inject(this, view);
-        mFormatter.format(mRawGuide).into(mContainer);
-        if (mGuide != null) {
-            displayTrophyInfo();
-        }
-        return view;
     }
 
     @Override

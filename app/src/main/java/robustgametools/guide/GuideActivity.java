@@ -32,6 +32,7 @@ public class GuideActivity extends BaseActivity {
 
     private ActionBarDrawerToggle mDrawerToggle;
     private TrophyGuide mTrophyGuide;
+    private boolean mIsOffline;
     private int mCurrentPosition = 0;
     private boolean mExit = false;
 
@@ -45,6 +46,7 @@ public class GuideActivity extends BaseActivity {
             Fragment frag = new GuideFragment();
             Bundle bundle = new Bundle();
             bundle.putString("rawGuide", mTrophyGuide.getRoadmap());
+            bundle.putString("title", mTrophyGuide.getTitle());
             frag.setArguments(bundle);
 
             getFragmentManager().beginTransaction()
@@ -60,6 +62,7 @@ public class GuideActivity extends BaseActivity {
         Intent intent = getIntent();
         String json = intent.getStringExtra("guideInfo");
         mTrophyGuide = new Gson().fromJson(json, TrophyGuide.class);
+        mIsOffline = intent.getBooleanExtra("isOffline", false);
     }
 
     private void initDrawer() {
@@ -106,6 +109,7 @@ public class GuideActivity extends BaseActivity {
             guide = new Gson().toJson(mTrophyGuide.getGuides().get(position-1));
             bundle.putString("guide", guide);
         }
+        bundle.putBoolean("isOffline", mIsOffline);
 
         frag.setArguments(bundle);
         getFragmentManager().beginTransaction()

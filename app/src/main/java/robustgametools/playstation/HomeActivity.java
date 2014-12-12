@@ -198,22 +198,32 @@ public class HomeActivity extends BaseActivity
         }
     }
 
-    @Override
-    public void onGuideSelected(String guideContent) {
+    private void saveNavigationPos() {
         SharedPreferences preferences = PreferenceManager
                 .getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt("navigationIndex", mCurrentlySelected);
         editor.apply();
-        Intent intent = new Intent(this, GuideActivity.class);
-        intent.putExtra("guideInfo", guideContent);
-        startActivity(intent);
+    }
+
+    @Override
+    public void onGuideSelected(String guideContent) {
+        saveNavigationPos();
+        startGuideActivity(guideContent, false);
     }
 
     @Override
     public void onDownloadedGuideSelected(String name) {
         Storage storage = Storage.getInstance(this);
         String guideInfo = storage.readGuide(name);
-        onGuideSelected(guideInfo);
+        saveNavigationPos();
+        startGuideActivity(guideInfo, true);
+    }
+
+    private void startGuideActivity(String guideContent, boolean isOffline) {
+        Intent intent = new Intent(this, GuideActivity.class);
+        intent.putExtra("guideInfo", guideContent);
+        intent.putExtra("isOffline", isOffline);
+        startActivity(intent);
     }
 }
