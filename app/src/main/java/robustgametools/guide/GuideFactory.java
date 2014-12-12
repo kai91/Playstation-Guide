@@ -129,8 +129,8 @@ public class GuideFactory {
             String url = rawGuide.substring(start, end);
             ImageView imageView = new ImageView(mContext);
             if (mIsOffline) {
-                Uri uri = mStorage.convertUrlToOfflineUri(mTitle, url);
-                Picasso.with(mContext).load(uri).resizeDimen(R.dimen.guide_image,
+                url = mStorage.convertUrlToOfflineUri(mTitle, url);
+                Picasso.with(mContext).load("file://" + url).resizeDimen(R.dimen.guide_image,
                         R.dimen.guide_image).centerInside().into(imageView);
             } else {
                 Picasso.with(mContext).load(url).resizeDimen(R.dimen.guide_image,

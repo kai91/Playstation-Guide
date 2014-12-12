@@ -128,12 +128,6 @@ public class TrophyGuideListAdapter extends BaseAdapter {
         });
     }
 
-    private void persistGameGuide(String title, String data) {
-        Storage storage = Storage.getInstance(mContext);
-        storage.persistGuideData(title, data);
-
-    }
-
     private void deleteGuide(String title) {
         mDownloadedGuides.remove(title);
         Storage storage = Storage.getInstance(mContext);

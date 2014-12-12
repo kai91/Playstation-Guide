@@ -69,6 +69,7 @@ public class GuideDownloader {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     handler.onFailure(statusCode, headers, responseBody, error);
+                    deleteGuideFolder(title);
                 }
             });
         }
@@ -76,7 +77,12 @@ public class GuideDownloader {
 
     public void cancelOngoingDownload() {
         HttpClient.cancelGuideRequest();
-        HttpClient.cancelGuideRequest();
+        HttpClient.cancelImageRequests();
+    }
+
+    private void deleteGuideFolder(String title) {
+        Storage storage = Storage.getInstance(mContext);
+        storage.deleteGuide(title);
     }
 
 }

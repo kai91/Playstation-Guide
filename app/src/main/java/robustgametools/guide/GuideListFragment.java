@@ -123,7 +123,7 @@ public class GuideListFragment extends Fragment {
             @Override
             public void onClick(SweetAlertDialog sweetAlertDialog) {
                 HttpClient.cancelGuideRequest();
-                mLoadingDialog.dismissWithAnimation();
+                mLoadingDialog.dismiss();
             }
         });
         mLoadingDialog.show();

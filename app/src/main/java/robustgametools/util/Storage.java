@@ -40,7 +40,6 @@ public class Storage {
         File newDir = new File(root, file);
         if (!newDir.exists()) {
             newDir.mkdirs();
-            Log.i("making dir");
         }
     }
 
@@ -122,14 +121,12 @@ public class Storage {
         return createFile(mGuideDir + File.separator + title, fileName, data);
     }
 
-    public Uri convertUrlToOfflineUri(String title, String url) {
+    public String convertUrlToOfflineUri(String title, String url) {
         String[] split = url.split("/");
         String fileName = split[split.length-1];
         String path = mContext.getFilesDir().getAbsolutePath() + File.separator
                 + mGuideDir + File.separator + title + File.separator + fileName;
-        Log.i(path);
-        Uri uri =Uri.fromFile(new File(path));
-        return  uri;
+        return  path;
     }
 
     public String readGuide(String name) {
