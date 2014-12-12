@@ -173,6 +173,7 @@ public class GuideFactory {
         }
 
         SpannableStringBuilder builder = new SpannableStringBuilder(rawString);
+        builder.setSpan(new ForegroundColorSpan(Color.DKGRAY), 0, rawString.length(), 0);
         rawString = formatBold(builder, rawString, mTextBoldRegex);
         rawString = formatBronze(builder, rawString);
         rawString = formatSilver(builder, rawString);
