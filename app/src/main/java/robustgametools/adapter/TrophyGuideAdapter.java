@@ -2,6 +2,7 @@ package robustgametools.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,9 @@ import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import robustgametools.model.Guide;
 import robustgametools.model.TrophyGuide;
+import robustgametools.model.TrophyLevel;
 import robustgametools.playstation_guide.R;
-import robustgametools.util.Log;
+import robustgametools.util.TrophyColor;
 
 /**
  * TrophyGuideAdapter to display
@@ -76,9 +78,9 @@ public class TrophyGuideAdapter extends BaseAdapter {
         }
 
         if (position == mCurrentSelected) {
-            holder.title.setTextColor(mColorRed);
+            holder.title.setTypeface(null, Typeface.BOLD);
         } else {
-            holder.title.setTextColor(Color.BLACK);
+            holder.title.setTypeface(null, Typeface.NORMAL);
         }
 
         if (position == 0) {
@@ -91,11 +93,23 @@ public class TrophyGuideAdapter extends BaseAdapter {
                     placeholder(R.drawable.placeholder_trophy).into(holder.trophyIcon);
             holder.title.setText(guide.title);
             holder.status.setVisibility(View.VISIBLE);
+            TrophyLevel level = TrophyLevel.valueOf(guide.type);
+            switch (level) {
+                case BRONZE:
+                    holder.status.setTextColor(TrophyColor.BRONZE);
+                    break;
+                case SILVER:
+                    holder.status.setTextColor(TrophyColor.SILVER);
+                    break;
+                case GOLD:
+                    holder.status.setTextColor(TrophyColor.GOLD);
+                    break;
+                default:
+                    holder.status.setTextColor(TrophyColor.PLATINUM);
+            }
         }
 
         new Shimmer().start(holder.status);
-
-
         return view;
     }
 
