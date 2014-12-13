@@ -3,7 +3,6 @@ package robustgametools.guide;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
@@ -25,6 +24,7 @@ import robustgametools.playstation_guide.R;
 import robustgametools.util.Log;
 import robustgametools.util.SpoilerTextView;
 import robustgametools.util.Storage;
+import robustgametools.util.TrophyColor;
 
 /**
  * A GuideFormatter class to
@@ -49,10 +49,7 @@ public class GuideFactory {
     private static final String mBronzeRegex = "[B]";
     private static final String mSpoilerRegex = "[Q]";
 
-    private static final int mBronze = Color.parseColor("#cd7f32");
-    private static final int mSilver = Color.parseColor("#808080");
-    private static final int mGold = Color.parseColor("#E2B227");
-    private static final int mPlatinum = Color.parseColor("#a5b6ec");
+
 
     private static final int mGreen = Color.parseColor("#2db680");
     private static final int mBlue = Color.parseColor("#5f7ab9");
@@ -215,7 +212,7 @@ public class GuideFactory {
             String bold = string.substring(start, end);
             spannable.replace(start, end + mBronzeRegex.length() * 2, bold);
             spannable.setSpan(new StyleSpan(Typeface.BOLD), start, end, 0);
-            spannable.setSpan(new ForegroundColorSpan(mBronze), start, end, 0);
+            spannable.setSpan(new ForegroundColorSpan(TrophyColor.BRONZE), start, end, 0);
             start = string.indexOf(mBronzeRegex);
         }
         return string;
@@ -231,7 +228,7 @@ public class GuideFactory {
             String bold = string.substring(start, end);
             spannable.replace(start, end + mSilverRegex.length() * 2, bold);
             spannable.setSpan(new StyleSpan(Typeface.BOLD), start, end, 0);
-            spannable.setSpan(new ForegroundColorSpan(mSilver), start, end, 0);
+            spannable.setSpan(new ForegroundColorSpan(TrophyColor.SILVER), start, end, 0);
             start = string.indexOf(mSilverRegex);
         }
         return string;
@@ -247,7 +244,7 @@ public class GuideFactory {
             String bold = string.substring(start, end);
             spannable.replace(start, end + mGoldRegex.length() * 2, bold);
             spannable.setSpan(new StyleSpan(Typeface.BOLD), start, end, 0);
-            spannable.setSpan(new ForegroundColorSpan(mGold), start, end, 0);
+            spannable.setSpan(new ForegroundColorSpan(TrophyColor.GOLD), start, end, 0);
             start = string.indexOf(mGoldRegex);
         }
         return string;
@@ -263,7 +260,7 @@ public class GuideFactory {
             String bold = string.substring(start, end);
             spannable.replace(start, end + mPlatinumRegex.length() * 2, bold);
             spannable.setSpan(new StyleSpan(Typeface.BOLD), start, end, 0);
-            spannable.setSpan(new ForegroundColorSpan(mPlatinum), start, end, 0);
+            spannable.setSpan(new ForegroundColorSpan(TrophyColor.PLATINUM), start, end, 0);
             start = string.indexOf(mPlatinumRegex);
         }
         return string;
