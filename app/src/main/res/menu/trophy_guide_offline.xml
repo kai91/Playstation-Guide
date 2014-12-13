@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="robustgametools.guide.GuideActivity" >
+
+    <item android:id="@+id/action_update_trophy_info"
+        android:title="@string/action_update_trophy_info"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+    <item android:id="@+id/action_exit_guide"
+        android:title="@string/action_exit_guide"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+</menu>

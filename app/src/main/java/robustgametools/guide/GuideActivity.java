@@ -23,7 +23,6 @@ import robustgametools.adapter.TrophyGuideAdapter;
 import robustgametools.model.BaseActivity;
 import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
-import robustgametools.util.Log;
 
 public class GuideActivity extends BaseActivity {
 
@@ -158,7 +157,13 @@ public class GuideActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.trophy_guide, menu);
+        int guideMenu;
+        if (mIsOffline) {
+            guideMenu = R.menu.trophy_guide_offline;
+        } else {
+            guideMenu = R.menu.trophy_guide;
+        }
+        getMenuInflater().inflate(guideMenu, menu);
         return true;
     }
 
