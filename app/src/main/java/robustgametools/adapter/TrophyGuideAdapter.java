@@ -33,15 +33,18 @@ public class TrophyGuideAdapter extends BaseAdapter {
 
     private TrophyGuide mTrophyGuide;
     private ArrayList<Guide> guides;
+    private ArrayList<Boolean> mTrophyInfo;
     private Context mContext;
     private LayoutInflater mInflater;
     private int mCurrentSelected = 0;
     private final int mColorRed = Color.parseColor("#EF5350"); // red
 
-    public TrophyGuideAdapter(Context context, TrophyGuide trophyGuide) {
+    public TrophyGuideAdapter(Context context, TrophyGuide trophyGuide,
+                              ArrayList<Boolean> trophyInfo) {
         mContext = context.getApplicationContext();
         mTrophyGuide = trophyGuide;
         guides = mTrophyGuide.getGuides();
+        mTrophyInfo = trophyInfo;
         mInflater = LayoutInflater.from(mContext);
     }
 
@@ -92,7 +95,11 @@ public class TrophyGuideAdapter extends BaseAdapter {
             Picasso.with(mContext).load(guide.url).
                     placeholder(R.drawable.placeholder_trophy).into(holder.trophyIcon);
             holder.title.setText(guide.title);
-            holder.status.setVisibility(View.VISIBLE);
+            if (mTrophyInfo.size() != 0 && mTrophyInfo.get(position-1)) {
+                holder.status.setVisibility(View.VISIBLE);
+            } else {
+                holder.status.setVisibility(View.GONE);
+            }
             TrophyLevel level = TrophyLevel.valueOf(guide.type);
             switch (level) {
                 case BRONZE:

@@ -15,31 +15,47 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import org.apache.http.Header;
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import robustgametools.adapter.TrophyGuideAdapter;
 import robustgametools.model.BaseActivity;
+import robustgametools.model.Profile;
+import robustgametools.model.Trophy;
 import robustgametools.model.TrophyGuide;
+import robustgametools.playstation.Playstation;
 import robustgametools.playstation_guide.R;
+import robustgametools.util.HttpClient;
+import robustgametools.util.JsonFactory;
+import robustgametools.util.Log;
+import robustgametools.util.Storage;
 
 public class GuideActivity extends BaseActivity {
 
     @InjectView(R.id.drawer) DrawerLayout mDrawer;
     @InjectView(R.id.drawer_menu) ListView mDrawerMenu;
-    @InjectView(R.id.loading) SmoothProgressBar mLoading;
 
     private ActionBarDrawerToggle mDrawerToggle;
     private TrophyGuide mTrophyGuide;
     private boolean mIsOffline;
     private int mCurrentPosition = 0;
     private boolean mExit = false;
+    private Toast mToast;
+    private Profile mProfile;
+    private ArrayList<Boolean> mTrophyInfo = new ArrayList<>();;
+    private TrophyGuideAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.inject(this);
+
+        mProfile = Playstation.getInstance(this).getProfile();
         getTrophyGuideInfo();
 
         if (savedInstanceState == null) {
@@ -56,7 +72,9 @@ public class GuideActivity extends BaseActivity {
         }
 
         setTitle(mTrophyGuide.getTitle());
+        updateTrophyInfo();
         initDrawer();
+
     }
 
     private void getTrophyGuideInfo() {
@@ -64,6 +82,21 @@ public class GuideActivity extends BaseActivity {
         String json = intent.getStringExtra("guideInfo");
         mTrophyGuide = new Gson().fromJson(json, TrophyGuide.class);
         mIsOffline = intent.getBooleanExtra("isOffline", false);
+    }
+
+    private void readTrophyInfo() {
+        Storage storage = Storage.getInstance(this);
+        String info = storage.readTrophyInfo(mTrophyGuide.getTitle(), mProfile.getOnlineId());
+        ArrayList<Trophy> trophies = JsonFactory.getInstance().parseTrophyList(info);
+        mTrophyInfo.clear();
+        for (int i = 0; i < trophies.size(); i++) {
+            mTrophyInfo.add(trophies.get(i).isEarned());
+        }
+        if (mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
+
+        Log.i("s " + mTrophyInfo.size());
     }
 
     private void initDrawer() {
@@ -77,13 +110,13 @@ public class GuideActivity extends BaseActivity {
                 R.string.app_name
         );
         mDrawer.setDrawerListener(mDrawerToggle);
-        final TrophyGuideAdapter adapter = new TrophyGuideAdapter(this, mTrophyGuide);
-        mDrawerMenu.setAdapter(adapter);
+        mAdapter = new TrophyGuideAdapter(this, mTrophyGuide, mTrophyInfo);
+        mDrawerMenu.setAdapter(mAdapter);
         mDrawerMenu.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mDrawerMenu.setItemChecked(position, true);
-                adapter.setSelection(position);
+                mAdapter.setSelection(position);
                 onNavigationItemSelected(position);
                 mCurrentPosition = position;
                 mDrawer.closeDrawers();
@@ -99,7 +132,6 @@ public class GuideActivity extends BaseActivity {
         }
 
         String guide;
-
         Fragment frag = new GuideFragment();
         Bundle bundle = new Bundle();
 
@@ -117,10 +149,6 @@ public class GuideActivity extends BaseActivity {
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, frag)
                 .commit();
-    }
-
-    private void updateTrophyInfo() {
-        mLoading.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -180,14 +208,43 @@ public class GuideActivity extends BaseActivity {
             finish();
             return true;
         } else if (id == R.id.action_save_trophy_guide) {
-            persistTrophyGuide();
+            // TODO download torphy guide
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void persistTrophyGuide() {
+    private void updateTrophyInfo() {
+        showToast("Fetching your trophy info");
+        HttpClient.getTrophies(mProfile.getOnlineId(), mTrophyGuide.getPlatforms().get(0).npId,
+                new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        persistTrophyInfo(new String(responseBody));
+                        showToast("Your trophy info updated");
+                        readTrophyInfo();
+                    }
 
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        showToast("Failed to fetch your trophy info");
+                    }
+                });
+    }
+
+    private void persistTrophyInfo(String data) {
+        Storage storage = Storage.getInstance(this);
+        storage.persistTrophyInfo(mTrophyGuide.getTitle(), mProfile.getOnlineId(), data);
+    }
+
+    private void showToast(String msg) {
+        if (mToast == null) {
+            mToast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
+            mToast.show();
+        } else {
+            mToast.setText(msg);
+            mToast.show();
+        }
     }
 }
