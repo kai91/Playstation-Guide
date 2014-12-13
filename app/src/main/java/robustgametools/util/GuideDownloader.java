@@ -9,10 +9,8 @@ import org.apache.http.Header;
 
 import java.util.ArrayList;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import robustgametools.guide.GuideFactory;
 import robustgametools.model.Guide;
-import robustgametools.model.Trophy;
 import robustgametools.model.TrophyGuide;
 
 public class GuideDownloader {

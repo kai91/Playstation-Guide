@@ -3,7 +3,6 @@ package robustgametools.adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.util.MutableInt;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.BinaryHttpResponseHandler;
 
 import org.apache.http.Header;
 
@@ -24,12 +20,9 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import robustgametools.guide.GuideFactory;
 import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
 import robustgametools.util.GuideDownloader;
-import robustgametools.util.HttpClient;
-import robustgametools.util.Log;
 import robustgametools.util.Storage;
 
 public class TrophyGuideListAdapter extends BaseAdapter {
