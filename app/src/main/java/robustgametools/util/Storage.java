@@ -152,6 +152,14 @@ public class Storage {
         deleteDir("", mActiveGame);
     }
 
+    public boolean persistTrophyInfo(String title, String username, String data) {
+        return createFile(mJsonDir + "/" + title, username, data);
+    }
+
+    public String readTrophyInfo(String title, String username) {
+        return readFile(mJsonDir + "/" + title, username);
+    }
+
     public boolean userDataExists() {
         File root = mContext.getFilesDir();
         File userData = new File(root, mActiveUser);
