@@ -50,9 +50,14 @@ public class GuideListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_all_guide, container, false);
         ButterKnife.inject(this, view);
         mDownloadedTitle = new ArrayList<>();
-        refreshDownloadedList();
         initGuide();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshDownloadedList();
     }
 
     public void initGuide() {
