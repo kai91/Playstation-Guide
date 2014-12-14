@@ -33,6 +33,7 @@ import robustgametools.model.TrophyGuide;
 import robustgametools.model.Types;
 import robustgametools.playstation.Playstation;
 import robustgametools.playstation_guide.R;
+import robustgametools.util.GuideDownloader;
 import robustgametools.util.HttpClient;
 import robustgametools.util.JsonFactory;
 import robustgametools.util.Log;
@@ -97,9 +98,12 @@ public class GuideActivity extends BaseActivity {
         choiceList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mPlatformChoice = position;
+                if (mPlatformChoice != position) {
+                    mPlatformChoice = position;
+                    updateTrophyInfo();
+                }
                 dialog.dismiss();
-                updateTrophyInfo();
+
             }
         });
         dialog.show();
@@ -236,7 +240,22 @@ public class GuideActivity extends BaseActivity {
             finish();
             return true;
         } else if (id == R.id.action_save_trophy_guide) {
-            // TODO download torphy guide
+            GuideDownloader downloader = GuideDownloader.getInstance(this);
+            mToast.setText("Downloading guide...");
+            mToast.show();
+            downloader.downloadGuide(mTrophyGuide.getTitle(), new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    mToast.setText("Guide downloaded");
+                    mToast.show();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    mToast.setText("Download failed");
+                    mToast.show();
+                }
+            });
             return true;
         } else if (id == R.id.action_switch_platform) {
             choosePlatform();
