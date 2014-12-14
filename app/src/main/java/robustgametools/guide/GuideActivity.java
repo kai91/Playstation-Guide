@@ -1,5 +1,6 @@
 package robustgametools.guide;
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -28,6 +30,7 @@ import robustgametools.model.BaseActivity;
 import robustgametools.model.Profile;
 import robustgametools.model.Trophy;
 import robustgametools.model.TrophyGuide;
+import robustgametools.model.Types;
 import robustgametools.playstation.Playstation;
 import robustgametools.playstation_guide.R;
 import robustgametools.util.HttpClient;
@@ -44,6 +47,7 @@ public class GuideActivity extends BaseActivity {
     private TrophyGuide mTrophyGuide;
     private boolean mIsOffline;
     private int mCurrentPosition = 0;
+    private int mPlatformChoice = 0;
     private boolean mExit = false;
     private Toast mToast;
     private Profile mProfile;
@@ -75,6 +79,30 @@ public class GuideActivity extends BaseActivity {
         updateTrophyInfo();
         initDrawer();
 
+    }
+
+    private void choosePlatform() {
+        ArrayList<Types> platforms = mTrophyGuide.getPlatforms();
+        ListView choiceList = new ListView(this);
+        String[] choices = new String[platforms.size()];
+        for (int i = 0; i < choices.length; i++) {
+            choices[i] = platforms.get(i).type;
+        }
+        ArrayAdapter adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, choices);
+        choiceList.setAdapter(adapter);
+        final Dialog dialog = new Dialog(this);
+        dialog.setTitle("Choose platform");
+        dialog.setContentView(choiceList);
+        choiceList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mPlatformChoice = position;
+                dialog.dismiss();
+                updateTrophyInfo();
+            }
+        });
+        dialog.show();
     }
 
     private void getTrophyGuideInfo() {
@@ -210,6 +238,9 @@ public class GuideActivity extends BaseActivity {
         } else if (id == R.id.action_save_trophy_guide) {
             // TODO download torphy guide
             return true;
+        } else if (id == R.id.action_switch_platform) {
+            choosePlatform();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -217,7 +248,8 @@ public class GuideActivity extends BaseActivity {
 
     private void updateTrophyInfo() {
         showToast("Fetching your trophy info");
-        HttpClient.getTrophies(mProfile.getOnlineId(), mTrophyGuide.getPlatforms().get(0).npId,
+        HttpClient.getTrophies(mProfile.getOnlineId(),
+                mTrophyGuide.getPlatforms().get(mPlatformChoice).npId,
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -227,7 +259,8 @@ public class GuideActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    public void onFailure(int statusCode, Header[] headers,
+                                          byte[] responseBody, Throwable error) {
                         showToast("Failed to fetch your trophy info");
                     }
                 });

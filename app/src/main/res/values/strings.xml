@@ -25,5 +25,6 @@
     <string name="action_update_trophy_info">Update trophy info</string>
     <string name="action_save_trophy_guide">Save</string>
     <string name="unlocked_trophy">Unlocked</string>
+    <string name="action_switch_platform">Switch platform</string>
 
 </resources>
