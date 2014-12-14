@@ -1,7 +1,6 @@
 package robustgametools.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +36,6 @@ public class TrophyGuideAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
     private int mCurrentSelected = 0;
-    private final int mColorRed = Color.parseColor("#EF5350"); // red
 
     public TrophyGuideAdapter(Context context, TrophyGuide trophyGuide,
                               ArrayList<Boolean> trophyInfo) {
