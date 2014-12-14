@@ -116,7 +116,6 @@ public class TrophyGuideAdapter extends BaseAdapter {
             }
         }
 
-        new Shimmer().start(holder.status);
         return view;
     }
 
@@ -125,9 +124,14 @@ public class TrophyGuideAdapter extends BaseAdapter {
         @InjectView(R.id.trophy_icon) CircleImageView trophyIcon;
         @InjectView(R.id.trophy_title) TextView title;
         @InjectView(R.id.status) ShimmerTextView status;
+        Shimmer shimmer;
 
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
+            if (shimmer == null) {
+                shimmer = new Shimmer();
+                shimmer.start(status);
+            }
         }
     }
 }
