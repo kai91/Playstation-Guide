@@ -49,10 +49,11 @@ public class GuideActivity extends BaseActivity {
     private boolean mIsOffline;
     private int mCurrentPosition = 0;
     private int mPlatformChoice = 0;
+    private int mNavigationIndex = -1;
     private boolean mExit = false;
     private Toast mToast;
     private Profile mProfile;
-    private ArrayList<Boolean> mTrophyInfo = new ArrayList<>();;
+    private ArrayList<Boolean> mTrophyInfo = new ArrayList<>();
     private TrophyGuideAdapter mAdapter;
 
     @Override
@@ -89,7 +90,7 @@ public class GuideActivity extends BaseActivity {
         for (int i = 0; i < choices.length; i++) {
             choices[i] = platforms.get(i).type;
         }
-        ArrayAdapter adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, choices);
         choiceList.setAdapter(adapter);
         final Dialog dialog = new Dialog(this);
@@ -140,17 +141,26 @@ public class GuideActivity extends BaseActivity {
                 mToolbar,
                 R.string.app_name,
                 R.string.app_name
-        );
+        ) {
+
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                if (mNavigationIndex != -1) {
+                    onNavigationItemSelected(mNavigationIndex);
+                    mCurrentPosition = mNavigationIndex;
+                    mNavigationIndex = -1;
+                }
+            }
+        };
         mDrawer.setDrawerListener(mDrawerToggle);
         mAdapter = new TrophyGuideAdapter(this, mTrophyGuide, mTrophyInfo);
         mDrawerMenu.setAdapter(mAdapter);
         mDrawerMenu.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mNavigationIndex = position;
                 mDrawerMenu.setItemChecked(position, true);
                 mAdapter.setSelection(position);
-                onNavigationItemSelected(position);
-                mCurrentPosition = position;
                 mDrawer.closeDrawers();
             }
         });
