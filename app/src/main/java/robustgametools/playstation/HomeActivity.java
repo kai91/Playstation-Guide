@@ -2,6 +2,7 @@ package robustgametools.playstation;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -11,15 +12,15 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import robustgametools.adapter.NavigationDrawerAdapter;
 import robustgametools.guide.GuideActivity;
 import robustgametools.guide.GuideHomeFragment;
 import robustgametools.guide.GuideListFragment;
@@ -36,12 +37,24 @@ public class HomeActivity extends BaseActivity
         MyGuideFragment.OnFragmentInteractionListener {
 
     @InjectView(R.id.drawer) DrawerLayout mDrawer;
-    @InjectView(R.id.drawer_menu) ListView mDrawerMenu;
 
     private ActionBarDrawerToggle mDrawerToggle;
     private int mCurrentlySelected = 0;
     private int mNavigationIndex = -1;
     private boolean mExit = false;
+    private ArrayList<TextView> mMenuText;
+
+    private final int[] NAVDRAWER_ITEM_ID = new int[] {
+            R.id.home,
+            R.id.guides,
+            R.id.exit
+    };
+
+    private final int[] NAVDRAWER_TITLE_RES_ID = new int[] {
+            R.string.nav_home,
+            R.string.nav_guides,
+            R.string.nav_exit
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,19 +112,37 @@ public class HomeActivity extends BaseActivity
             }
         };
         mDrawer.setDrawerListener(mDrawerToggle);
-        final NavigationDrawerAdapter adapter =
-                new NavigationDrawerAdapter(this, mCurrentlySelected);
-        mDrawerMenu.setAdapter(adapter);
-        mDrawerMenu.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mDrawerMenu.setItemChecked(position, true);
-                adapter.selectItem(position);
-                onNavigationItemSelected(position);
-                mCurrentlySelected = position;
-                mDrawer.closeDrawers();
+        setUpNavDrawer();
+    }
+
+    private void setUpNavDrawer() {
+        mMenuText = new ArrayList<>();
+        for (int i = 0; i < NAVDRAWER_ITEM_ID.length; i++) {
+            final int j = i;
+            TextView view = (TextView) findViewById(NAVDRAWER_ITEM_ID[i]).findViewById(R.id.menu);
+            view.setText(NAVDRAWER_TITLE_RES_ID[i]);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onNavigationItemSelected(j);
+                }
+            });
+            mMenuText.add(view);
+        }
+        formatNavDrawer(0);
+    }
+
+    private void formatNavDrawer(int index) {
+        int red = Color.parseColor("#EF5350"); // red
+        int gray = Color.parseColor("#757575"); // grey
+        for (int i = 0; i <mMenuText.size(); i++) {
+            TextView text = mMenuText.get(i);
+            if (i == index) {
+                text.setTextColor(red);
+            } else {
+                text.setTextColor(gray);
             }
-        });
+        }
     }
 
     public void signOut() {
@@ -195,7 +226,10 @@ public class HomeActivity extends BaseActivity
     private void onNavigationItemSelected(int position) {
         if (position != mCurrentlySelected) {
             mNavigationIndex = position;
+            mCurrentlySelected = position;
+            formatNavDrawer(position);
         }
+        mDrawer.closeDrawers();
     }
 
     private void saveNavigationPos() {
