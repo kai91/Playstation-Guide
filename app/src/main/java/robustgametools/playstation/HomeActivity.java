@@ -241,9 +241,9 @@ public class HomeActivity extends BaseActivity
     }
 
     @Override
-    public void onGuideSelected(String guideContent) {
+    public void onGuideSelected(String guideContent, boolean isOffline) {
         saveNavigationPos();
-        startGuideActivity(guideContent, false);
+        startGuideActivity(guideContent, isOffline);
     }
 
     @Override

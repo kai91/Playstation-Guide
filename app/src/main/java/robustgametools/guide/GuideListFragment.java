@@ -2,7 +2,6 @@ package robustgametools.guide;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -96,16 +95,14 @@ public class GuideListFragment extends Fragment {
         mGuideList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String title = mGuides.get(position).getTitle();
+                final String title = mGuides.get(position).getTitle();
                 showProgressDialog();
                 HttpClient.getGameGuide(title, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         String guideInfo = new String (responseBody);
-                        Intent intent = new Intent(getActivity(), GuideActivity.class);
-                        intent.putExtra("guideInfo", guideInfo);
                         mLoadingDialog.dismiss();
-                        startActivity(intent);
+                        mListener.onGuideSelected(guideInfo, mDownloadedTitle.contains(title));
                     }
 
                     @Override
@@ -152,7 +149,7 @@ public class GuideListFragment extends Fragment {
     }
 
     public interface GuideListListener {
-        public void onGuideSelected(String guideContent);
+        public void onGuideSelected(String guideContent, boolean isOffline);
     }
 
 }
