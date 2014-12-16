@@ -143,7 +143,7 @@ public class GuideFactory {
         if (start == -1) {
             formatText(rawGuide);
         } else {
-            formatText(rawGuide.substring(0, start));
+            formatText(rawGuide.substring(0, start).trim());
             rawGuide = rawGuide.replaceFirst(Pattern.quote(mSpoilerRegex), "");
             int end = rawGuide.indexOf(mSpoilerRegex);
             rawGuide = rawGuide.replaceFirst(Pattern.quote(mSpoilerRegex), "");
