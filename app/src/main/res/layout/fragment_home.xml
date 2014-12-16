@@ -6,25 +6,6 @@
     android:layout_height="match_parent"
     tools:context="robustgametools.playstation.HomeFragment" >
 
-    <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/loading"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        app:spb_interpolator="spb_interpolator_acceleratedecelerate"
-        app:spb_sections_count="3"
-        app:spb_speed="1.0"
-        app:spb_stroke_width="3dp"
-        app:spb_stroke_separator_length="4dp"
-        app:spb_reversed="true"
-        app:spb_mirror_mode="true"
-        app:spb_progressiveStart_activated="true"
-        app:spb_progressiveStart_speed="1.5"
-        app:spb_progressiveStop_speed="3.4"
-        android:visibility="gone" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
