@@ -24,6 +24,7 @@
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             card_view:cardCornerRadius="2dp">
 
             <LinearLayout
@@ -159,6 +160,7 @@
             android:layout_below="@id/header"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="7dp"
             card_view:cardCornerRadius="2dp">
 
             <FrameLayout
