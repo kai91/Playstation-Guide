@@ -7,6 +7,7 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -185,6 +186,7 @@ public class GuideFactory {
         formatButton(builder, rawString);
         TextView text = new TextView(mContext);
         text.setText(builder);
+        Linkify.addLinks(text, Linkify.ALL);
         views.add(text);
     }
 

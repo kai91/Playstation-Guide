@@ -1,6 +1,7 @@
 package robustgametools.util;
 
 import android.content.Context;
+import android.text.util.Linkify;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
@@ -38,6 +39,7 @@ public class SpoilerTextView extends TextView {
             @Override
             public void onClick(View view) {
                 setText(content);
+                Linkify.addLinks((TextView) view, Linkify.ALL);
             }
         });
     }
