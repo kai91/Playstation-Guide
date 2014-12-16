@@ -3,12 +3,14 @@ package robustgametools.playstation;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -25,7 +27,6 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import robustgametools.adapter.GameListAdapter;
 import robustgametools.model.Game;
 import robustgametools.model.Profile;
@@ -54,7 +55,7 @@ public class HomeFragment extends Fragment {
     @InjectView(R.id.platinum) TextView mPlatinum;
     @InjectView(R.id.games) ListView mGameList;
     @InjectView(R.id.plus) ImageView mPlus;
-    @InjectView(R.id.loading) SmoothProgressBar mLoading;
+    @InjectView(R.id.swipe_container) SwipeRefreshLayout mSwipeLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,16 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.inject(this, view);
+
+        mSwipeLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateHeader();
+                updateList(null, 0);
+                mSwipeLayout.setRefreshing(true);
+            }
+        });
         initHeader();
         initGameList();
 
@@ -119,11 +130,8 @@ public class HomeFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.refresh:
                 updateHeader();
-                Storage storage = Storage.getInstance(getActivity().
-                        getApplicationContext());
-                String data = storage.readGameData();
-                updateList(data, 0);
-                mLoading.setVisibility(View.VISIBLE);
+                updateList(null, 0);
+                mSwipeLayout.setRefreshing(true);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -187,10 +195,26 @@ public class HomeFragment extends Fragment {
                 showGameDetail(game);
             }
         });
+        mGameList.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem == 0) {
+                    mSwipeLayout.setEnabled(true);
+                } else {
+                    mSwipeLayout.setEnabled(false);
+                }
+            }
+        });
     }
 
     private void updateList(String data, int offset) {
-        mLoading.setVisibility(View.VISIBLE);
+        mSwipeLayout.setRefreshing(true);
         if (offset == 0) {
             HttpClient.getRecentlyPlayedGames(mProfile.getOnlineId(), new AsyncHttpResponseHandler() {
                 @Override
@@ -202,7 +226,7 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     Log.i("Updating game list: Failed");
-                    mLoading.setVisibility(View.GONE);
+                    mSwipeLayout.setRefreshing(false);
                     if (getActivity() != null) {
                         Toast.makeText(getActivity(), "Failed updating data", Toast.LENGTH_LONG).show();
                     }
@@ -213,7 +237,7 @@ public class HomeFragment extends Fragment {
         int totalGameCount = mProfile.getGameCount();
         if (totalGameCount <= offset) {
             // Finished updating all games
-            mLoading.setVisibility(View.GONE);
+            mSwipeLayout.setRefreshing(false);
             Storage storage = Storage.getInstance(getActivity());
             storage.persistRecentGames(data);
             JsonFactory jsonFactory = JsonFactory.getInstance();
@@ -223,7 +247,7 @@ public class HomeFragment extends Fragment {
             mProfile.getGames().addAll(games);
             adapter.notifyDataSetChanged();
         } else {
-            retrieveList(data, mProfile.getGames().size());
+            retrieveList(data, offset);
         }
     }
 
@@ -246,7 +270,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         Log.i("Updating game list: Failed");
-                        mLoading.setVisibility(View.GONE);
+                        mSwipeLayout.setRefreshing(false);
                         if (getActivity() != null) {
                             Toast.makeText(getActivity(), "Failed updating data", Toast.LENGTH_LONG).show();
                         }

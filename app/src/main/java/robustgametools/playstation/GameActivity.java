@@ -2,9 +2,11 @@ package robustgametools.playstation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -23,7 +25,6 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import robustgametools.adapter.TrophyListAdapter;
 import robustgametools.model.BaseActivity;
 import robustgametools.model.Game;
@@ -47,8 +48,8 @@ public class GameActivity extends BaseActivity {
     @InjectView(R.id.platinum) LinearLayout mPlatinum;
     @InjectView(R.id.progress) NumberProgressBar mProgress;
     @InjectView(R.id.trophies) ListView mTrophyList;
-    @InjectView(R.id.loading) SmoothProgressBar mLoadingBar;
     @InjectView(R.id.loading_progress) ProgressBar mProgressBar;
+    @InjectView(R.id.swipe_container) SwipeRefreshLayout mSwipeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,15 +90,16 @@ public class GameActivity extends BaseActivity {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         String data = new String(responseBody);
                         initTrophyList(data);
-                        changeLoadingVisibility(View.GONE);
+                        mProgressBar.setVisibility(View.GONE);
+                        initSwipeRefresh();
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         Log.i("Get trophy info failed");
-                        changeLoadingVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(), "Failed to retrieve data." +
                                         " Check your network and try again.", Toast.LENGTH_LONG).show();
+                        mSwipeLayout.setRefreshing(false);
                     }
                 });
     }
@@ -106,17 +108,36 @@ public class GameActivity extends BaseActivity {
         JsonFactory jsonFactory = JsonFactory.getInstance();
         ArrayList<Trophy> trophies = jsonFactory.parseTrophyList(data);
 
-        //if (Playstation.sDebug) {
-        //    TrophyGuide.parseFromTrophyList(trophies);
-        //}
-
         TrophyListAdapter adapter = new TrophyListAdapter(this, trophies);
         mTrophyList.setAdapter(adapter);
+        mTrophyList.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem == 0) {
+                    mSwipeLayout.setEnabled(true);
+                } else {
+                    mSwipeLayout.setEnabled(false);
+                }
+            }
+        });
     }
 
-    private void changeLoadingVisibility(int visibility) {
-        mLoadingBar.setVisibility(visibility);
-        mProgressBar.setVisibility(visibility);
+    private void initSwipeRefresh() {
+        mSwipeLayout.setRefreshing(false);
+        mSwipeLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mSwipeLayout.setRefreshing(true);
+                getTrophyList();
+            }
+        });
     }
 
     @Override
@@ -139,8 +160,8 @@ public class GameActivity extends BaseActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_refresh_game) {
+            mSwipeLayout.setRefreshing(true);
             getTrophyList();
-            mLoadingBar.setVisibility(View.VISIBLE);
             return true;
         }
         return super.onOptionsItemSelected(item);
