@@ -283,7 +283,8 @@ public class GuideActivity extends BaseActivity {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         persistTrophyInfo(new String(responseBody));
-                        showToast("Your trophy info updated");
+                        showToast("Your trophy info updated for "
+                                + mTrophyGuide.getPlatforms().get(mPlatformChoice).type);
                         readTrophyInfo();
                     }
 
