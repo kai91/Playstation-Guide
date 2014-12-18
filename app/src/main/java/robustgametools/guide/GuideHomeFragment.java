@@ -13,23 +13,21 @@ import android.view.ViewGroup;
 
 import com.astuetz.PagerSlidingTabStrip;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
-import robustgametools.model.TrophyGuide;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import robustgametools.playstation_guide.R;
 
 public class GuideHomeFragment extends Fragment {
 
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
+    @InjectView(R.id.tabs) PagerSlidingTabStrip mTabStrip;
+    @InjectView(R.id.pager) ViewPager mViewPager;
 
     // Keep a reference to MyGuideFragment to notify it to
     // refreshDownloadedList downloaded guides list
     private MyGuideFragment mMyGuideFragment;
     private GuideListFragment mGuideListFragment;
-
-    private ArrayList<TrophyGuide> mDownloadedGuide;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +44,7 @@ public class GuideHomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_guide_home, container, false);
+        ButterKnife.inject(this, view);
         if (mMyGuideFragment == null) {
             mMyGuideFragment = new MyGuideFragment();
             mGuideListFragment = new GuideListFragment();
@@ -53,20 +52,18 @@ public class GuideHomeFragment extends Fragment {
 
         // Create the adapter that will return a fragment for each of the two
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager(),
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager(),
                 mMyGuideFragment, mGuideListFragment);
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) view.findViewById(R.id.pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setAdapter(sectionsPagerAdapter);
 
         // Bind the tabs to the ViewPager
-        PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
-        tabs.setViewPager(mViewPager);
+        mTabStrip.setViewPager(mViewPager);
 
         // When user switched to MyGuideFragment, refreshDownloadedList the list in MyGuideFragment
         // in case user downloaded new guide
-        tabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mTabStrip.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(
                     int position, float positionOffset, int positionOffsetPixels) {}

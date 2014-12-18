@@ -64,12 +64,6 @@ public class MyGuideFragment extends Fragment {
         });
     }
 
-    public void onButtonPressed(String name) {
-        if (mListener != null) {
-            mListener.onDownloadedGuideSelected(name);
-        }
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
