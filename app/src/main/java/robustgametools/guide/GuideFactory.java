@@ -49,7 +49,7 @@ public class GuideFactory {
     private static final String mSilverRegex = "[S]";
     private static final String mBronzeRegex = "[B]";
     private static final String mSpoilerRegex = "[Q]";
-
+    private static final String mYoutubeRegex= "[Y]";
 
 
     private static final int mGreen = Color.parseColor("#2db680");
@@ -128,13 +128,14 @@ public class GuideFactory {
             ImageView imageView = new ImageView(mContext);
             if (mIsOffline) {
                 url = mStorage.convertUrlToOfflineUri(mTitle, url);
-                Picasso.with(mContext).load("file://" + url).resizeDimen(R.dimen.guide_image,
-                        R.dimen.guide_image).centerInside().into(imageView);
+                Picasso.with(mContext).load("file://" + url).resizeDimen(R.dimen.guide_image_width,
+                        R.dimen.guide_image_height).centerInside().into(imageView);
             } else {
-                Picasso.with(mContext).load(url).resizeDimen(R.dimen.guide_image,
-                        R.dimen.guide_image).centerInside().into(imageView);
+                Picasso.with(mContext).load(url).resizeDimen(R.dimen.guide_image_width,
+                        R.dimen.guide_image_height).centerInside().into(imageView);
             }
             views.add(imageView);
+            imageView.setAdjustViewBounds(true  );
             formatImage(rawGuide.substring(end, rawGuide.length()));
         }
     }
@@ -142,9 +143,9 @@ public class GuideFactory {
     private void formatSpoiler(String rawGuide) {
         int start = rawGuide.indexOf(mSpoilerRegex);
         if (start == -1) {
-            formatText(rawGuide);
+            formatYoutube(rawGuide);
         } else {
-            formatText(rawGuide.substring(0, start).trim() + "\n");
+            formatYoutube(rawGuide.substring(0, start).trim() + "\n");
             rawGuide = rawGuide.replaceFirst(Pattern.quote(mSpoilerRegex), "");
             int end = rawGuide.indexOf(mSpoilerRegex);
             rawGuide = rawGuide.replaceFirst(Pattern.quote(mSpoilerRegex), "");
@@ -156,6 +157,26 @@ public class GuideFactory {
             formatSpoiler(rawGuide.substring(end, rawGuide.length()));
         }
 
+    }
+
+    private void formatYoutube(String rawGuide) {
+        int start = rawGuide.indexOf(mYoutubeRegex);
+        if (start == -1) {
+            formatText(rawGuide);
+        } else {
+            //formatText(rawGuide);
+            //formatText(rawGuide.substring(0, start).trim() + "\n");
+            rawGuide = rawGuide.replaceFirst(Pattern.quote(mYoutubeRegex), "");
+            int end = rawGuide.indexOf(mYoutubeRegex);
+            rawGuide = rawGuide.replaceFirst(Pattern.quote(mYoutubeRegex), "");
+            String rawSpoiler = rawGuide.substring(start, end);
+            //SpoilerTextView spoiler = new SpoilerTextView(mContext);
+            //spoiler.setSpoiler(placeHolderFormat(rawSpoiler));
+            //spoiler.setTextColor(Color.BLACK);
+            //views.add(spoiler);
+            //formatYoutube(rawGuide.substring(end, rawGuide.length()));
+            formatYoutube(rawGuide);
+        }
     }
 
     // This should be refactored after this, as this is redundant code, see formatText() below

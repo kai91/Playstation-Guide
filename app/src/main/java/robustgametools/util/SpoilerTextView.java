@@ -23,22 +23,22 @@ public class SpoilerTextView extends TextView {
     }
 
     public void setSpoiler(CharSequence warning, final CharSequence content) {
-        setText(warning);
+        setText(warning + "\n");
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                setText(content);
+                setText(content + "\n");
             }
         });
 
     }
 
     public void setSpoiler(final CharSequence content) {
-        setText(mWarning);
+        setText(mWarning + "\n");
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                setText(content);
+                setText(content + "\n");
                 Linkify.addLinks((TextView) view, Linkify.ALL);
             }
         });
