@@ -5,13 +5,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import robustgametools.playstation_guide.R;
+import robustgametools.util.Storage;
 
 public class DownloadedGuideListAdapter extends BaseAdapter{
 
@@ -41,7 +44,7 @@ public class DownloadedGuideListAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup parent) {
+    public View getView(final int position, View view, ViewGroup parent) {
 
         ViewHolder holder;
         if(view == null) {
@@ -53,13 +56,28 @@ public class DownloadedGuideListAdapter extends BaseAdapter{
         }
 
         holder.title.setText(mGuideList.get(position));
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteGuide(mGuideList.get(position));
+                Toast.makeText(mContext, "Guide deleted", Toast.LENGTH_LONG).show();
+            }
+        });
 
         return view;
+    }
+
+    private void deleteGuide(String title) {
+        mGuideList.remove(title);
+        Storage storage = Storage.getInstance(mContext);
+        storage.deleteGuide(title);
+        notifyDataSetChanged();
     }
 
     static class ViewHolder {
 
         @InjectView(R.id.title) TextView title;
+        @InjectView(R.id.delete) ImageView delete;
 
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
