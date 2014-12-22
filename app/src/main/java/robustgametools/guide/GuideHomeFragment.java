@@ -52,8 +52,7 @@ public class GuideHomeFragment extends Fragment {
 
         // Create the adapter that will return a fragment for each of the two
         // primary sections of the activity.
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager(),
-                mMyGuideFragment, mGuideListFragment);
+        final SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager.setAdapter(sectionsPagerAdapter);
@@ -71,9 +70,9 @@ public class GuideHomeFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 if (position == 1) {
-                    mMyGuideFragment.refreshDownloadedList();
+                    ((MyGuideFragment)sectionsPagerAdapter.getItem(1)).refreshDownloadedList();
                 } else if (position == 0) {
-                    mGuideListFragment.refreshDownloadedList();
+                    ((GuideListFragment)sectionsPagerAdapter.getItem(0)).refreshDownloadedList();
                 }
             }
 
@@ -89,20 +88,23 @@ public class GuideHomeFragment extends Fragment {
         private MyGuideFragment myGuideFragment;
         private GuideListFragment guideListFragment;
 
-        public SectionsPagerAdapter(FragmentManager fm,
-                                    MyGuideFragment fragment, GuideListFragment list) {
+        public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
-            myGuideFragment = fragment;
-            guideListFragment = list;
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the myGuideFragment for the given page.
             if (position == 0) {
+                if (guideListFragment == null) {
+                    guideListFragment = new GuideListFragment();
+                }
                 return guideListFragment;
             }
             else {
+                if (myGuideFragment == null) {
+                    myGuideFragment = new MyGuideFragment();
+                }
                 return myGuideFragment;
             }
         }

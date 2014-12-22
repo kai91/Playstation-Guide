@@ -80,12 +80,14 @@ public class GuideListFragment extends Fragment {
     }
 
     public void refreshDownloadedList() {
-        Storage storage = Storage.getInstance(getActivity());
-        ArrayList<String> newList = storage.getGuideList();
-        mDownloadedTitle.clear();
-        mDownloadedTitle.addAll(newList);
-        if (mAdapter != null) {
-            mAdapter.notifyDataSetChanged();
+        if (getActivity() != null) {
+            Storage storage = Storage.getInstance(getActivity());
+            ArrayList<String> newList = storage.getGuideList();
+            mDownloadedTitle.clear();
+            mDownloadedTitle.addAll(newList);
+            if (mAdapter != null) {
+                mAdapter.notifyDataSetChanged();
+            }
         }
     }
 

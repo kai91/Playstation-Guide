@@ -39,17 +39,19 @@ public class MyGuideFragment extends Fragment {
     }
 
     public void refreshDownloadedList() {
-        Storage storage = Storage.getInstance(getActivity());
-        ArrayList<String> newList = storage.getGuideList();
-        mDownloadedTitle.clear();
-        mDownloadedTitle.addAll(newList);
-        if (mAdapter != null) {
-            mAdapter.notifyDataSetChanged();
-        }
-        if (!mDownloadedTitle.isEmpty()) {
-            mEmptyMessage.setVisibility(View.GONE);
-        } else {
-            mEmptyMessage.setVisibility(View.VISIBLE);
+        if (getActivity() != null) {
+            Storage storage = Storage.getInstance(getActivity());
+            ArrayList<String> newList = storage.getGuideList();
+            mDownloadedTitle.clear();
+            mDownloadedTitle.addAll(newList);
+            if (mAdapter != null) {
+                mAdapter.notifyDataSetChanged();
+            }
+            if (!mDownloadedTitle.isEmpty()) {
+                mEmptyMessage.setVisibility(View.GONE);
+            } else {
+                mEmptyMessage.setVisibility(View.VISIBLE);
+            }
         }
     }
 
