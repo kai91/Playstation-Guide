@@ -208,7 +208,13 @@ public class HomeActivity extends BaseActivity
         if (mDrawer.isDrawerOpen(Gravity.START)) {
             mDrawer.closeDrawers();
         } else {
-            if (mExit) {
+            if (mCurrentlySelected != 0) {
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, new HomeFragment())
+                        .commit();
+                mCurrentlySelected = 0;
+            }
+            else if (mExit) {
                 super.onBackPressed();
             } else {
                 mExit = true;
