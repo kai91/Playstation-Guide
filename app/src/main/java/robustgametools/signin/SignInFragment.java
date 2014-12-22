@@ -175,9 +175,8 @@ public class SignInFragment extends Fragment {
     }
 
     private void showLoadingDialog() {
-        mProgressDialog = new SweetAlertDialog(
-                getActivity(), SweetAlertDialog.PROGRESS_TYPE);
-        mProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        mProgressDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+        mProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#0D47A1"));
         mProgressDialog.setTitleText("Signing in...");
         mProgressDialog.setCancelable(false);
         mProgressDialog.setCancelText("Cancel");
