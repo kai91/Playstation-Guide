@@ -213,6 +213,7 @@ public class HomeActivity extends BaseActivity
                         .replace(R.id.container, new HomeFragment())
                         .commit();
                 mCurrentlySelected = 0;
+                formatNavDrawer(0);
             }
             else if (mExit) {
                 super.onBackPressed();
