@@ -2,8 +2,9 @@ package robustgametools.signin;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Color;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +23,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import robustgametools.playstation_guide.R;
 import robustgametools.util.HttpClient;
 import robustgametools.util.JsonFactory;
@@ -34,7 +34,7 @@ public class SignInFragment extends Fragment {
     @InjectView(R.id.username) EditText mUsername;
 
     private onSignInListener mListener;
-    private SweetAlertDialog mProgressDialog;
+    private ProgressDialog mProgressDialog;
     private Storage mStorage;
     private JsonFactory jsonFactory = JsonFactory.getInstance();
 
@@ -175,14 +175,12 @@ public class SignInFragment extends Fragment {
     }
 
     private void showLoadingDialog() {
-        mProgressDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
-        mProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#0D47A1"));
-        mProgressDialog.setTitleText("Signing in...");
+        mProgressDialog = new ProgressDialog(getActivity());
+        mProgressDialog.setMessage("Signing in...");
         mProgressDialog.setCancelable(false);
-        mProgressDialog.setCancelText("Cancel");
-        mProgressDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+        mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
-            public void onClick(SweetAlertDialog sweetAlertDialog) {
+            public void onCancel(DialogInterface dialog) {
                 HttpClient.cancelSignInRequest();
                 mProgressDialog.dismiss();
             }

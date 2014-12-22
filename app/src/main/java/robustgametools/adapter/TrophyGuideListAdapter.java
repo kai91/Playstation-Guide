@@ -1,8 +1,8 @@
 package robustgametools.adapter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
 import robustgametools.util.GuideDownloader;
@@ -31,7 +30,7 @@ public class TrophyGuideListAdapter extends BaseAdapter {
     private ArrayList<String> mDownloadedGuides;
     private Context mContext;
     private LayoutInflater mInflater;
-    private SweetAlertDialog mDownloadDialog;
+    private ProgressDialog mDownloadDialog;
     private GuideDownloader mDownloader;
 
     public TrophyGuideListAdapter(Context context, ArrayList<TrophyGuide> guides,
@@ -88,8 +87,7 @@ public class TrophyGuideListAdapter extends BaseAdapter {
                     downloadGuide(position);
                 } else {
                     deleteGuide(mGuides.get(position).getTitle());
-                    new SweetAlertDialog(mContext, SweetAlertDialog.NORMAL_TYPE)
-                            .setTitleText("Guide deleted").show();
+                    Toast.makeText(mContext, "Guide deleted", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -100,20 +98,12 @@ public class TrophyGuideListAdapter extends BaseAdapter {
 
     private void downloadGuide(final int position) {
         downloadGuide(mGuides.get(position).getTitle());
-        mDownloadDialog = new SweetAlertDialog(mContext, SweetAlertDialog.PROGRESS_TYPE);
-        mDownloadDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-        mDownloadDialog.setCancelText("Cancel").setTitleText("Downloading");
+        mDownloadDialog = new ProgressDialog(mContext);
+        mDownloadDialog.setMessage("Downloading...");
         mDownloadDialog.show();
         mDownloadDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                mDownloader.cancelOngoingDownload();
-                deleteGuide(mGuides.get(position).getTitle());
-            }
-        });
-        mDownloadDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sweetAlertDialog) {
                 mDownloadDialog.dismiss();
                 mDownloader.cancelOngoingDownload();
                 deleteGuide(mGuides.get(position).getTitle());
@@ -133,8 +123,7 @@ public class TrophyGuideListAdapter extends BaseAdapter {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 mDownloadDialog.dismiss();
-                new SweetAlertDialog(mContext, SweetAlertDialog.SUCCESS_TYPE)
-                        .setTitleText("Download complete").show();
+                Toast.makeText(mContext, "Download complete", Toast.LENGTH_LONG).show();
                 mDownloadedGuides.add(title);
                 notifyDataSetChanged();
             }

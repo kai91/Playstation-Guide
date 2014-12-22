@@ -2,7 +2,8 @@ package robustgametools.guide;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.graphics.Color;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import robustgametools.adapter.TrophyGuideListAdapter;
 import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
@@ -40,7 +40,7 @@ public class GuideListFragment extends Fragment {
     private GuideListListener mListener;
     private ArrayList<TrophyGuide> mGuides;
     private TrophyGuideListAdapter mAdapter;
-    private SweetAlertDialog mLoadingDialog;
+    private ProgressDialog mLoadingDialog;
     private ArrayList<String> mDownloadedTitle;
 
     @Override
@@ -116,14 +116,11 @@ public class GuideListFragment extends Fragment {
     }
 
     private void showProgressDialog() {
-        mLoadingDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
-        mLoadingDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-        mLoadingDialog.setTitleText("Loading...");
-        mLoadingDialog.setCancelable(false);
-        mLoadingDialog.setCancelText("Cancel");
-        mLoadingDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+        mLoadingDialog = new ProgressDialog(getActivity());
+        mLoadingDialog.setMessage("Loading...");
+        mLoadingDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
-            public void onClick(SweetAlertDialog sweetAlertDialog) {
+            public void onCancel(DialogInterface dialog) {
                 HttpClient.cancelGuideRequest();
                 mLoadingDialog.dismiss();
             }
