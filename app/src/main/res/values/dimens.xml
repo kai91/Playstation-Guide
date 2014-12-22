@@ -13,7 +13,7 @@
     <dimen name="trophy_count_spacing">1dp</dimen>
     <dimen name="trophy_icon_size_medium">22dp</dimen>
     <dimen name="trophy_icon_size_small">15dp</dimen>
-    <dimen name="game_trophy_size">72dp</dimen>
+    <dimen name="game_trophy_size">70dp</dimen>
     <dimen name="earned_trophy_size">28dp</dimen>
     <dimen name="guide_image">250dp</dimen>
 
