@@ -24,11 +24,6 @@ public class GuideHomeFragment extends Fragment {
     @InjectView(R.id.tabs) PagerSlidingTabStrip mTabStrip;
     @InjectView(R.id.pager) ViewPager mViewPager;
 
-    // Keep a reference to MyGuideFragment to notify it to
-    // refreshDownloadedList downloaded guides list
-    private MyGuideFragment mMyGuideFragment;
-    private GuideListFragment mGuideListFragment;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +40,6 @@ public class GuideHomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_guide_home, container, false);
         ButterKnife.inject(this, view);
-        if (mMyGuideFragment == null) {
-            mMyGuideFragment = new MyGuideFragment();
-            mGuideListFragment = new GuideListFragment();
-        }
 
         // Create the adapter that will return a fragment for each of the two
         // primary sections of the activity.
