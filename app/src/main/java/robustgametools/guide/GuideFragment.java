@@ -24,7 +24,7 @@ import robustgametools.playstation_guide.R;
 public class GuideFragment extends Fragment {
 
     private GuideFactory mFormatter;
-    private String mRawGuide, mTitle;
+    private String mRawGuide;
     private Guide mGuide;
     private boolean mIsOffline;
 
@@ -47,8 +47,8 @@ public class GuideFragment extends Fragment {
             mRawGuide = mGuide.guide;
         }
         mIsOffline = args.getBoolean("isOffline");
-        mTitle = args.getString("title");
-        mFormatter = GuideFactory.getInstance(getActivity(), mTitle);
+        String title = args.getString("title");
+        mFormatter = GuideFactory.getInstance(getActivity(), title);
     }
 
     @Override

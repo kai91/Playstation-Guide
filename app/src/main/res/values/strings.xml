@@ -6,6 +6,7 @@
     <string name="instruction">Enter your PSN id</string>
     <string name="sign_in">Sign In</string>
     <string name="hint">psn id</string>
+    <string name="retry">Retry</string>
     <string name="title_activity_home">PS Trophy Guide</string>
     <string name="title_section1">All Guides</string>
     <string name="title_section2">My Guides</string>
@@ -27,5 +28,7 @@
     <string name="nav_home">Home</string>
     <string name="nav_guides">Guides</string>
     <string name="nav_exit">Sign out</string>
+
+    <string name="banner_ad_unit_id">ca-app-pub-1242559271085926/5668287296</string>
 
 </resources>
