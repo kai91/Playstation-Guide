@@ -1,6 +1,7 @@
 package robustgametools.util;
 
 import android.content.Context;
+import android.text.SpannableStringBuilder;
 import android.text.util.Linkify;
 import android.util.AttributeSet;
 import android.view.View;
@@ -33,12 +34,12 @@ public class SpoilerTextView extends TextView {
 
     }
 
-    public void setSpoiler(final CharSequence content) {
+    public void setSpoiler(final SpannableStringBuilder content) {
         setText(mWarning + "\n");
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                setText(content + "\n");
+                setText(content.append("\n"));
                 Linkify.addLinks((TextView) view, Linkify.ALL);
             }
         });

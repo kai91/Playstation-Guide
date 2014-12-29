@@ -129,7 +129,7 @@ public class HomeActivity extends BaseActivity
             });
             mMenuText.add(view);
         }
-        formatNavDrawer(0);
+        formatNavDrawer(mCurrentlySelected);
     }
 
     private void formatNavDrawer(int index) {

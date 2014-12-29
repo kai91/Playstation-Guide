@@ -152,7 +152,6 @@ public class GuideFactory {
             String rawSpoiler = rawGuide.substring(start, end);
             SpoilerTextView spoiler = new SpoilerTextView(mContext);
             spoiler.setSpoiler(placeHolderFormat(rawSpoiler));
-            spoiler.setTextColor(Color.BLACK);
             views.add(spoiler);
             formatSpoiler(rawGuide.substring(end, rawGuide.length()));
         }
@@ -182,6 +181,7 @@ public class GuideFactory {
     // This should be refactored after this, as this is redundant code, see formatText() below
     private SpannableStringBuilder placeHolderFormat(String rawString) {
         SpannableStringBuilder builder = new SpannableStringBuilder(rawString);
+        builder.setSpan(new ForegroundColorSpan(Color.DKGRAY), 0, rawString.length(), 0);
         rawString = formatBold(builder, rawString, mTextBoldRegex);
         rawString = formatBronze(builder, rawString);
         rawString = formatSilver(builder, rawString);
