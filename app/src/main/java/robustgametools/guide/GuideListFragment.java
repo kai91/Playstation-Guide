@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -25,6 +25,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import robustgametools.adapter.TrophyGuideListAdapter;
 import robustgametools.model.TrophyGuide;
 import robustgametools.playstation_guide.R;
@@ -33,9 +34,9 @@ import robustgametools.util.Storage;
 
 public class GuideListFragment extends Fragment {
 
-    @InjectView(R.id.content) LinearLayout mContent;
     @InjectView(R.id.loading) ProgressBar mLoading;
     @InjectView(R.id.guide_list) ListView mGuideList;
+    @InjectView(R.id.retry) Button mRetryButton;
 
     private GuideListListener mListener;
     private ArrayList<TrophyGuide> mGuides;
@@ -65,7 +66,6 @@ public class GuideListFragment extends Fragment {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
                 mGuides = new Gson().fromJson(result, new TypeToken<List<TrophyGuide>>(){}.getType());
-                mContent.setVisibility(View.VISIBLE);
                 mLoading.setVisibility(View.GONE);
                 showResult();
             }
@@ -75,8 +75,17 @@ public class GuideListFragment extends Fragment {
                                   Throwable error) {
                 Toast.makeText(getActivity(), "Error downloading guide. " +
                         "Check your network and try again.", Toast.LENGTH_LONG).show();
+                mLoading.setVisibility(View.GONE);
+                mRetryButton.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    @OnClick(R.id.retry)
+    public void retryConnection(){
+        initGuide();
+        mRetryButton.setVisibility(View.GONE);
+        mLoading.setVisibility(View.VISIBLE);
     }
 
     public void refreshDownloadedList() {
@@ -93,6 +102,7 @@ public class GuideListFragment extends Fragment {
 
     private void showResult() {
         mAdapter = new TrophyGuideListAdapter(getActivity(), mGuides, mDownloadedTitle);
+        mGuideList.setVisibility(View.VISIBLE);
         mGuideList.setAdapter(mAdapter);
         mGuideList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
