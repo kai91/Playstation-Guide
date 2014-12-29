@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import robustgametools.adapter.TrophyListAdapter;
 import robustgametools.model.BaseActivity;
 import robustgametools.model.Game;
@@ -50,6 +52,7 @@ public class GameActivity extends BaseActivity {
     @InjectView(R.id.trophies) ListView mTrophyList;
     @InjectView(R.id.loading_progress) ProgressBar mProgressBar;
     @InjectView(R.id.swipe_container) SwipeRefreshLayout mSwipeLayout;
+    @InjectView(R.id.retry) Button mRetryButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +94,7 @@ public class GameActivity extends BaseActivity {
                         String data = new String(responseBody);
                         initTrophyList(data);
                         mProgressBar.setVisibility(View.GONE);
+                        mRetryButton.setVisibility(View.GONE);
                         initSwipeRefresh();
                     }
 
@@ -100,8 +104,17 @@ public class GameActivity extends BaseActivity {
                         Toast.makeText(getApplicationContext(), "Failed to retrieve data." +
                                         " Check your network and try again.", Toast.LENGTH_LONG).show();
                         mSwipeLayout.setRefreshing(false);
+                        mRetryButton.setVisibility(View.VISIBLE);
+                        mProgressBar.setVisibility(View.GONE);
                     }
                 });
+    }
+
+    @OnClick(R.id.retry)
+    public void retryGetTrophyList() {
+        getTrophyList();
+        mRetryButton.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
     private void initTrophyList(String data) {
