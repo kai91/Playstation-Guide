@@ -28,7 +28,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import robustgametools.adapter.TrophyListAdapter;
-import robustgametools.model.BaseActivity;
 import robustgametools.model.Game;
 import robustgametools.model.Profile;
 import robustgametools.model.Trophy;

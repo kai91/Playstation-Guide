@@ -16,6 +16,13 @@
         android:id="@+id/guides"
         layout="@layout/drawer_item_home_menu" />
 
+    <View
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/gray_divider"/>
+
     <include
         android:id="@+id/exit"
         layout="@layout/drawer_item_home_menu" />

@@ -25,7 +25,6 @@ import robustgametools.guide.GuideActivity;
 import robustgametools.guide.GuideHomeFragment;
 import robustgametools.guide.GuideListFragment;
 import robustgametools.guide.MyGuideFragment;
-import robustgametools.model.BaseActivity;
 import robustgametools.model.Game;
 import robustgametools.playstation_guide.R;
 import robustgametools.signin.SignInActivity;

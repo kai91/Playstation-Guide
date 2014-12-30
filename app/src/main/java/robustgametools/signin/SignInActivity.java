@@ -3,7 +3,7 @@ package robustgametools.signin;
 import android.content.Intent;
 import android.os.Bundle;
 
-import robustgametools.model.BaseActivity;
+import robustgametools.playstation.BaseActivity;
 import robustgametools.playstation.HomeActivity;
 import robustgametools.playstation_guide.R;
 import robustgametools.util.Log;
