@@ -45,7 +45,6 @@ public class GuideActivity extends BaseActivity {
 
     @InjectView(R.id.drawer) DrawerLayout mDrawer;
     @InjectView(R.id.drawer_menu) ListView mDrawerMenu;
-    @InjectView(R.id.adView) AdView mAdView;
 
     private ActionBarDrawerToggle mDrawerToggle;
     private TrophyGuide mTrophyGuide;
@@ -83,7 +82,6 @@ public class GuideActivity extends BaseActivity {
         setTitle(mTrophyGuide.getTitle());
         updateTrophyInfo();
         initDrawer();
-        setUpAdmod();
     }
 
     private void choosePlatform() {
@@ -312,43 +310,5 @@ public class GuideActivity extends BaseActivity {
             mToast.setText(msg);
             mToast.show();
         }
-    }
-
-    private void setUpAdmod() {
-        // Create an ad request. Check logcat output for the hashed device ID to
-        // get test ads on a physical device. e.g.
-        // "Use AdRequest.Builder.addTestDevice("ABCDEF012345") to get test ads on this device."
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("B3B20F202CF0AD4ABE4BC8A9DF6DA617")
-                .build();
-
-        // Start loading the ad in the background.
-        mAdView.loadAd(adRequest);
-    }
-
-    @Override
-    public void onPause() {
-        if (mAdView != null) {
-            mAdView.pause();
-        }
-        super.onPause();
-    }
-
-    /** Called when returning to the activity */
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mAdView != null) {
-            mAdView.resume();
-        }
-    }
-
-    /** Called before the activity is destroyed */
-    @Override
-    public void onDestroy() {
-        if (mAdView != null) {
-            mAdView.destroy();
-        }
-        super.onDestroy();
     }
 }
