@@ -28,7 +28,8 @@
     <string name="nav_home">Home</string>
     <string name="nav_guides">Guides</string>
     <string name="nav_exit">Sign out</string>
-
+    <string name="setting">Settings</string>
     <string name="banner_ad_unit_id">ca-app-pub-1242559271085926/5668287296</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

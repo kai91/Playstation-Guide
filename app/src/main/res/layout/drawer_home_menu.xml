@@ -23,6 +23,10 @@
         android:layout_height="1dp"
         android:background="@drawable/gray_divider"/>
 
+    <!--<include
+        android:id="@+id/setting"
+        layout="@layout/drawer_item_home_menu" />-->
+
     <include
         android:id="@+id/exit"
         layout="@layout/drawer_item_home_menu" />

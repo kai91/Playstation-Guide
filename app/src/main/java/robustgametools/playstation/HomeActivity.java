@@ -46,12 +46,14 @@ public class HomeActivity extends BaseActivity
     private final int[] NAVDRAWER_ITEM_ID = new int[] {
             R.id.home,
             R.id.guides,
+            //R.id.setting,
             R.id.exit
     };
 
     private final int[] NAVDRAWER_TITLE_RES_ID = new int[] {
             R.string.nav_home,
             R.string.nav_guides,
+            //R.string.setting,
             R.string.nav_exit
     };
 
@@ -94,19 +96,27 @@ public class HomeActivity extends BaseActivity
         ) {
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                if (mNavigationIndex == 0) {
+                if (mNavigationIndex < 0) {
+                    return;
+                }
+                if (NAVDRAWER_ITEM_ID[mNavigationIndex] == R.id.home) {
                     getFragmentManager().beginTransaction()
                             .replace(R.id.container, new HomeFragment())
                             .commit();
                 }
-                else if (mNavigationIndex == 1) {
+                else if (NAVDRAWER_ITEM_ID[mNavigationIndex] == R.id.guides) {
                     getFragmentManager().beginTransaction()
                             .replace(R.id.container, new GuideHomeFragment())
                             .commit();
 
-                } else if (mNavigationIndex == 2) {
+                } else if (NAVDRAWER_ITEM_ID[mNavigationIndex] == R.id.exit) {
                     signOut();
-                }
+                } /*else if (NAVDRAWER_ITEM_ID[mNavigationIndex] == R.id.setting) {
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.container, new SettingFragment())
+                            .commit();
+
+                }*/
                 mNavigationIndex = -1;
             }
         };

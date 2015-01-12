@@ -39,8 +39,8 @@ import robustgametools.util.Storage;
 
 public class HomeFragment extends Fragment {
 
-    private static Profile mProfile;
-    private static Playstation mPlaystation;
+    private Profile mProfile;
+    private Playstation mPlaystation;
 
     private HomeFragmentListener mListener;
     private GameListAdapter adapter;
