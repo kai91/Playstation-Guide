@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">PS Trophy Guide</string>
+    <string name="app_name">Guide</string>
     <string name="action_refresh_trophy">Refresh</string>
     <string name="instruction">Enter your PSN id</string>
     <string name="sign_in">Sign In</string>
@@ -29,7 +29,5 @@
     <string name="nav_guides">Guides</string>
     <string name="nav_exit">Sign out</string>
     <string name="setting">Settings</string>
-    <string name="banner_ad_unit_id">ca-app-pub-1242559271085926/5668287296</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
