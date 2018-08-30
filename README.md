@@ -1,4 +1,4 @@
-### Deprecated! A personal learning project during college
+# Deprecated! A personal learning project during college
 
 playstation-guide
 =================
