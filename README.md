@@ -1,3 +1,5 @@
+### Deprecated! A personal learning project during college
+
 playstation-guide
 =================
 
